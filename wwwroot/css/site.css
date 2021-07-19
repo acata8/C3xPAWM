@@ -70,7 +70,9 @@ ul>li{
   padding-bottom: 1em;
 }
 
-.d-logo{
-  height: 350px;
-  width: 350px;
+.sizing{
+  display: block;
+  margin: auto;
+  max-height: 350px;
+  border-radius: 1em;
 }
