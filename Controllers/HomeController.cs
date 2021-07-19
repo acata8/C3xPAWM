@@ -24,7 +24,7 @@ namespace C3xPAWM.Controllers
         }
         
 
-        public IActionResult Privacy()
+        public IActionResult Elenco()
         {
             return View();
         }

@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "Elenco Negozi";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<br>
+<h3> Inizia la ricerca dei negozi </h3>
+<ul>
+    <li class="elenco">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                <h3>
+                         <small class="text-muted">nella tua regione...</small>
+                    </h3> 
+                </div>
+                <div class="col-md-4">
+                    <label for="regioni">Seleziona la regione</label>
+                <select name="regioni" id="regioni">
+                    <option value="null" selected disabled>      </option>
+                    <option value="Marche">Marche</option>
+                    <option value="Lazio">Lazio</option>
+                    <option value="Umbria">Umbria</option>
+                    <option value="Empty" disabled>...</option>
+                </select>
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-outline-primary" asp-controller="" asp-action="">Vai all'elenco</a> @* Aggiungere il passaggio del valore value *@
+                    </div>
+            </div>
+        </div>
+    </li>
+    <li class="elenco">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>
+                        <small class="text-muted">nella tua provincia...</small>
+                    </h3> 
+                </div>
+                <div class="col-md-4">
+                    <form asp-action="" method="post"></form>
+                    <label for="regioni">Seleziona la provincia</label>
+                    <select name="regioni" id="regioni">
+                        <option value="null" selected>  </option>
+                        <option value="Lazio">AN</option>
+                        <option value="Marche">AP</option>
+                        <option value="Marche">MC</option>
+                        <option value="Marche">PU</option>
+                        <option value="Marche" disabled>...</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-outline-primary" asp-controller="" asp-action="">Vai all'elenco</a> @* Aggiungere il passaggio del valore value *@
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="elenco">
+        <div class="container">
+        <div class="row">
+                <div class="col-md-4">
+                <h3>
+                        <small class="text-muted">nella tua citta...</small>
+                    </h3> 
+                </div>
+                <div class="spacing col-md-4">
+                    <input type="text" name="citta" id="citta" placeholder="Digita la citt&agrave;"> 
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-outline-primary" asp-controller="" asp-action="">Vai all'elenco</a> @* Aggiungere il passaggio del valore value *@
+                    </div>
+            </div>
+        </div>
+    </li>
+</ul>
