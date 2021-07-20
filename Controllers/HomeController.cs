@@ -23,12 +23,6 @@ namespace C3xPAWM.Controllers
             return View();
         }
         
-
-        public IActionResult Elenco()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

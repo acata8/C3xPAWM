@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Elenco per Regione";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3 class="spacing"> Lista dei negozi affiliati </h3>
+
+    @* Fare un for each per la lista dei negozi della regione x passata in input *@
+    <ul>
+        @for(int i = 1; i <= 5; i++){
+        <li class="elenco">
+            <div class="row">
+                <div class="col-md-2">
+                    <p> Nome negozio @i</p>
+                </div>
+                <div class="col-md-2">                            
+                    <h5>Città</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Via negozio</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Tipologia</h5>
+                </div>
+                <div class="col-md-2">
+                    <h5>Numero telefonico</h5>
+                </div>
+            </div> 
+        </li>
+        }
+        
+    </ul> 
+
+    
