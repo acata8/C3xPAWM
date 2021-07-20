@@ -1,10 +1,55 @@
-﻿html {
+﻿/* RESET CSS */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* end reset css */
+
+html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
   margin-bottom: 60px;
   font-family: 'Open Sans', sans-serif;
 }
@@ -14,7 +59,7 @@ body {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+  line-height: 80px; 
 }
 
 /* Navbar section */
@@ -27,10 +72,6 @@ header{
   position: fixed;
   width: 100%;
   z-index: 1;
-}
-
-.sticky + .content {
-  padding-top: 60px;
 }
 
 .padding{
@@ -64,10 +105,6 @@ author{
   font-style: italic;
 }
 
-ul>li{
-  list-style-type: none;
-}
-
 .elenco{
   padding: 3em;
 }
@@ -77,15 +114,16 @@ ul>li{
 }
 
 .spacing{
-  padding-bottom: 1em;
+  padding: 1em 1em;
 }
+
+/* Carousel setting */
 
 .sizing{
   display: block;
   margin: auto;
   max-height: 350px;
   max-width: 350px;
-  border-radius: 1em;
 }
 
 @media (max-width: 478px) {
@@ -93,3 +131,4 @@ ul>li{
     display: none !important;
   } 
 }
+/* end carousel section */
