@@ -59,7 +59,7 @@ body {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 80px; 
+  line-height: 60px; 
 }
 
 /* Navbar section */
@@ -98,7 +98,7 @@ h1{
 }
 
 .logo{
-  height: 5em;
+  height: 3em;
 }
 
 author{
@@ -132,3 +132,4 @@ author{
   } 
 }
 /* end carousel section */
+

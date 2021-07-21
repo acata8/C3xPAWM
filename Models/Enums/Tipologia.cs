@@ -6,6 +6,7 @@ namespace C3xPAWM.Models.Enums
         Idraulica,
         Alimentare,
         Elettronica,
+        Cartolibreria
         
     }
 }

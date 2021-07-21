@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using C3xPAWM.Models.Services.Application;
+using C3xPAWM.Models.Services.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,8 @@ namespace C3xPAWM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddTransient<INegoziService, AdoNetNegoziService>();
+            services.AddTransient<IDatabaseAccessor, SqliteDatabaseAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
