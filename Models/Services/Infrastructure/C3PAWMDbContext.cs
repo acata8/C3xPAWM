@@ -1,0 +1,61 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using C3xPAWM.Models.Entities;
+using C3xPAWM.Models.Enums;
+
+#nullable disable
+
+namespace C3xPAWM.Models.Services.Infrastructure
+{
+    public partial class C3PAWMDbContext : DbContext
+    {
+        public C3PAWMDbContext()
+        {
+        }
+
+        public C3PAWMDbContext(DbContextOptions<C3PAWMDbContext> options)
+            : base(options)
+        {
+        }
+
+        public virtual DbSet<Indirizzo> Indirizzi { get; set; }
+        public virtual DbSet<Negozio> Negozio { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                //To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlite("Data Source=Data/C3PAWM.db");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Negozio>(entity => {
+                entity.ToTable("Negozi");
+                entity.HasKey(negozio => negozio.NegozioId);
+
+                entity.Property(negozio => negozio.Tipologia)
+                .HasConversion(tipo => tipo.ToString(), 
+                                tipo => (Tipologia)Enum.Parse(typeof(Tipologia), tipo));
+
+                entity.Property(negozio => negozio.Categoria)
+                .HasConversion(categoria => categoria.ToString(), 
+                                categoria => (Categoria)Enum.Parse(typeof(Categoria), categoria));
+                                
+                entity.HasMany(negozio => negozio.Indirizzi)
+                .WithOne(indirizzo => indirizzo.Negozio)
+                .HasForeignKey(indirizzo => indirizzo.IndirizzoId);
+            });
+
+            modelBuilder.Entity<Indirizzo>(entity => {
+                 entity.ToTable("Indirizzi");{{{{{{}}}}}}
+                 entity.HasKey(indirizzo => indirizzo.IndirizzoId);
+             });
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    }
+}

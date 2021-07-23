@@ -10,16 +10,19 @@
     <ul>
         <li class="elenco">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <p class="font-weight-bold">Nome</p>
+                </div>
+                 <div class="col-md-1">                            
+                    <p class="font-weight-bold">Provincia</p>
                 </div>
                 <div class="col-md-2">                            
                     <p class="font-weight-bold">Citta</p>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <p class="font-weight-bold">Via</p>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <p class="font-weight-bold">Tipologia</p>
                 </div>
                 <div class="col-md-2">
@@ -30,16 +33,19 @@
         @foreach(NegozioViewModel negozio in Model){
         <li class="elenco">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <p> @negozio.Nome</p>
                 </div>
+                <div class="col-md-1">                            
+                    <h5>@negozio.Indirizzo.First().Provincia</h5>
+                </div>
                 <div class="col-md-2">                            
-                    <h5>@negozio.Citta</h5>
+                    <h5>@negozio.Indirizzo.First().Citta</h5>
                 </div>
-                <div class="col-md-3">
-                    <h5>@negozio.Via</h5>
+                <div class="col-md-2">
+                    <h5>@negozio.Indirizzo.First().Via</h5>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <h5>@negozio.Tipologia</h5>
                 </div>
                 <div class="col-md-2">

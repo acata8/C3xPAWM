@@ -26,3 +26,9 @@ function addStricky() {
     section.classList.remove("padding")
   }
 }
+
+
+// sezione alert 
+
+var btnCity = document.getElementById("btnAddCity")
+

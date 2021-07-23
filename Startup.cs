@@ -26,8 +26,9 @@ namespace C3xPAWM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddTransient<INegoziService, AdoNetNegoziService>();
+            services.AddTransient<INegoziService, EfNegoziService>();
             services.AddTransient<IDatabaseAccessor, SqliteDatabaseAccessor>();
+            services.AddDbContext<C3PAWMDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +54,7 @@ namespace C3xPAWM
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{x?}");
             });
         }
     }

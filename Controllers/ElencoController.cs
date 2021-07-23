@@ -14,16 +14,20 @@ namespace C3xPAWM.Controllers
             this.negoziService = negoziService;
         }
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            //List<NegozioViewModel> citta = await negoziService.getListaCittaDistinct();
+            return View(/*citta*/);
         }
         public async Task<IActionResult> ListaNegozi(){
-            List<NegozioViewModel> negozi = await negoziService.getNegozi();
+            List<NegozioViewModel> negozi = await negoziService.getNegoziAsync();
             return View(negozi);
         }
 
-       
+        public async Task<IActionResult> ListaNegoziCitta(string x){
+            //List<NegozioViewModel> negozi = await negoziService.getNegoziByCittaAsync(x);
+            return View(/*negozi*/);
+        }
 
     }
 }
