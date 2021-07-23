@@ -53,6 +53,9 @@ namespace C3xPAWM.Models.Entities
             Telefono = nuovoNumero;
         }
 
+        public Indirizzo PrimoIndirizzo(){
+            return Indirizzi.First();
+        }
 
     }
 

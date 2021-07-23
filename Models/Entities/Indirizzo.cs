@@ -13,7 +13,8 @@ namespace C3xPAWM.Models.Entities
         public string Provincia { get; set; }
         public string Citta { get; set; }
         public string Via { get; set; }
-
         public virtual Negozio Negozio { get; set; }
+
+        
     }
 }

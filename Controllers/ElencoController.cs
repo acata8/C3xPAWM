@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Services.Application;
@@ -16,8 +17,10 @@ namespace C3xPAWM.Controllers
         
         public async Task<IActionResult> Index()
         {
-            //List<NegozioViewModel> citta = await negoziService.getListaCittaDistinct();
-            return View(/*citta*/);
+            List<string> citta = await negoziService.getListaCittaDistinct();
+            List<string> regioni = await negoziService.getListaRegioniDistinct();
+            var tuple = new Tuple<List<string>, List<string>>(citta,regioni);
+            return View(tuple);
         }
         public async Task<IActionResult> ListaNegozi(){
             List<NegozioViewModel> negozi = await negoziService.getNegoziAsync();
@@ -25,9 +28,13 @@ namespace C3xPAWM.Controllers
         }
 
         public async Task<IActionResult> ListaNegoziCitta(string x){
-            //List<NegozioViewModel> negozi = await negoziService.getNegoziByCittaAsync(x);
-            return View(/*negozi*/);
+            List<NegozioViewModel> negozi = await negoziService.getNegoziByCittaAsync(x);
+            return View(negozi);
         }
 
+        public async Task<IActionResult> ListaNegoziRegione(string x){
+            List<NegozioViewModel> negozi = await negoziService.getNegoziByRegioneAsync(x);
+            return View(negozi);
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace C3xPAWM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddTransient<INegoziService, EfNegoziService>();
+            services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<IDatabaseAccessor, SqliteDatabaseAccessor>();
             services.AddDbContext<C3PAWMDbContext>();
         }
