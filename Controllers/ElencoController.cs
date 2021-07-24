@@ -7,33 +7,38 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace C3xPAWM.Controllers
 {
+    [ResponseCache(CacheProfileName = "Elenco")]
     public class ElencoController : Controller
     {
         
+    
         private readonly INegoziService negoziService;
-        public ElencoController(INegoziService negoziService){
+        public ElencoController(INegoziService negoziService)
+        {
             this.negoziService = negoziService;
         }
         
         public async Task<IActionResult> Index()
         {
-            List<string> citta = await negoziService.getListaCittaDistinct();
-            List<string> regioni = await negoziService.getListaRegioniDistinct();
+            List<string> citta = await negoziService.GetListaCittaDistinct();
+            List<string> regioni = await negoziService.GetListaRegioniDistinct();
             var tuple = new Tuple<List<string>, List<string>>(citta,regioni);
             return View(tuple);
         }
-        public async Task<IActionResult> ListaNegozi(){
-            List<NegozioViewModel> negozi = await negoziService.getNegoziAsync();
+        public async Task<IActionResult> ListaNegozi(string search = null,
+                                                     int page = 1)
+        {
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziAsync(search);
             return View(negozi);
         }
 
         public async Task<IActionResult> ListaNegoziCitta(string x){
-            List<NegozioViewModel> negozi = await negoziService.getNegoziByCittaAsync(x);
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziByCittaAsync(x);
             return View(negozi);
         }
 
         public async Task<IActionResult> ListaNegoziRegione(string x){
-            List<NegozioViewModel> negozi = await negoziService.getNegoziByRegioneAsync(x);
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziByRegioneAsync(x);
             return View(negozi);
         }
     }

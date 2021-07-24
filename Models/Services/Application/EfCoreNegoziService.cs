@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,28 +19,35 @@ namespace C3xPAWM.Models.Services.Application
 
         }
 
-        public async Task<List<string>> getListaCittaDistinct()
+        public async Task<List<string>> GetListaCittaDistinct()
         {
-            var citta = await dbContext.Negozio.Select(negozio => negozio.Indirizzi.First().Citta)
+            var citta = await dbContext.Negozio
+            .AsNoTracking()
+            .Select(negozio => negozio.Indirizzi.First().Citta)
             .Distinct()
             .ToListAsync();
 
             return citta;
         }
 
-        public async Task<List<string>> getListaRegioniDistinct()
+        public async Task<List<string>> GetListaRegioniDistinct()
         {
-            var Regioni = await dbContext.Negozio.Select(negozio => negozio.Indirizzi.First().Regione)
+            var Regioni = await dbContext.Negozio
+            .AsNoTracking()
+            .Select(negozio => negozio.Indirizzi.First().Regione)
             .Distinct()
             .ToListAsync();
-
+        
             return Regioni;
         }
 
-        public async Task<List<NegozioViewModel>> getNegoziAsync()
+        public async Task<List<NegozioViewModel>> GetNegoziAsync(string search)
         {
-           
-            var negozi = await dbContext.Negozio.Select(negozio => new NegozioViewModel {
+            search = search ?? "";
+            var negozi = await dbContext.Negozio
+            .AsNoTracking()
+            .Where(negozio => negozio.Nome.Contains(search))
+            .Select(negozio => new NegozioViewModel {
                 Nome = negozio.Nome,
                 Telefono = negozio.Telefono,
                 Tipologia = negozio.Tipologia,
@@ -49,16 +57,16 @@ namespace C3xPAWM.Models.Services.Application
                     Via = indirizzo.Via,
                     Provincia = indirizzo.Provincia
                 }).ToList()
-            }).ToListAsync();
+            })
+            .ToListAsync();
 
             return negozi;
-
-
         }
 
-        public async Task<List<NegozioViewModel>> getNegoziByCittaAsync(string citta)
+        public async Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta)
         {
             var negozi = await dbContext.Negozio
+            .AsNoTracking()
             .Where(negozio => negozio.Indirizzi.First().Citta.Equals(citta))
             .Select(negozio => new NegozioViewModel {
                 Nome = negozio.Nome,
@@ -70,15 +78,19 @@ namespace C3xPAWM.Models.Services.Application
                     Via = indirizzo.Via,
                     Provincia = indirizzo.Provincia
                 }).ToList()
-            }).ToListAsync();
+            })
+            .ToListAsync();
 
+            if (!negozi.Any()) throw new InvalidOperationException($"Impossibile, localita' non trovata");
+            
             return negozi;
+            
         }
-        public async Task<List<NegozioViewModel>> getNegoziByRegioneAsync(string regione)
+        public async Task<List<NegozioViewModel>> GetNegoziByRegioneAsync(string regione)
         {
-            string RE = regione.ToUpper();
             var negozi = await dbContext.Negozio
-            .Where(negozio => negozio.Indirizzi.First().Regione.Equals(RE))
+            .AsNoTracking()
+            .Where(negozio => negozio.Indirizzi.First().Regione.Equals(regione))
             .Select(negozio => new NegozioViewModel {
                 Nome = negozio.Nome,
                 Telefono = negozio.Telefono,
@@ -89,7 +101,10 @@ namespace C3xPAWM.Models.Services.Application
                     Via = indirizzo.Via,
                     Regione = indirizzo.Regione
                 }).ToList()
-            }).ToListAsync();
+            })
+            .ToListAsync();
+
+            if (!negozi.Any()) throw new InvalidOperationException($"Impossibile, localita' non trovata");
 
             return negozi;
         }

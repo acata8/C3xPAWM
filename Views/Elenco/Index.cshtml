@@ -29,7 +29,7 @@
     </li>
     <li class="elenco">
         <div id="btnAlert" class="alert alert-danger text-center d-none" role="alert">
-                Il campo non pu&ograve; essere vuoto!
+                Il campo citt&agrave; non pu&ograve; essere vuoto!
         </div>
         <div class="container">
             <div class="row">
@@ -56,6 +56,9 @@
         </div>
     </li>
     <li class="elenco">
+         <div id="btnAlertRegione" class="alert alert-danger text-center d-none" role="alert">
+                Il campo regione non pu&ograve; essere vuoto!
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -79,48 +82,35 @@
             </div>
         </div> 
     </li>
+    <li>
+        <div class="row">
+            <div class="col-md-4">
+                <h3>
+                    <small class="text-muted">ricerca nel sistema... </small>
+                </h3>
+            </div>
+
+            <div class="col-md-4">
+                <input type="text" name="search" placeholder="Cerca un negozio" >
+            </div>
+
+            <div class="col-md-2">
+                <form asp-action="ListaNegozi" method="get">
+                    <button id="btnAddNome" class="btn btn-outline-primary" >Vai all'elenco</button>  
+                </form>
+            </div>
+
+
+        </div>
+            
+       
+    </li>
+    
 </ul>
 
  
 
-@* Script per passare l'asp-route-id al bottone *@
-@section scripts {
-    <script>
-        
-        var btnAlert = document.getElementById("btnAlert");
-        
-        $('#btnAddCity').click( function (e){
-            e.preventDefault();
-            
-            var x = $('#citta').val();
-            if(x != "-1") {
-                btnAlert.classList.remove("show")
-                window.location.href = $(this).attr('href') + '/' + x;
-                
-            }else{
-                console.log("Errore!")
-                btnAlert.classList.remove("d-none")
-                btnAlert.classList.add("show")
-            }
-        });
-
-         $('#btnAddRegion').click( function (e){
-            e.preventDefault();
-            
-            var x = $('#regione').val();
-            if(x != "-1") {
-                btnAlert.classList.remove("show")
-                window.location.href = $(this).attr('href') + '/' + x;
-                
-            }else{
-                console.log("Errore!")
-                btnAlert.classList.remove("d-none")
-                btnAlert.classList.add("show")
-            }
-        });
-
-   
-    </script>
-} 
 
 
+
+ 

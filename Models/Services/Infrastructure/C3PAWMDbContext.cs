@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Enums;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 #nullable disable
 
@@ -10,26 +12,18 @@ namespace C3xPAWM.Models.Services.Infrastructure
 {
     public partial class C3PAWMDbContext : DbContext
     {
-        public C3PAWMDbContext()
-        {
-        }
-
+        
+    
         public C3PAWMDbContext(DbContextOptions<C3PAWMDbContext> options)
             : base(options)
         {
         }
 
+       
+
         public virtual DbSet<Indirizzo> Indirizzi { get; set; }
         public virtual DbSet<Negozio> Negozio { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                //To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlite("Data Source=Data/C3PAWM.db");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,7 +45,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
             });
 
             modelBuilder.Entity<Indirizzo>(entity => {
-                 entity.ToTable("Indirizzi");{{{{{{}}}}}}
+                 entity.ToTable("Indirizzi");
                  entity.HasKey(indirizzo => indirizzo.IndirizzoId);
              });
         }

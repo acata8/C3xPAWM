@@ -8,14 +8,14 @@
     - regione
 
 * Accesso al db (EFCore)
-
+* Caching
+* Reindirizzamento errori
+* Config e settare appsetting.json
 
 ##NOT-DONE
 
-* Logger
-* Cashing
-* Reindirizzamento errori
-* Config e settare appsetting.json
+
+
 * Autenticazione
     - operazioni negozio
         1. Effettuare vendita

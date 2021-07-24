@@ -27,8 +27,40 @@ function addStricky() {
   }
 }
 
+//Sezione per settare il PATH con l'option nell'index di elenco
+var btnAlert = document.getElementById("btnAlert");
+var btnAlertRegione = document.getElementById("btnAlertRegione");
 
-// sezione alert 
+$('#btnAddCity').click( function (e){
+    e.preventDefault();
+    
+    var x = $('#citta').val();
+    if(x != "-1") {
+        btnAlert.classList.remove("show")
+        window.location.href = $(this).attr('href') + '/' + x;
+        
+    }else{
+        console.log("Errore!")
+        btnAlert.classList.remove("d-none")
+        btnAlert.classList.add("show")
+    }
+});
 
-var btnCity = document.getElementById("btnAddCity")
+ $('#btnAddRegion').click( function (e){
+    e.preventDefault();
+    
+    var x = $('#regione').val();
+    if(x != "-1") {
+        btnAlertRegione.classList.remove("show")
+        window.location.href = $(this).attr('href') + '/' + x;
+        
+    }else{
+        console.log("Errore!")
+        btnAlertRegione.classList.remove("d-none")
+        btnAlertRegione.classList.add("show")
+    }
+});
+
+
+
 
