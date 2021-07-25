@@ -25,7 +25,7 @@ namespace C3xPAWM.Controllers
             var tuple = new Tuple<List<string>, List<string>>(citta,regioni);
             return View(tuple);
         }
-        public async Task<IActionResult> ListaNegozi(string search = null,
+        public async Task<IActionResult> ListaNegozi(string search,
                                                      int page = 1)
         {
             List<NegozioViewModel> negozi = await negoziService.GetNegoziAsync(search, page);

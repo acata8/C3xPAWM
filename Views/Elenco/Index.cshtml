@@ -67,44 +67,19 @@
                     </h3> 
                 </div>
                 <div class="spacing col-md-4">
-                    <input type="text" name="regione" placeholder="Cerca un negozio" >
                     <select name="regione" id="regione">
                        <option value="-1" selected>  </option>
                         @foreach (var regione in @Model.Item2)
                         {
                             <option value="@regione">@regione</option>
                         } 
-
                     </select>
                 </div>
                 <div class="col-md-2">
                    <a id="btnAddRegion" class="btn btn-outline-primary" asp-action="ListaNegoziRegione" asp-controller="Elenco">Vai all'elenco</a> 
-                  
                 </div>
             </div>
         </div> 
-    </li>
-    <li class="elenco">
-        <div id="btnAlertNegozio" class="alert alert-danger text-center d-none" role="alert">
-                Il campo regione non pu&ograve; essere vuoto!
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <h3>
-                    <small class="text-muted">ricerca nel sistema... </small>
-                </h3>
-            </div>
-
-            <div class="col-md-4 spacing">
-                <input type="text" name="search" placeholder="Cerca un negozio" >
-            </div>
-
-            <div class="col-md-2">
-                <form asp-action="ListaNegozi" method="get">
-                    <button id="btnAddNome" class="btn btn-outline-primary" >Vai all'elenco</button>  
-                </form>
-            </div>
-        </div>
     </li>
 </ul>
 

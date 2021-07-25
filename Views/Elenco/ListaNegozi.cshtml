@@ -2,14 +2,26 @@
 @{
     ViewData["Title"] = "Elenco";
 }
-
-
-    <div class="text-center">
-        <h1 class="display-4">Lista Negozi</h1>
-        <p class="font-weight-bold">Negozi affiliati al sistema C3</p>
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="display-4">Lista Negozi</h1>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+            <form asp-action="ListaNegozi" method="get">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
+                    <div class="input-group-append">
+                        <button class="input-group-text"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-  
-
+    <div>
+        
+    </div>
+    
+    <p class="font-weight-bold mt-3">Negozi affiliati al sistema C3</p>
     <ul>
         <li class="elenco">
             <div class="row">

@@ -50,8 +50,8 @@ namespace C3xPAWM.Models.Services.Application
             search = search ?? "";
 
             page = Math.Max(1, page);
-            int limit = negozioOptions.CurrentValue.PerPage;
-            int offset = (page - 1) * limit;
+            //int limit = negozioOptions.CurrentValue.PerPage;
+            //int offset = (page - 1) * limit;
 
 
             var negozi = await dbContext.Negozio
@@ -77,6 +77,7 @@ namespace C3xPAWM.Models.Services.Application
             return negozi;
         }
 
+    
         public async Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta)
         {
             var negozi = await dbContext.Negozio

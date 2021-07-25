@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System;
 
 namespace C3xPAWM
 {
@@ -59,6 +61,13 @@ namespace C3xPAWM
             {
                 app.UseDeveloperExceptionPage();
 
+            //Setting per BrowserSync
+            try
+            {
+                File.WriteAllText("browsersync-update.txt", DateTime.Now.ToString());
+            }catch { }
+                
+            
                 
             }
             else
