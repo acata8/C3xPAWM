@@ -51,7 +51,6 @@ namespace C3xPAWM
             services.Configure<NegoziOptions>(configuration.GetSection("Negozi"));
             services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
             
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,11 +63,10 @@ namespace C3xPAWM
             //Setting per BrowserSync
             try
             {
-                File.WriteAllText("browsersync-update.txt", DateTime.Now.ToString());
+                File.WriteAllText("bin/browsersync-update.txt", DateTime.Now.ToString());
             }catch { }
                 
-            
-                
+
             }
             else
             {

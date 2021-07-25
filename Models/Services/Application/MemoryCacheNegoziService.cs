@@ -12,11 +12,11 @@ namespace C3xPAWM.Models.Services.Application
     {
         private readonly INegoziService negozioService;
         private readonly IMemoryCache memoryCache;
-        private readonly IOptionsMonitor<CacheOptions> expirationCache;
+        private readonly IOptionsMonitor<CacheOptions> cacheOptions;
 
-        public MemoryCacheNegoziService(INegoziService negozioService, IMemoryCache memoryCache, IOptionsMonitor<CacheOptions> expirationCache)
+        public MemoryCacheNegoziService(INegoziService negozioService, IMemoryCache memoryCache, IOptionsMonitor<CacheOptions> cacheOptions)
         {
-            this.expirationCache = expirationCache;
+            this.cacheOptions = cacheOptions;
             this.memoryCache = memoryCache;
             this.negozioService = negozioService;
 
@@ -77,7 +77,7 @@ namespace C3xPAWM.Models.Services.Application
 
 
         private int GetExpirationTime(){
-            return expirationCache.CurrentValue.TimeExpirationCache;
+            return cacheOptions.CurrentValue.TimeExpirationCache;
         }
     }
 }

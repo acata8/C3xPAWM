@@ -50,13 +50,13 @@ namespace C3xPAWM.Models.Services.Application
             search = search ?? "";
 
             page = Math.Max(1, page);
-            //int limit = negozioOptions.CurrentValue.PerPage;
-            //int offset = (page - 1) * limit;
+            int limit = negozioOptions.CurrentValue.PerPage;
+            int offset = (page - 1) * limit;
 
 
             var negozi = await dbContext.Negozio
-            //.Skip(offset)
-            //.Take(limit)
+            .Skip(offset)
+            .Take(limit)
             .AsNoTracking()
             .Where(negozio => negozio.Nome.Contains(search))
             .Select(negozio => new NegozioViewModel
