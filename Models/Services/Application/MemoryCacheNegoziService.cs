@@ -44,13 +44,13 @@ namespace C3xPAWM.Models.Services.Application
             });
         }
 
-        public Task<List<NegozioViewModel>> GetNegoziAsync(string search)
+        public Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page)
         {
-            return memoryCache.GetOrCreateAsync($"negozi{search}", cacheEntry =>
+            return memoryCache.GetOrCreateAsync($"negozi{search}-{page}", cacheEntry =>
             {
                 cacheEntry.SetSize(1);
                 cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetNegoziAsync(search);
+                return negozioService.GetNegoziAsync(search, page);
             });
 
         }

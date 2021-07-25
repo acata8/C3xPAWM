@@ -28,7 +28,7 @@ namespace C3xPAWM.Controllers
         public async Task<IActionResult> ListaNegozi(string search = null,
                                                      int page = 1)
         {
-            List<NegozioViewModel> negozi = await negoziService.GetNegoziAsync(search);
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziAsync(search, page);
             return View(negozi);
         }
 
@@ -37,8 +37,8 @@ namespace C3xPAWM.Controllers
             return View(negozi);
         }
 
-        public async Task<IActionResult> ListaNegoziRegione(string x){
-            List<NegozioViewModel> negozi = await negoziService.GetNegoziByRegioneAsync(x);
+        public async Task<IActionResult> ListaNegoziRegione(string regione){
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziByRegioneAsync(regione);
             return View(negozi);
         }
     }
