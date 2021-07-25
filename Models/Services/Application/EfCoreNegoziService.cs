@@ -23,28 +23,6 @@ namespace C3xPAWM.Models.Services.Application
 
         }
 
-        public async Task<List<string>> GetListaCittaDistinct()
-        {
-            var citta = await dbContext.Negozio
-            .AsNoTracking()
-            .Select(negozio => negozio.Indirizzi.First().Citta)
-            .Distinct()
-            .ToListAsync();
-
-            return citta;
-        }
-
-        public async Task<List<string>> GetListaRegioniDistinct()
-        {
-            var Regioni = await dbContext.Negozio
-            .AsNoTracking()
-            .Select(negozio => negozio.Indirizzi.First().Regione)
-            .Distinct()
-            .ToListAsync();
-
-            return Regioni;
-        }
-
         public async Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page)
         {
             search = search ?? "";
@@ -78,11 +56,13 @@ namespace C3xPAWM.Models.Services.Application
         }
 
     
-        public async Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta)
+        public async Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta, int page)
         {
+
+            citta = citta.ToUpper() ?? "";
             var negozi = await dbContext.Negozio
             .AsNoTracking()
-            .Where(negozio => negozio.Indirizzi.First().Citta.Equals(citta))
+            .Where(negozio => negozio.Indirizzi.First().Citta.ToUpper().Equals(citta))
             .Select(negozio => new NegozioViewModel
             {
                 Nome = negozio.Nome,
@@ -103,14 +83,14 @@ namespace C3xPAWM.Models.Services.Application
             return negozi;
 
         }
-        public async Task<List<NegozioViewModel>> GetNegoziByRegioneAsync(string regione)
+        public async Task<List<NegozioViewModel>> GetNegoziByProvinciaAsync(string provincia)
         {
 
-            regione = regione ?? "";
+            provincia = provincia.ToUpper() ?? "";
 
             var negozi = await dbContext.Negozio
             .AsNoTracking()
-            .Where(negozio => negozio.Indirizzi.First().Regione.Equals(regione))
+            .Where(negozio => negozio.Indirizzi.First().Provincia.ToUpper().Equals(provincia))
             .Select(negozio => new NegozioViewModel
             {
                 Nome = negozio.Nome,

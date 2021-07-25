@@ -4,7 +4,7 @@ namespace C3xPAWM.Models.Enums
     {
         Ferramenta,
         Idraulica,
-        Alimentare,
+        Alimentari,
         Elettronica,
         Cartolibreria
         

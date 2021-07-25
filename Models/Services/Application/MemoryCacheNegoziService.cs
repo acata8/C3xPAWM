@@ -24,25 +24,6 @@ namespace C3xPAWM.Models.Services.Application
 
         //RICORDA DI USARE memoryCache.Remove($"..") quando aggiorni qualcosa
 
-        public Task<List<string>> GetListaCittaDistinct()
-        {
-            return memoryCache.GetOrCreateAsync($"citta", cacheEntry =>
-            {
-                cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetListaCittaDistinct();
-            });
-
-        }
-
-        public Task<List<string>> GetListaRegioniDistinct()
-        {
-
-            return memoryCache.GetOrCreateAsync($"regioni", cacheEntry =>
-            {
-                cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetListaRegioniDistinct();
-            });
-        }
 
         public Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page)
         {
@@ -55,23 +36,23 @@ namespace C3xPAWM.Models.Services.Application
 
         }
 
-        public Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta)
+        public Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta, int page)
         {
-            return memoryCache.GetOrCreateAsync($"{citta}", cacheEntry =>
+            return memoryCache.GetOrCreateAsync($"{citta}-{page}", cacheEntry =>
             {
                 cacheEntry.SetSize(1);
                 cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetNegoziByCittaAsync(citta);
+                return negozioService.GetNegoziByCittaAsync(citta,page);
             });
         }
 
-        public Task<List<NegozioViewModel>> GetNegoziByRegioneAsync(string regione)
+        public Task<List<NegozioViewModel>> GetNegoziByProvinciaAsync(string provincia)
         {
-            return memoryCache.GetOrCreateAsync($"{regione}", cacheEntry =>
+            return memoryCache.GetOrCreateAsync($"{provincia}", cacheEntry =>
             {
                 cacheEntry.SetSize(1);
                 cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetNegoziByRegioneAsync(regione);
+                return negozioService.GetNegoziByProvinciaAsync(provincia);
             });
         }
 

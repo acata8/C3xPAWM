@@ -6,10 +6,8 @@ namespace C3xPAWM.Models.Services.Application
 {
     public interface INegoziService
     {
-        Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page);
-        Task<List<string>> GetListaRegioniDistinct();        
-        Task<List<string>> GetListaCittaDistinct();       
-        Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta);
-        Task<List<NegozioViewModel>> GetNegoziByRegioneAsync(string regione);
+        Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page);   
+        Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta, int page);
+        Task<List<NegozioViewModel>> GetNegoziByProvinciaAsync(string regione);
     }
 }

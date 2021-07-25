@@ -18,12 +18,9 @@ namespace C3xPAWM.Controllers
             this.negoziService = negoziService;
         }
         
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<string> citta = await negoziService.GetListaCittaDistinct();
-            List<string> regioni = await negoziService.GetListaRegioniDistinct();
-            var tuple = new Tuple<List<string>, List<string>>(citta,regioni);
-            return View(tuple);
+            return View();
         }
         public async Task<IActionResult> ListaNegozi(string search,
                                                      int page = 1)
@@ -32,13 +29,13 @@ namespace C3xPAWM.Controllers
             return View(negozi);
         }
 
-        public async Task<IActionResult> ListaNegoziCitta(string x){
-            List<NegozioViewModel> negozi = await negoziService.GetNegoziByCittaAsync(x);
+        public async Task<IActionResult> ListaNegoziCitta(string citta, int page = 1){
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziByCittaAsync(citta, page);
             return View(negozi);
         }
 
-        public async Task<IActionResult> ListaNegoziRegione(string regione){
-            List<NegozioViewModel> negozi = await negoziService.GetNegoziByRegioneAsync(regione);
+        public async Task<IActionResult> ListaNegoziProvincia(string provincia){
+            List<NegozioViewModel> negozi = await negoziService.GetNegoziByProvinciaAsync(provincia);
             return View(negozi);
         }
     }
