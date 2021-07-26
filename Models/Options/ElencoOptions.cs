@@ -1,13 +1,13 @@
 namespace C3xPAWM.Models.Options
 {
-    public class NegoziOptions
+    public class ElencoOptions
     {
         public int PerPage { get; set; }
 
-        public NegoziOrderOptions Order { get; set; }
+        public ElencoOrderOptions Order { get; set; }
     }
 
-    public class NegoziOrderOptions{
+    public class ElencoOrderOptions{
         public string By { get; set; }
 
         public bool Ascending { get; set; }

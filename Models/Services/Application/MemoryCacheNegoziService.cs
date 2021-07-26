@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Options;
 using C3xPAWM.Models.ViewModel;
 using Microsoft.Extensions.Caching.Memory;
@@ -22,40 +23,33 @@ namespace C3xPAWM.Models.Services.Application
 
         }
 
+        public Task<List<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<NegozioViewModel>> GetListaNegozi(ElencoListInputModel model)
+        {
+            throw new NotImplementedException();
+        }
+
         //RICORDA DI USARE memoryCache.Remove($"..") quando aggiorni qualcosa
 
 
-        public Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page)
+        public Task<List<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
         {
+
+            var page = model.Page;
+            var search = model.Search;
+
             return memoryCache.GetOrCreateAsync($"negozi{search}-{page}", cacheEntry =>
             {
                 cacheEntry.SetSize(1);
                 cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetNegoziAsync(search, page);
+                return negozioService.GetNegozi(model);
             });
 
         }
-
-        public Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta, int page)
-        {
-            return memoryCache.GetOrCreateAsync($"{citta}-{page}", cacheEntry =>
-            {
-                cacheEntry.SetSize(1);
-                cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetNegoziByCittaAsync(citta,page);
-            });
-        }
-
-        public Task<List<NegozioViewModel>> GetNegoziByProvinciaAsync(string provincia)
-        {
-            return memoryCache.GetOrCreateAsync($"{provincia}", cacheEntry =>
-            {
-                cacheEntry.SetSize(1);
-                cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
-                return negozioService.GetNegoziByProvinciaAsync(provincia);
-            });
-        }
-
 
         private int GetExpirationTime(){
             return cacheOptions.CurrentValue.TimeExpirationCache;

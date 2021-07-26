@@ -48,7 +48,7 @@ namespace C3xPAWM
 
             //Options
             services.Configure<ConnectionsStringsOptions>(configuration.GetSection("ConnectionsStrings"));
-            services.Configure<NegoziOptions>(configuration.GetSection("Negozi"));
+            services.Configure<ElencoOptions>(configuration.GetSection("Elenco"));
             services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
             
         }

@@ -1,76 +1,93 @@
 @{
     ViewData["Title"] = "Elenco Negozi";
 }
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
-    <p class="font-weight-bold">Inizia la ricerca dei negozi</p>
-</div>
 
-<ul>
-    <li class="elenco">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4">
-                <h3>
-                    <small class="text-muted">in tutto il territorio... </small>
-                </h3> 
+@model ElencoListViewModel
+
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="display-4">Lista Negozi</h1>
+        </div>
+        <div class="col-md-4 d-flex align-items-center">
+            <form asp-action="Index" method="get">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
+                    <div class="input-group-append">
+                        <button class="input-group-text" title="Cerca"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
+            </form>
+        </div>
+    </div>
 
+    <form asp-action="Tipologia" method="get">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca una categoria" aria-label="Search" aria-describedby="searchAddon">
+                    <div class="input-group-append">
+                        <button class="input-group-text" title="Cerca"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+   
+    <p class="font-weight-bold mt-3">Negozi affiliati al sistema C3</p>
+    <p class="font-weight-bold mt-3">Inizia la ricerca</p>
+    <ul>
+        <li class="elenco">
+            <div class="row">
+                <div class="col-md-3">
+                    <a asp-route-orderby="Nome" asp-route-ascending="true">Nome</a>
+                </div>
                 <div class="col-md-2">
-                    <a class="btn btn-outline-primary" asp-action="ListaNegozi" asp-controller="Elenco">Vai all'elenco</a>
+                    <a asp-route-orderby="Tipologia" asp-route-ascending="true">Tipo</a>
                 </div>
-            </div>
-        </div>
-    </li>
-    <li class="elenco">
-        <div id="btnAlert" class="alert alert-danger text-center d-none" role="alert">
-                Il campo citt&agrave; non pu&ograve; essere vuoto!
-        </div>
-        <div class="container">
+                <div class="col-md-3">                            
+                    <p class="font-weight-bold">Citta (Provincia)</p>
+                </div>
+                <div class="col-md-2">
+                    <p class="font-weight-bold">Via</p>
+                </div>
+                <div class="col-md-2">
+                    <p class="font-weight-bold">Telefono</p>
+                </div>
+            </div> 
+        </li>
+        @foreach(var negozio in Model.Negozi){
+        <li class="elenco">
             <div class="row">
-                <div class="col-md-4">
-                <h3>
-                        <small class="text-muted">nella tua citta...</small>
-                    </h3> 
+                <div class="col-md-3">
+                    <p> @negozio.Nome</p>
                 </div>
-                <div class="col-md-5 mt-3">
-                    <form asp-action="ListaNegoziCitta" method="get">
-                        <div class="input-group">
-                            <input class="form-control" type="text" name="citta" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
-                            <div class="input-group-append">
-                                <button class="input-group-text" title="Cerca"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-md-2 text-lowercase font-italic ">
+                    <p>@negozio.Tipologia</p>
                 </div>
-            </div>
-        </div>
-    </li>
-    <li class="elenco">
-        <div id="btnAlertRegione" class="alert alert-danger text-center d-none" role="alert">
-                Il campo regione non pu&ograve; essere vuoto!
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                <h3>
-                        <small class="text-muted">nella tua provincia...</small>
-                    </h3> 
+                <div class="col-md-3">                            
+                    <h5>@negozio.Indirizzo.First().Citta (@negozio.Indirizzo.First().Provincia)</h5>
                 </div>
-                <div class="col-md-5 mt-3">
-                    <form asp-action="ListaNegoziProvincia" method="get">
-                        <div class="input-group">
-                            <input class="form-control" type="text" name="provincia" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
-                            <div class="input-group-append">
-                                <button class="input-group-text" title="Cerca"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-md-2">
+                    <h5>@negozio.Indirizzo.First().Via</h5>
                 </div>
-            </div>
-        </div> 
-    </li>
-</ul>
+                <div class="col-md-2">
+                    <h5>@negozio.Telefono</h5>
+                </div>
+            </div> 
+        </li>
+        }
+    </ul>
+
+    
+<nav class="nav justify-content-center mt-3" aria-label="Paginazione">
+    <ul class="pagination">
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" asp-route-page="1">1 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" asp-route-page="2">2</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" asp-route-page="3">3</a>
+        </li>
+    </ul>
+</nav>
 
  
 

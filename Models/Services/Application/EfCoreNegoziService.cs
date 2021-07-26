@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Entities;
+using C3xPAWM.Models.Enums;
+using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Options;
 using C3xPAWM.Models.Services.Infrastructure;
 using C3xPAWM.Models.ViewModel;
@@ -14,29 +16,26 @@ namespace C3xPAWM.Models.Services.Application
     public class EfCoreNegoziService : INegoziService
     {
         private readonly C3PAWMDbContext dbContext;
-        private readonly IOptionsMonitor<NegoziOptions> negozioOptions;
+        private readonly IOptionsMonitor<ElencoOptions> elencoOptions;
 
-        public EfCoreNegoziService(C3PAWMDbContext dbContext, IOptionsMonitor<NegoziOptions> negozioOptions)
+        public EfCoreNegoziService(C3PAWMDbContext dbContext, IOptionsMonitor<ElencoOptions> negozioOptions)
         {
-            this.negozioOptions = negozioOptions;
+            this.elencoOptions = negozioOptions;
             this.dbContext = dbContext;
 
         }
 
-        public async Task<List<NegozioViewModel>> GetNegoziAsync(string search, int page)
+        public async Task<List<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
         {
-            search = search ?? "";
-
-            page = Math.Max(1, page);
-            int limit = negozioOptions.CurrentValue.PerPage;
-            int offset = (page - 1) * limit;
 
 
-            var negozi = await dbContext.Negozio
-            .Skip(offset)
-            .Take(limit)
+            IQueryable<Negozio> baseQuery = dbContext.Negozi;
+            var y = input.Search.ToUpper();
+            var x = Enum.Parse(typeof(Tipologia), y);
+            
+            IQueryable<NegozioViewModel> queryLinq = baseQuery
             .AsNoTracking()
-            .Where(negozio => negozio.Nome.Contains(search))
+            .Where(negozio => negozio.Tipologia.Equals(x))
             .Select(negozio => new NegozioViewModel
             {
                 Nome = negozio.Nome,
@@ -49,20 +48,44 @@ namespace C3xPAWM.Models.Services.Application
                     Via = indirizzo.Via,
                     Provincia = indirizzo.Provincia
                 }).ToList()
-            })
+            });
+            
+            List<NegozioViewModel> negozi = await queryLinq
+            .Skip(input.Offset)
+            .Take(input.Limit)
             .ToListAsync();
 
             return negozi;
         }
 
-    
-        public async Task<List<NegozioViewModel>> GetNegoziByCittaAsync(string citta, int page)
+        public async Task<List<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
         {
+           
+            IQueryable<Negozio> baseQuery = dbContext.Negozi;
 
-            citta = citta.ToUpper() ?? "";
-            var negozi = await dbContext.Negozio
+            var x = model.OrderBy;
+
+        
+            switch(model.OrderBy){
+                case "Nome":{
+                    if(model.Ascending){
+                        baseQuery.OrderBy(ordinamento => ordinamento.Nome).AsNoTracking();
+                    }else
+                        baseQuery.OrderByDescending(ordinamento => ordinamento.Nome);
+                    break;
+                }
+                case "Tipologia":{
+                    if(model.Ascending){
+                        baseQuery.OrderBy(ordinamento => ordinamento.Tipologia.ToString());
+                    }else
+                        baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia.ToString());
+                    break;
+                }
+            }
+
+            IQueryable<NegozioViewModel> queryLinq = baseQuery
             .AsNoTracking()
-            .Where(negozio => negozio.Indirizzi.First().Citta.ToUpper().Equals(citta))
+            .Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()))
             .Select(negozio => new NegozioViewModel
             {
                 Nome = negozio.Nome,
@@ -75,40 +98,15 @@ namespace C3xPAWM.Models.Services.Application
                     Via = indirizzo.Via,
                     Provincia = indirizzo.Provincia
                 }).ToList()
-            })
+            });
+            
+            List<NegozioViewModel> negozi = await queryLinq
+            .Skip(model.Offset)
+            .Take(model.Limit)
             .ToListAsync();
-
-            if (!negozi.Any()) throw new InvalidOperationException($"Impossibile, localita' non trovata");
-
-            return negozi;
-
-        }
-        public async Task<List<NegozioViewModel>> GetNegoziByProvinciaAsync(string provincia)
-        {
-
-            provincia = provincia.ToUpper() ?? "";
-
-            var negozi = await dbContext.Negozio
-            .AsNoTracking()
-            .Where(negozio => negozio.Indirizzi.First().Provincia.ToUpper().Equals(provincia))
-            .Select(negozio => new NegozioViewModel
-            {
-                Nome = negozio.Nome,
-                Telefono = negozio.Telefono,
-                Tipologia = negozio.Tipologia,
-                Categoria = negozio.Categoria,
-                Indirizzo = negozio.Indirizzi.Select(indirizzo => new IndirizzoViewModel
-                {
-                    Citta = indirizzo.Citta,
-                    Via = indirizzo.Via,
-                    Regione = indirizzo.Regione
-                }).ToList()
-            })
-            .ToListAsync();
-
-            if (!negozi.Any()) throw new InvalidOperationException($"Impossibile, localita' non trovata");
 
             return negozi;
         }
+
     }
 }

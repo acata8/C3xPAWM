@@ -22,7 +22,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
        
 
         public virtual DbSet<Indirizzo> Indirizzi { get; set; }
-        public virtual DbSet<Negozio> Negozio { get; set; }
+        public virtual DbSet<Negozio> Negozi { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
