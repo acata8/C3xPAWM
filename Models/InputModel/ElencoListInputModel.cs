@@ -31,7 +31,7 @@ namespace C3xPAWM.Models.InputModel
             Search = search ?? "";
             Page = Math.Max(1, page);;
             Limit = Math.Max(1, limit);
-            Offset = (page - 1) * Limit;
+            Offset = (Page - 1) * Limit;
             OrderBy = orderby;
             Ascending = ascending;
         }

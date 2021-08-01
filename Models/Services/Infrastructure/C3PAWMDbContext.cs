@@ -21,7 +21,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
 
        
 
-        public virtual DbSet<Indirizzo> Indirizzi { get; set; }
+        
         public virtual DbSet<Negozio> Negozi { get; set; }
 
 
@@ -37,17 +37,9 @@ namespace C3xPAWM.Models.Services.Infrastructure
 
                 entity.Property(negozio => negozio.Categoria)
                 .HasConversion(categoria => categoria.ToString(), 
-                                categoria => (Categoria)Enum.Parse(typeof(Categoria), categoria));
-                                
-                entity.HasMany(negozio => negozio.Indirizzi)
-                .WithOne(indirizzo => indirizzo.Negozio)
-                .HasForeignKey(indirizzo => indirizzo.IndirizzoId);
+                                categoria => (Categoria)Enum.Parse(typeof(Categoria), categoria));     
             });
 
-            modelBuilder.Entity<Indirizzo>(entity => {
-                 entity.ToTable("Indirizzi");
-                 entity.HasKey(indirizzo => indirizzo.IndirizzoId);
-             });
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

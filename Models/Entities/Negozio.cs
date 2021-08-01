@@ -4,27 +4,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using C3xPAWM.Models.Enums;
 
-#nullable disable
+
 
 namespace C3xPAWM.Models.Entities
 {
     public partial class Negozio
     {
-        public Negozio(string nome, Tipologia tipologia)
-        {
-            if(string.IsNullOrWhiteSpace(nome)){
-                throw new ArgumentException("negozio deve avere un nome");
-            }
-            if(Tipologia.IsDefined(tipologia)){
-                throw new ArgumentException("negozio deve avere una tipologia valida");
-            }
-            Nome = nome;
-            Categoria = Categoria.NEGOZIO;
-            Tipologia = tipologia;
-            Token = 5;
-            Indirizzi = new HashSet<Indirizzo>();
-        }
-
+        
         public int NegozioId { get; private set; }
         public string Nome { get; private set; }
         public int Token { get; private set; }
@@ -33,8 +19,10 @@ namespace C3xPAWM.Models.Entities
         public string Password { get; private set; }
         public Tipologia Tipologia { get; private set; }
         public Categoria Categoria { get; private set; }
-
-        public virtual ICollection<Indirizzo> Indirizzi { get; set; }
+        public string Regione { get; private set; }
+        public string Provincia { get; private set; }
+        public string Citta { get; private set; }
+        public string Via { get; private set; }
 
         public void CambiaNome(string nuovoNome){
             if(string.IsNullOrWhiteSpace(nuovoNome)){
@@ -51,10 +39,6 @@ namespace C3xPAWM.Models.Entities
             }
             
             Telefono = nuovoNumero;
-        }
-
-        public Indirizzo PrimoIndirizzo(){
-            return Indirizzi.First();
         }
 
     }

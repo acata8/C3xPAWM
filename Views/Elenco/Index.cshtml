@@ -31,17 +31,19 @@
    
     <p class="font-weight-bold mt-3">Negozi affiliati al sistema C3</p>
     <p class="font-weight-bold mt-3">Inizia la ricerca</p>
+
+   
     <ul>
         <li class="elenco">
             <div class="row">
                 <div class="col-md-3">
-                    <a asp-route-orderby="Nome" asp-route-ascending="true">Nome</a>
+                    <a asp-route-orderby="Nome" asp-route-ascending="@(Model.Input.OrderBy == "Nome" ? !Model.Input.Ascending : true)">Nome @if(@Model.Input.OrderBy == "Nome"){    <i class="fas fa-caret-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
                 <div class="col-md-2">
-                    <a asp-route-orderby="Tipologia" asp-route-ascending="true">Tipo</a>
+                    <a asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){     <i class="fas fa-caret-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
-                <div class="col-md-3">                            
-                    <p class="font-weight-bold">Citta (Provincia)</p>
+                <div class="col-md-3">             
+                    <p class="font-weight-bold">Citta (Provincia)</p>           
                 </div>
                 <div class="col-md-2">
                     <p class="font-weight-bold">Via</p>
@@ -49,6 +51,8 @@
                 <div class="col-md-2">
                     <p class="font-weight-bold">Telefono</p>
                 </div>
+
+              
             </div> 
         </li>
         @foreach(var negozio in Model.Negozi){
@@ -61,10 +65,10 @@
                     <p>@negozio.Tipologia</p>
                 </div>
                 <div class="col-md-3">                            
-                    <h5>@negozio.Indirizzo.First().Citta (@negozio.Indirizzo.First().Provincia)</h5>
+                    <h5>@negozio.Citta (@negozio.Provincia)</h5>
                 </div>
                 <div class="col-md-2">
-                    <h5>@negozio.Indirizzo.First().Via</h5>
+                    <h5>@negozio.Via</h5>
                 </div>
                 <div class="col-md-2">
                     <h5>@negozio.Telefono</h5>

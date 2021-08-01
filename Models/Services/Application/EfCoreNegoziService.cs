@@ -28,7 +28,6 @@ namespace C3xPAWM.Models.Services.Application
         public async Task<List<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
         {
 
-
             IQueryable<Negozio> baseQuery = dbContext.Negozi;
             var y = input.Search.ToUpper();
             var x = Enum.Parse(typeof(Tipologia), y);
@@ -42,12 +41,10 @@ namespace C3xPAWM.Models.Services.Application
                 Telefono = negozio.Telefono,
                 Tipologia = negozio.Tipologia,
                 Categoria = negozio.Categoria,
-                Indirizzo = negozio.Indirizzi.Select(indirizzo => new IndirizzoViewModel
-                {
-                    Citta = indirizzo.Citta,
-                    Via = indirizzo.Via,
-                    Provincia = indirizzo.Provincia
-                }).ToList()
+                Via = negozio.Via,
+                Citta = negozio.Citta,
+                Provincia = negozio.Provincia,
+                Regione = negozio.Regione
             });
             
             List<NegozioViewModel> negozi = await queryLinq
@@ -63,24 +60,21 @@ namespace C3xPAWM.Models.Services.Application
            
             IQueryable<Negozio> baseQuery = dbContext.Negozi;
 
-            var x = model.OrderBy;
-
-        
             switch(model.OrderBy){
-                case "Nome":{
+                case "Nome":
                     if(model.Ascending){
-                        baseQuery.OrderBy(ordinamento => ordinamento.Nome).AsNoTracking();
+                        baseQuery = baseQuery.OrderBy(ordinamento => ordinamento.Nome);
                     }else
-                        baseQuery.OrderByDescending(ordinamento => ordinamento.Nome);
+                        baseQuery = baseQuery.OrderByDescending(ordinamento => ordinamento.Nome);
                     break;
-                }
-                case "Tipologia":{
+                
+                case "Tipologia":
                     if(model.Ascending){
-                        baseQuery.OrderBy(ordinamento => ordinamento.Tipologia.ToString());
+                        baseQuery = baseQuery.OrderBy(ordinamento => ordinamento.Tipologia);
                     }else
-                        baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia.ToString());
+                        baseQuery = baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia);
                     break;
-                }
+
             }
 
             IQueryable<NegozioViewModel> queryLinq = baseQuery
@@ -92,12 +86,10 @@ namespace C3xPAWM.Models.Services.Application
                 Telefono = negozio.Telefono,
                 Tipologia = negozio.Tipologia,
                 Categoria = negozio.Categoria,
-                Indirizzo = negozio.Indirizzi.Select(indirizzo => new IndirizzoViewModel
-                {
-                    Citta = indirizzo.Citta,
-                    Via = indirizzo.Via,
-                    Provincia = indirizzo.Provincia
-                }).ToList()
+                Via = negozio.Via,
+                Citta = negozio.Citta,
+                Provincia = negozio.Provincia,
+                Regione = negozio.Regione
             });
             
             List<NegozioViewModel> negozi = await queryLinq
