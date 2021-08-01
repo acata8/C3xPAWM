@@ -19,7 +19,7 @@ namespace C3xPAWM.Controllers
         
         public async Task<IActionResult> Index(ElencoListInputModel input)
         {
-            List<NegozioViewModel> negozi = await negoziService.GetNegozi(input);
+            ListViewModel<NegozioViewModel> negozi = await negoziService.GetNegozi(input);
 
             ElencoListViewModel viewModel = new ElencoListViewModel{
                 Negozi = negozi,
@@ -30,7 +30,7 @@ namespace C3xPAWM.Controllers
         }
 
         public async Task<IActionResult> Tipologia(ElencoListInputModel input){
-            List<NegozioViewModel> negozi = await negoziService.ByTipologia(input);
+            ListViewModel<NegozioViewModel> negozi = await negoziService.ByTipologia(input);
 
             ElencoListViewModel viewModel = new ElencoListViewModel{
                 Negozi = negozi,

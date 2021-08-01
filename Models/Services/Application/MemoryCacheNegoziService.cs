@@ -23,7 +23,7 @@ namespace C3xPAWM.Models.Services.Application
 
         }
 
-        public Task<List<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
+        public Task<ListViewModel<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
         {
             throw new NotImplementedException();
         }
@@ -36,7 +36,7 @@ namespace C3xPAWM.Models.Services.Application
         //RICORDA DI USARE memoryCache.Remove($"..") quando aggiorni qualcosa
 
 
-        public Task<List<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
+        public Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
         {
 
             var page = model.Page;

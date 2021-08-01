@@ -7,7 +7,7 @@ namespace C3xPAWM.Models.Services.Application
 {
     public interface INegoziService
     {
-        Task<List<NegozioViewModel>> GetNegozi(ElencoListInputModel model);
-        Task<List<NegozioViewModel>> ByTipologia(ElencoListInputModel input);
+        Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model);
+        Task<ListViewModel<NegozioViewModel>> ByTipologia(ElencoListInputModel input);
     }
 }
