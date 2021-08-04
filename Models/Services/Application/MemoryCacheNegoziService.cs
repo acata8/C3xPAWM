@@ -28,16 +28,9 @@ namespace C3xPAWM.Models.Services.Application
             throw new NotImplementedException();
         }
 
-        public Task<List<NegozioViewModel>> GetListaNegozi(ElencoListInputModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        //RICORDA DI USARE memoryCache.Remove($"..") quando aggiorni qualcosa
-
-
         public Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
         {
+            
 
             var page = model.Page;
             var search = model.Search;
@@ -54,14 +47,12 @@ namespace C3xPAWM.Models.Services.Application
             return cacheOptions.CurrentValue.TimeExpirationCache;
         }
 
-        Task<List<PubblicitaViewModel>> GetNegoziPubblicizzati()
+        public ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input)
         {
-            throw new NotImplementedException();
+            return negozioService.GetNegoziPubblicizzati(input);
+
         }
 
-        Task<List<PubblicitaViewModel>> INegoziService.GetNegoziPubblicizzati()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

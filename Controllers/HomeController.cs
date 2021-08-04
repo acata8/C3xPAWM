@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using C3xPAWM.Models;
 using C3xPAWM.Models.Services.Application;
 using C3xPAWM.Models.ViewModel;
+using C3xPAWM.Models.InputModel;
 
 namespace C3xPAWM.Controllers
 {
@@ -21,10 +22,17 @@ namespace C3xPAWM.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(ElencoListInputModel input)
         {
-            List<PubblicitaViewModel> negoziPubblicizzati = await negoziService.GetNegoziPubblicizzati();
-            return View(negoziPubblicizzati);
+            ListViewModel<PubblicitaViewModel> negoziPubblicizzati =  negoziService.GetNegoziPubblicizzati(input);
+
+            ElencoListViewModel viewModel = new ElencoListViewModel{
+                Negozi = null,
+                NegoziPubblicizzati = negoziPubblicizzati,
+                Input = input
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Error()

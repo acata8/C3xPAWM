@@ -29,9 +29,10 @@ namespace C3xPAWM.Models.Services.Application
         {
 
             IQueryable<Negozio> baseQuery = dbContext.Negozi;
-            var y = input.Search.ToUpper();
-            var x = Enum.Parse(typeof(Tipologia), y);
             
+                var y = input.Search.ToUpper();
+                var x = Enum.Parse(typeof(Tipologia), y);
+
             IQueryable<NegozioViewModel> queryLinq = baseQuery
             .AsNoTracking()
             .Where(negozio => negozio.Tipologia.Equals(x))
@@ -67,9 +68,15 @@ namespace C3xPAWM.Models.Services.Application
             
             IQueryable<Negozio> baseQuery = dbContext.Negozi;
 
-            switch(model.OrderBy){
+            var orderBy = model.OrderBy;
+            var ascending = model.Ascending;
+            var tipologia = model.Tipologia;
+            var offset = model.Offset;
+            var limit = model.Limit;
+
+             switch(orderBy){
                 case "Nome":
-                    if(model.Ascending){
+                    if(ascending){
                         baseQuery = baseQuery.OrderBy(ordinamento => ordinamento.Nome);
                     }else
                         baseQuery = baseQuery.OrderByDescending(ordinamento => ordinamento.Nome);
@@ -83,27 +90,36 @@ namespace C3xPAWM.Models.Services.Application
                     break;
 
             }
-
-            IQueryable<NegozioViewModel> queryLinq = baseQuery
-            .AsNoTracking()
-            .Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()))
-            .Select(negozio => new NegozioViewModel
-            {
-                Nome = negozio.Nome,
-                Telefono = negozio.Telefono,
-                Tipologia = negozio.Tipologia,
-                Categoria = negozio.Categoria,
-                Via = negozio.Via,
-                Citta = negozio.Citta,
-                Provincia = negozio.Provincia,
-                Regione = negozio.Regione
-            });
             
+             IQueryable<NegozioViewModel> queryLinq = baseQuery
+                    .AsNoTracking()
+                    .Select(negozio => new NegozioViewModel
+                    {
+                        Nome = negozio.Nome,
+                        Telefono = negozio.Telefono,
+                        Tipologia = negozio.Tipologia,
+                        Categoria = negozio.Categoria,
+                        Via = negozio.Via,
+                        Citta = negozio.Citta,
+                        Provincia = negozio.Provincia,
+                        Regione = negozio.Regione
+                    });
+
+            if(tipologia){
+                var y = model.Search.ToUpper();
+                var x = Enum.Parse(typeof(Tipologia), y);
+            
+                queryLinq = queryLinq.Where(negozio => negozio.Tipologia.Equals(x));
+            }else{
+                queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
+            }
+
+
             var totale = queryLinq.Count();
 
             List<NegozioViewModel> negozi = await queryLinq
-            .Skip(model.Offset)
-            .Take(model.Limit)
+            .Skip(offset)
+            .Take(limit)
             .ToListAsync();
 
             ListViewModel<NegozioViewModel> listViewModel = new ListViewModel<NegozioViewModel>{
@@ -114,11 +130,12 @@ namespace C3xPAWM.Models.Services.Application
             return listViewModel;
         }
 
-        public async Task<List<PubblicitaViewModel>> GetNegoziPubblicizzati(){
+        public ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input){
             
             IQueryable<Pubblicita> baseQuery =  dbContext.Pubblicita;
 
-
+            var offset = input.Offset;
+            var limit = input.Limit;
             var queryLinq = baseQuery
                         .AsNoTracking()
                         .Where(p => p.Attiva == 1)
@@ -128,10 +145,22 @@ namespace C3xPAWM.Models.Services.Application
                             Durata = p.Durata,
                             Attiva = p.Attiva,
                             Negozio = p.Negozio
-                        });
-                        
+                        })
+                        .ToList();
 
-            return await queryLinq.ToListAsync();
+            var totale = queryLinq.Count();
+
+            List<PubblicitaViewModel> negozi = queryLinq
+                    .Skip(offset)
+                    .Take(limit)
+                    .ToList();
+
+            ListViewModel<PubblicitaViewModel> listViewModel = new ListViewModel<PubblicitaViewModel>{
+                Elenco = negozi,
+                TotaleElenco = totale,
+            };
+
+            return listViewModel;
             
         }
             

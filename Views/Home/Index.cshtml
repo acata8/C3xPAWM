@@ -1,11 +1,11 @@
-﻿@model List<PubblicitaViewModel>
+﻿@model ElencoListViewModel
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Benvenuto in C3</h1>
+    <h1 class="display-4" style="color: rgb(255, 166, 0);">Benvenuto in C3</h1>
     <p class="mt-3">Il progetto si rivolge ai centri abitati medi della provincia italiana dove le attività commerciali del centro <b>soffrono la concorrenza di grossi centri commerciali</b> situati nelle periferie.
     L’idea di fondo è considerare il trasporto della merce una volta acquistata una delle scomodità principali degli acquisti in centro oltre alla più difficile collocazione dei punti vendita in relazione a specifiche categorie merceologiche.
     Il progetto si pone dunque come obiettivo quello di fornire un supporto per rendere l’esperienza degli acquisti in centro più facile e interessante.
@@ -14,72 +14,88 @@
     <p>
         Il nostro obiettivo &egrave; di fornire supporto ai commercianti locali fornendo una piattaforma dove poter organizzare la consegna dei beni direttamente a casa dell'acquirente, in un punto di ritiro o in un determinato locker. 
     </p>
-
-    <h3> Negozi Pubblicizzati </h3>
-    @if(@Model.Any(p => p.Attiva == 1)){
-        <div class="row">
-            <div class="col-md-3">
-                <input type="text" id="filtro-provincia" placeholder="Filtra per provincia">
-            </div>
-        </div>
-
-        <ul>
-            <li class="elenco">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p>Nome</p>
-                    </div>
-                    <div class="col-md-2 text-lowercase font-italic ">
-                        <p>Nome Evento </p>
-                    </div>
-                    <div class="col-md-3">                            
-                        <h5>Citta (Provincia)</h5>
-                    </div>
-                    <div class="col-md-2">
-                        <h5>Via</h5>
-                    </div>
-                    <div class="col-md-2">
-                        <h5>Tipologia</h5>
-                    </div>
-                </div>
-            </li>
-            @foreach (var a in Model)
-            {
-            <li class="elenco">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p>@a.Negozio.Nome</p>
-                    </div>
-                    <div class="col-md-2 text-lowercase font-italic ">
-                        <p>@a.NomeEvento </p>
-                    </div>
-                    <div class="col-md-3">                            
-                        <h5>@a.Negozio.Citta (@a.Negozio.Provincia)</h5>
-                    </div>
-                    <div class="col-md-2">
-                        <h5>@a.Negozio.Via</h5>
-                    </div>
-                    <div class="col-md-2">
-                        <h5>@a.Negozio.Tipologia</h5>
-                    </div>
-                </div> 
-            </li>
-            }
-        </ul>
-    }
-    <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta quas qui numquam eius repellendus similique quia tenetur. Expedita voluptatibus voluptas eum ullam. Voluptatibus incidunt nam quasi quas nobis officia deserunt?
-    Obcaecati blanditiis nostrum alias culpa deleniti voluptates, dolore minima quae laborum quod, voluptatibus earum! A quos, ad nulla officia iure beatae laborum possimus quidem, alias illum ipsum ipsa qui deserunt!
-    Blanditiis quis atque tenetur ea, saepe earum harum facere eaque ex iure at amet quod accusamus, labore cum dolor molestiae dicta voluptatum inventore quasi. Molestias ipsum in velit. Numquam, repellat!
-    Unde et, autem ratione architecto alias accusantium labore. Corporis, mollitia. Eaque neque doloribus laudantium illo cum necessitatibus reprehenderit quia, fugit, possimus totam natus quidem quo. Error deserunt sequi fugit voluptatum.</p>
-    
-    
-    <p> 
+    <p class="mt-3"> 
         Grazie per averci scelto. <br>
         <b>
             <author>Il team di C3</author>
         </b>
     </p>
+    <br>
+    
+    
+        @if(@Model.NegoziPubblicizzati.Elenco.Any(p => p.Attiva == 1)){
+        <h2 class="title"> Negozi Pubblicizzati </h2>
+        
+                <ul class="elenco">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p class="font-weight-bold">Nome</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="font-weight-bold" >Nome Evento </p>
+                            </div>
+                            <div class="col-md-3">                            
+                                <p class="font-weight-bold">Citta (Provincia)</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="font-weight-bold" >Via</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="font-weight-bold">Tipologia</p>
+                            </div>
+                        </div>
+                    </li>
+                    @foreach (var a in Model.NegoziPubblicizzati.Elenco)
+                    {
+                    <li>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p>@a.Negozio.Nome</p>
+                            </div>
+                            <div class="col-md-2 text-lowercase font-italic ">
+                                <p>@a.NomeEvento </p>
+                            </div>
+                            <div class="col-md-3">                            
+                                <h5>@a.Negozio.Citta (@a.Negozio.Provincia)</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>@a.Negozio.Via</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>@a.Negozio.Tipologia</h5>
+                            </div>
+                        </div> 
+                    </li>
+                }
+            </ul>
+        
+    }else{
+        <h2 class="title"> Non ci sono negozi pubblicizzati al momento! </h2>
+    }
+
+
+    @{
+  int pagine = (int) Math.Ceiling(Model.NegoziPubblicizzati.TotaleElenco / (decimal) Model.Input.Limit);
+  int paginaCorrente = Model.Input.Page;
+    }
+    <nav class="nav justify-content-center mt-3" aria-label="Paginazione">
+    <ul class="pagination">
+        @for(int p = Math.Max(1, paginaCorrente-4); p <= Math.Min(pagine ,paginaCorrente+4); p++){
+            if(p == paginaCorrente){
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" asp-route-page="@p">@p <span class="sr-only">(current)</span></a>
+                </li>
+            }else{
+                <li class="page-item" aria-current="page">
+                    <a class="page-link" asp-route-page="@p">@p </a>
+                </li>
+            }
+
+        }
+    <br>
+    <br>
+    
 
 
 

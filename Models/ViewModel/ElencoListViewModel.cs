@@ -6,6 +6,8 @@ namespace C3xPAWM.Models.ViewModel
     public class ElencoListViewModel
     {
         public ListViewModel<NegozioViewModel> Negozi { get; set; }
+
+        public ListViewModel<PubblicitaViewModel> NegoziPubblicizzati { get; set; }
         public ElencoListInputModel Input { get; set; }
     }
 }

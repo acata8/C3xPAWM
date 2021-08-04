@@ -105,26 +105,26 @@ author{
   font-style: italic;
 }
 
+
+
+
+
+.title{
+    color: rgb(255,166,0);
+    font-size: 26px;
+}
+
 .elenco{
+  border: rgb(229, 230, 231) 1px solid;
+}
+
+.elenco li{
   padding: 3em;
 }
 
-.elenco:not(:last-child){
+.elenco li:nth-of-type(2n+1){
+  background-color: rgb(229, 230, 231);
+}
+.elenco li:not(:last-child){
   border-bottom: grey 1px solid;
 }
-
-/* Carousel setting */
-
-.sizing{
-  display: block;
-  margin: auto;
-  max-height: 350px;
-  max-width: 350px;
-}
-
-@media (max-width: 478px) {
-  .sizing{
-    display: none !important;
-  } 
-}
-/* end carousel section */

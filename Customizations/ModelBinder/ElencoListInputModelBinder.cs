@@ -22,8 +22,10 @@ namespace C3xPAWM.Customizations.ModelBinder
             int page = Convert.ToInt32(bindingContext.ValueProvider.GetValue("Page").FirstValue);
             var ascending = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Ascending").FirstValue);
             string orderby = bindingContext.ValueProvider.GetValue("OrderBy").FirstValue;
-           
-            var inputModel = new ElencoListInputModel(search, page, orderby, ascending, elencoOptions.CurrentValue.PerPage, elencoOptions.CurrentValue.Order);
+            var tipologia = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Tipologia").FirstValue);
+            var provincia = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Provincia").FirstValue);
+
+            var inputModel = new ElencoListInputModel(search, page, orderby, ascending, elencoOptions.CurrentValue.PerPage, elencoOptions.CurrentValue.Order, tipologia, provincia);
             
             bindingContext.Result = ModelBindingResult.Success(inputModel);
 
