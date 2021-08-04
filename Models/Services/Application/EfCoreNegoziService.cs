@@ -114,5 +114,27 @@ namespace C3xPAWM.Models.Services.Application
             return listViewModel;
         }
 
+        public async Task<List<PubblicitaViewModel>> GetNegoziPubblicizzati(){
+            
+            IQueryable<Pubblicita> baseQuery = dbContext.Pubblicita;
+
+
+            var queryLinq = baseQuery
+                        .AsNoTracking()
+                        .Where(p => p.Attiva == 1)
+                        .Select(p => new PubblicitaViewModel{
+                            PubblicitaId = p.PubblicitaId,
+                            NomeEvento = p.NomeEvento,
+                            Durata = p.Durata,
+                            Attiva = p.Attiva,
+                            Negozio = p.Negozio
+                        });
+                        
+
+            return queryLinq.ToList();
+            
+        }
+            
     }
 }
+

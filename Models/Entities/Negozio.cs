@@ -24,6 +24,8 @@ namespace C3xPAWM.Models.Entities
         public string Citta { get; private set; }
         public string Via { get; private set; }
 
+        public virtual List<Pubblicita> Pubblicita {get; private set; }
+
         public void CambiaNome(string nuovoNome){
             if(string.IsNullOrWhiteSpace(nuovoNome)){
                 throw new ArgumentException("Il negozio deve avere un nome valido");

@@ -9,5 +9,6 @@ namespace C3xPAWM.Models.Services.Application
     {
         Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model);
         Task<ListViewModel<NegozioViewModel>> ByTipologia(ElencoListInputModel input);
+        Task<List<PubblicitaViewModel>> GetNegoziPubblicizzati();
     }
 }

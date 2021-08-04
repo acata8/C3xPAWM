@@ -39,7 +39,7 @@ namespace C3xPAWM
                 options.CacheProfiles.Add("Elenco", elencoProfile);
             });
             services.AddTransient<INegoziService, EfCoreNegoziService>();
-            services.AddTransient<ICachedNegoziService, MemoryCacheNegoziService>();
+            //services.AddTransient<ICachedNegoziService, MemoryCacheNegoziService>();
             services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
             {
                 string connectionString = configuration.GetSection("ConnectionsStrings").GetValue<string>("Default");

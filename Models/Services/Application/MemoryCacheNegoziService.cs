@@ -50,9 +50,18 @@ namespace C3xPAWM.Models.Services.Application
             });
 
         }
-
         private int GetExpirationTime(){
             return cacheOptions.CurrentValue.TimeExpirationCache;
+        }
+
+        Task<List<PubblicitaViewModel>> GetNegoziPubblicizzati()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<PubblicitaViewModel>> INegoziService.GetNegoziPubblicizzati()
+        {
+            throw new NotImplementedException();
         }
     }
 }

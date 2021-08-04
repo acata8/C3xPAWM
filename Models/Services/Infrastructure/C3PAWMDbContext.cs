@@ -24,6 +24,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
         
         public virtual DbSet<Negozio> Negozi { get; set; }
 
+        public virtual DbSet<Pubblicita> Pubblicita { get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,8 +41,18 @@ namespace C3xPAWM.Models.Services.Infrastructure
                                 categoria => (Categoria)Enum.Parse(typeof(Categoria), categoria));     
             });
 
-        }
+         
 
+            modelBuilder.Entity<Pubblicita>(entity => {
+                    entity.ToTable("Pubblicita");
+                    entity.HasKey(p => p.PubblicitaId);
+
+                entity.HasOne(p => p.Negozio)
+                .WithMany(p => p.Pubblicita)
+                .HasForeignKey(p=>p.NegozioId);
+            
+            });
+        }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
