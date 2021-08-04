@@ -116,7 +116,7 @@ namespace C3xPAWM.Models.Services.Application
 
         public async Task<List<PubblicitaViewModel>> GetNegoziPubblicizzati(){
             
-            IQueryable<Pubblicita> baseQuery = dbContext.Pubblicita;
+            IQueryable<Pubblicita> baseQuery =  dbContext.Pubblicita;
 
 
             var queryLinq = baseQuery
@@ -131,7 +131,7 @@ namespace C3xPAWM.Models.Services.Application
                         });
                         
 
-            return queryLinq.ToList();
+            return await queryLinq.ToListAsync();
             
         }
             
