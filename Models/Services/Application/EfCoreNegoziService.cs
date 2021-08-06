@@ -107,8 +107,9 @@ namespace C3xPAWM.Models.Services.Application
 
             if(tipologia){
                 var y = model.Search.ToUpper();
-                var x = Enum.Parse(typeof(Tipologia), y);
-            
+                Tipologia x;
+                if (Enum.TryParse(y, true, out x))
+                    queryLinq = queryLinq.Where(negozio => negozio.Tipologia == x);
                 queryLinq = queryLinq.Where(negozio => negozio.Tipologia.Equals(x));
             }else{
                 queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
