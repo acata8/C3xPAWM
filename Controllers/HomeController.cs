@@ -22,14 +22,15 @@ namespace C3xPAWM.Controllers
 
         }
 
+        [ResponseCache(CacheProfileName = "Home")]
         public IActionResult Index(ElencoListInputModel input)
         {
             ListViewModel<PubblicitaViewModel> negoziPubblicizzati =  negoziService.GetNegoziPubblicizzati(input);
 
-            ElencoListViewModel viewModel = new ElencoListViewModel{
-                Negozi = null,
+            PubblicitaListViewModel viewModel = new PubblicitaListViewModel{
                 NegoziPubblicizzati = negoziPubblicizzati,
                 Input = input
+                
             };
 
             return View(viewModel);

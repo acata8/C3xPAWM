@@ -22,45 +22,6 @@ namespace C3xPAWM.Models.Services.Application
         {
             this.elencoOptions = negozioOptions;
             this.dbContext = dbContext;
-
-        }
-
-        public async Task<ListViewModel<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
-        {
-
-            IQueryable<Negozio> baseQuery = dbContext.Negozi;
-            
-                var y = input.Search.ToUpper();
-                var x = Enum.Parse(typeof(Tipologia), y);
-
-            IQueryable<NegozioViewModel> queryLinq = baseQuery
-            .AsNoTracking()
-            .Where(negozio => negozio.Tipologia.Equals(x))
-            .Select(negozio => new NegozioViewModel
-            {
-                Nome = negozio.Nome,
-                Telefono = negozio.Telefono,
-                Tipologia = negozio.Tipologia,
-                Categoria = negozio.Categoria,
-                Via = negozio.Via,
-                Citta = negozio.Citta,
-                Provincia = negozio.Provincia,
-                Regione = negozio.Regione
-            });
-            
-            var totale = queryLinq.Count();
-
-            List<NegozioViewModel> negozi = await queryLinq
-            .Skip(input.Offset)
-            .Take(input.Limit)
-            .ToListAsync();
-
-            ListViewModel<NegozioViewModel> listViewModel = new ListViewModel<NegozioViewModel>{
-                Elenco = negozi,
-                TotaleElenco = totale
-            };
-
-            return listViewModel;
         }
 
         public async Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model)

@@ -37,7 +37,7 @@ namespace C3xPAWM
                 configuration.Bind("ResponseCache:Elenco", elencoProfile);
                 options.CacheProfiles.Add("Home", homeProfile);
                 options.CacheProfiles.Add("Elenco", elencoProfile);
-            });
+            }).AddRazorRuntimeCompilation();
             services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<ICachedNegoziService, MemoryCacheNegoziService>();
             services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
@@ -76,10 +76,10 @@ namespace C3xPAWM
             
             app.UseStaticFiles();
 
-            //app.UseResponseCaching();
+            
 
             app.UseRouting();
-
+            app.UseResponseCaching();
            
             app.UseEndpoints(endpoints =>
             {

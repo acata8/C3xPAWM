@@ -95,28 +95,7 @@
         }
     </ul>
 
-@{
-  int pagine = (int) Math.Ceiling(Model.Negozi.TotaleElenco / (decimal) Model.Input.Limit);
-  int paginaCorrente = Model.Input.Page;
-}
-<nav class="nav justify-content-center mt-3" aria-label="Paginazione">
-    <ul class="pagination">
-        @for(int p = Math.Max(1, paginaCorrente-4); p <= Math.Min(pagine ,paginaCorrente+4); p++){
-            if(p == paginaCorrente){
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" asp-route-page="@p">@p <span class="sr-only">(current)</span></a>
-                </li>
-            }else{
-                <li class="page-item" aria-current="page">
-                    <a class="page-link" asp-route-page="@p">@p </a>
-                </li>
-            }
-
-        }
-        
-        
-    </ul>
-</nav>
+<vc:pagination model="@Model" />
 
  
 

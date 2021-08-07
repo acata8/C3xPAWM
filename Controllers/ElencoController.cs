@@ -11,35 +11,25 @@ namespace C3xPAWM.Controllers
     [ResponseCache(CacheProfileName = "Elenco")]
     public class ElencoController : Controller
     {
-        private readonly INegoziService negoziService;
-        public ElencoController(INegoziService negoziService)
+        private readonly ICachedNegoziService negoziService;
+
+        public ElencoController(ICachedNegoziService negoziService)
         {
             this.negoziService = negoziService;
         }
-        
+
         public async Task<IActionResult> Index(ElencoListInputModel input)
         {
             ListViewModel<NegozioViewModel> negozi = await negoziService.GetNegozi(input);
 
-            ElencoListViewModel viewModel = new ElencoListViewModel{
+            ElencoListViewModel viewModel = new ElencoListViewModel
+            {
                 Negozi = negozi,
                 Input = input
             };
 
             return View(viewModel);
         }
-
-        public async Task<IActionResult> Tipologia(ElencoListInputModel input){
-            ListViewModel<NegozioViewModel> negozi = await negoziService.ByTipologia(input);
-
-            ElencoListViewModel viewModel = new ElencoListViewModel{
-                Negozi = negozi,
-                Input = input
-            };
-
-            return View(viewModel);
-        }
-
 
     }
 }

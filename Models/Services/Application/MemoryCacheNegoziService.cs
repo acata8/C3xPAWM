@@ -23,15 +23,9 @@ namespace C3xPAWM.Models.Services.Application
 
         }
 
-        public Task<ListViewModel<NegozioViewModel>> ByTipologia(ElencoListInputModel input)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
-        {
-            
-
+            public Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
+            {
             var page = model.Page;
             var search = model.Search;
 
@@ -41,17 +35,18 @@ namespace C3xPAWM.Models.Services.Application
                 cacheEntry.SetAbsoluteExpiration(TimeSpan.FromSeconds(GetExpirationTime()));
                 return negozioService.GetNegozi(model);
             });
-
         }
+
+         public ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input)
+        {
+            return negozioService.GetNegoziPubblicizzati(input);
+        }
+
         private int GetExpirationTime(){
             return cacheOptions.CurrentValue.TimeExpirationCache;
         }
 
-        public ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input)
-        {
-            return negozioService.GetNegoziPubblicizzati(input);
-
-        }
+       
 
         
     }
