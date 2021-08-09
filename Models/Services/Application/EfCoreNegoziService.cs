@@ -107,6 +107,7 @@ namespace C3xPAWM.Models.Services.Application
                             Durata = p.Durata,
                             Attiva = p.Attiva,
                             Negozio = p.Negozio
+                            
                         })
                         .ToList();
 
