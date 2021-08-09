@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using C3xPAWM.Models.ViewModel;
 
 namespace C3xPAWM.Models.Entities
 {
@@ -12,5 +13,7 @@ namespace C3xPAWM.Models.Entities
         //Riferita in termini di giorni
         public int Attiva {get; set;}
         public virtual Negozio Negozio { get; set; }
+
+
     }
 }

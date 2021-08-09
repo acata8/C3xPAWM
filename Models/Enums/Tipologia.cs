@@ -6,7 +6,8 @@ namespace C3xPAWM.Models.Enums
         IDRAULICA,
         ALIMENTARI,
         ELETTRONICA,
-        CARTOLERIA
-        
+        CARTOLERIA,
+        ABBIGLIAMENTO,
+        INDEFINITA //LASCIARE PER ULTIMA PER SKIPLAST
     }
 }

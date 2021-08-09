@@ -4,9 +4,12 @@
 
 @model ElencoListViewModel
 
+
+
     <div class="row">
         <div class="col-md-8">
             <h1 class="display-4">Lista Negozi</h1>
+            
         </div>
     </div>
 
@@ -49,7 +52,16 @@
     <p class="font-weight-bold mt-3">Negozi affiliati al sistema C3</p>
     <p class="font-weight-bold mt-3">Inizia la ricerca</p>
 
+    @if (TempData["Success"] != null)
+    {
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+    }
    
+   @if (TempData["Error"] != null)
+    {
+    <p class="alert alert-error" id="errorMessage">@TempData["MessaErrorge"]</p>
+    }
+    
     <ul class="elenco">
         <li>
             <div class="row">

@@ -1,3 +1,4 @@
+using System;
 using C3xPAWM.Models.Entities;
 
 namespace C3xPAWM.Models.ViewModel
@@ -11,6 +12,14 @@ namespace C3xPAWM.Models.ViewModel
         public int Attiva {get; set;}
         public Negozio Negozio;
 
+      public static PubblicitaViewModel FromEntity(Pubblicita pubblicita){
+            return new PubblicitaViewModel{
+                PubblicitaId = pubblicita.PubblicitaId,
+                NomeEvento = pubblicita.NomeEvento,
+                Durata = pubblicita.Durata,
+                Attiva = pubblicita.Attiva
+            };
+        }
         
     }
 }

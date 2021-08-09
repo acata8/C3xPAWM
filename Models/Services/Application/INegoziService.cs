@@ -7,8 +7,11 @@ namespace C3xPAWM.Models.Services.Application
 {
     public interface INegoziService
     {
+        NegozioViewModel CreateNegozi(NegozioCreateInputModel model);
         Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model);
         
         ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input);
+        NegozioEditInputModel GetNegozio(int id);
+        bool EditNegozio(NegozioEditInputModel model);
     }
 }

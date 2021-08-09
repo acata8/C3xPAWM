@@ -37,9 +37,14 @@ namespace C3xPAWM
                 configuration.Bind("ResponseCache:Elenco", elencoProfile);
                 options.CacheProfiles.Add("Home", homeProfile);
                 options.CacheProfiles.Add("Elenco", elencoProfile);
-            }).AddRazorRuntimeCompilation();
+            })
+            #if DEBUG
+            .AddRazorRuntimeCompilation()
+            #endif
+            ;
+            
             services.AddTransient<INegoziService, EfCoreNegoziService>();
-            services.AddTransient<ICachedNegoziService, MemoryCacheNegoziService>();
+
             services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
             {
                 string connectionString = configuration.GetSection("ConnectionsStrings").GetValue<string>("Default");
@@ -75,9 +80,6 @@ namespace C3xPAWM
             }
             
             app.UseStaticFiles();
-
-            
-
             app.UseRouting();
             app.UseResponseCaching();
            
@@ -85,7 +87,7 @@ namespace C3xPAWM
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{x?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
 

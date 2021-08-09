@@ -123,9 +123,55 @@ namespace C3xPAWM.Models.Services.Application
             };
 
             return listViewModel;
-            
         }
+
+        public NegozioViewModel CreateNegozi(NegozioCreateInputModel model){
             
+            var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione, model.Citta, model.Via, model.Tipologia);
+            dbContext.Add(negozio);
+            dbContext.SaveChanges();
+
+            return NegozioViewModel.FromEntity(negozio);
+        }
+
+        public NegozioEditInputModel GetNegozio(int id)
+        {
+            return dbContext.Negozi.Where(n => n.NegozioId == id)
+                    .Select(negozio => new NegozioEditInputModel
+                    {
+                        NegozioId = negozio.NegozioId,
+                        Nome = negozio.Nome,
+                        Telefono = negozio.Telefono,
+                        Via = negozio.Via,
+                        Citta = negozio.Citta,
+                        Provincia = negozio.Provincia,
+                        Regione = negozio.Regione,
+                        Tipologia = negozio.Tipologia
+                    }).FirstOrDefault();
+        }
+
+        public bool EditNegozio(NegozioEditInputModel model)
+        {
+            Negozio negozio = dbContext.Negozi.Find(model.NegozioId);
+
+            negozio.CambiaNome(model.Nome);
+            negozio.CambiaTelefono(model.Telefono);
+            negozio.CambiaCitta(model.Citta);
+            negozio.CambiaProvincia(model.Provincia);
+            negozio.CambiaVia(model.Via);
+            negozio.CambiaRegione(model.Regione);
+            negozio.settaTipologia(Convert.ToString(model.Tipologia));
+
+            try
+            {
+                 dbContext.SaveChanges();
+                 return true;
+            }
+            catch (System.Exception)
+            {
+                return false;    
+            }
+        }
     }
 }
 
