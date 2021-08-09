@@ -26,6 +26,7 @@ namespace C3xPAWM.Models.Entities
 
         public virtual ICollection<Pubblicita> Pubblicita {get; private set; }
 
+        public virtual ICollection<Pacco> Pacchi {get; private set; }
 
         public Negozio()
         {
@@ -72,6 +73,7 @@ namespace C3xPAWM.Models.Entities
             Categoria = Categoria.NEGOZIO;
             Token = 5;
             Pubblicita = new HashSet<Pubblicita>();
+            Pacchi = new HashSet<Pacco>();
         }
 
         public void CambiaNome(string nuovoNome){
