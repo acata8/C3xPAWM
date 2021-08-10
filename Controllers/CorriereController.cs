@@ -12,7 +12,7 @@ namespace C3xPAWM.Controllers
             this.corriereService = corriereService;
         }
 
-        public ActionResult Index(){
+        public IActionResult Index(){
             //Ritornare la lista dei pacchi dove lui e corriere
             return View();
         }

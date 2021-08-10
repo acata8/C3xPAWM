@@ -8,38 +8,38 @@
 
     <div class="row">
         <div class="col-md-8">
-            <h1 class="display-4">Lista Negozi</h1>
-            
+            <h1 class="display-4" style="color: rgb(255,166,0);">Negozi affiliati</h1>
         </div>
     </div>
+    <p class="mt-2 title" style="color: rgb(255,166,0);"> Inizia la ricerca</p>
 
     <div class="mt-3 row">
-        <div class="col-md-4 d-flex align-items-center">
+        <div class="col-md-4 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
                 <div class="input-group">
                     <input class="form-control" type="text" name="search" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
                     <div class="input-group-append">
-                        <button class="input-group-text" title="Cerca"><i class="fas fa-search"></i></button>
+                        <button class="input-group-text" title="Cerca"><i class="fas fa-filter"></i></button>
                     </div>
                 </div>
             }
         </div>
-        <div class="col-md-4  d-flex align-items-center">
+        <div class="col-md-4  d-flex align-items-center mt-2">
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
 
                 <div class="input-group">
                     <input class="form-control" type="text" name="search" placeholder="Cerca una tipologia" aria-label="Search" aria-describedby="searchAddon">
                     <div class="input-group-append">
-                        <button type="submit" class="input-group-text" title="Cerca" name="Tipologia" value="True"><i class="fas fa-search"></i></button>
+                        <button type="submit" class="input-group-text" title="Cerca" name="Tipologia" value="True"><i class="fas fa-filter"></i></button>
                     </div>
                 </div>
             
             }
             
         </div>
-        <div class="col-md-4  d-flex align-items-center">
+        <div class="col-md-4 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
                 <button type="submit" class="btn btn btn-outline-danger" title="Ricarica"><i class="fas fa-reply"></i> Ricarica</button>
@@ -48,28 +48,14 @@
         </div>
     </div>
     
-   
-    <p class="font-weight-bold mt-3">Negozi affiliati al sistema C3</p>
-    <p class="font-weight-bold mt-3">Inizia la ricerca</p>
-
-    @if (TempData["Success"] != null)
-    {
-    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
-    }
-   
-   @if (TempData["Error"] != null)
-    {
-    <p class="alert alert-error" id="errorMessage">@TempData["MessaErrorge"]</p>
-    }
-    
-    <ul class="elenco">
+    <ul class="elenco mt-5">
         <li>
             <div class="row">
                 <div class="col-md-3">
-                    <a asp-route-orderby="Nome" asp-route-ascending="@(Model.Input.OrderBy == "Nome" ? !Model.Input.Ascending : true)">Nome @if(@Model.Input.OrderBy == "Nome"){    <i class="fas fa-caret-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                    <a asp-route-orderby="Nome" asp-route-ascending="@(Model.Input.OrderBy == "Nome" ? !Model.Input.Ascending : true)">Nome @if(@Model.Input.OrderBy == "Nome"){    <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
                 <div class="col-md-2">
-                    <a asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){     <i class="fas fa-caret-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                    <a asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){     <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
                 <div class="col-md-3">             
                     <p class="font-weight-bold">Citta (Provincia)</p>           
