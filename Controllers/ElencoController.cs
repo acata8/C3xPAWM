@@ -33,44 +33,6 @@ namespace C3xPAWM.Controllers
             return View(viewModel);
         }
 
-        [HttpGet]
-        public IActionResult Creazione()
-        {
-            var vm = new NegozioCreateInputModel();
-            return View(vm);
-        }
-
-        [HttpPost]
-        public IActionResult Creazione(NegozioCreateInputModel model)
-        {
-            
-            if(ModelState.IsValid){
-                negoziService.CreateNegozi(model);
-                TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult Modifica(int id){
-            NegozioEditInputModel inputModel = negoziService.GetNegozio(id);
-            return View(inputModel);
-        }
-
-        [HttpPost]
-        public IActionResult Modifica(NegozioEditInputModel model)
-        {
-            
-            if(ModelState.IsValid){
-                var modificato =  negoziService.EditNegozio(model);
-                TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Modifica), new {id = model.NegozioId});
-            }
-
-            return View(model);
-        }
     }
    
 }

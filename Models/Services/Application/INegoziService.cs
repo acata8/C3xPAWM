@@ -12,6 +12,9 @@ namespace C3xPAWM.Models.Services.Application
         
         ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input);
         NegozioEditInputModel GetNegozio(int id);
+
         bool EditNegozio(NegozioEditInputModel model);
+        PubblicitaViewModel CreatePubblicita(PubblicitaInputModel model);
+        PubblicitaInputModel GetNegozioPubblicita(int id);
     }
 }

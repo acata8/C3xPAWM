@@ -8,7 +8,6 @@ namespace C3xPAWM.Models.ViewModel
         public int PubblicitaId { get; set; }
         public string NomeEvento { get; set; }
         public int Durata { get; set; }
-
         public int Attiva {get; set;}
         public Negozio Negozio;
 
@@ -17,7 +16,8 @@ namespace C3xPAWM.Models.ViewModel
                 PubblicitaId = pubblicita.PubblicitaId,
                 NomeEvento = pubblicita.NomeEvento,
                 Durata = pubblicita.Durata,
-                Attiva = pubblicita.Attiva
+                Attiva = pubblicita.Attiva,
+                Negozio = pubblicita.Negozio
             };
         }
         

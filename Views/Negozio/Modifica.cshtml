@@ -7,8 +7,9 @@
 <h4 class="title mt-3">Aggiungi il tuo negozio!</h4>
 
 
-@using((Html.BeginForm("Modifica", "Elenco", FormMethod.Post))){
-    <input asp-for="NegozioId" type="hidden">
+@using((Html.BeginForm("Modifica", "Negozio", FormMethod.Post))){
+    
+    @Html.HiddenFor(n => n.NegozioId)
     
             <div class="row mt-2">
                     <div class="col-md-12">
@@ -21,6 +22,21 @@
                         <input class="form-control" asp-for="Nome" type="text">
                     </div>
                 </div>
+
+            <div class="row mt-2">
+                    <div class="col-md-5 mt-3">
+                        <label for="Email">Email</label>
+                        <input class="form-control" asp-for="Email" type="text">
+                    </div>
+                    <div class="col-md-3 mt-3">
+
+                        <label for="Password">Password</label>
+                        <input class="form-control" asp-for="Password" type="password" placeholder="Password attuale o nuova">
+                        
+                    </div>
+                </div>
+
+
                 <div class="row mt-2">
                     <div class="col-md-8 mt-3">
                         <label for="Via">Via</label>
@@ -41,10 +57,7 @@
                         <input class="form-control" asp-for="Regione" type="text">
                     </div>
             </div>
-
-    
-    
-
+            
     <div class="row mt-2">
         <div class="col-md-4">
             

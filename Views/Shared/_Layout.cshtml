@@ -19,10 +19,19 @@
                 <div id="navbar-brand" class="collapse navbar-collapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Home">Home </a>
+                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Home" title="HOME"> <i class="fas fa-home"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Elenco">Negozi</a>
+                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Elenco"><i class="fas fa-list"></i> Elenco Negozi </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Corriere"><i class="fas fa-edit"></i> Dashboard Corriere </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Utente"><i class="fas fa-edit"></i> Dashboard Utente </a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Negozio"><i class="fas fa-edit"></i> Dashboard Negozio </a>
                         </li>
                     </ul>
                 </div>
@@ -32,14 +41,18 @@
     <section id="section">
         <div class="container">
             <main role="main" class="pb-3">
-                @if(TempData["Success"] != null){
-                    <div class="alert alert-success alert-dismissable mt-3" role="alert">
-                        @TempData["Success"]
-                    </div>
-                }
+               
+                        @if(TempData["Success"] != null){
+                            <div class="alert alert-success alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:12%;z-index:10000;opacity:0.9;">
+                                @TempData["Success"]
+                            </div>
+                        }
+                  
+               
                 @RenderBody()
             </main>
         </div>
+        
 
         <footer class="border-top footer text-muted">
             <div class="container">

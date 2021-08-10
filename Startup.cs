@@ -44,6 +44,8 @@ namespace C3xPAWM
             ;
             
             services.AddTransient<INegoziService, EfCoreNegoziService>();
+            services.AddTransient<ICorriereService, EfCoreCorrieriService>();
+            services.AddTransient<IUtenteService, EfCoreUtentiService>();
 
             services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
             {

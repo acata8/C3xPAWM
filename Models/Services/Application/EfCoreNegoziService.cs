@@ -128,7 +128,7 @@ namespace C3xPAWM.Models.Services.Application
 
         public NegozioViewModel CreateNegozi(NegozioCreateInputModel model){
             
-            var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione, model.Citta, model.Via, model.Tipologia);
+            var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione, model.Citta, model.Via, model.Tipologia, model.Email, model.Password);
             dbContext.Add(negozio);
             dbContext.SaveChanges();
 
@@ -147,6 +147,8 @@ namespace C3xPAWM.Models.Services.Application
                         Citta = negozio.Citta,
                         Provincia = negozio.Provincia,
                         Regione = negozio.Regione,
+                        Password = negozio.Password,
+                        Email = negozio.Email,
                         Tipologia = negozio.Tipologia
                     }).FirstOrDefault();
         }
@@ -162,7 +164,8 @@ namespace C3xPAWM.Models.Services.Application
             negozio.CambiaVia(model.Via);
             negozio.CambiaRegione(model.Regione);
             negozio.settaTipologia(Convert.ToString(model.Tipologia));
-
+            negozio.CambiaPassword(model.Password);
+            negozio.CambiaEmail(model.Email);
             try
             {
                  dbContext.SaveChanges();
@@ -173,6 +176,35 @@ namespace C3xPAWM.Models.Services.Application
                 return false;    
             }
         }
+
+
+        public PubblicitaInputModel GetNegozioPubblicita(int id){
+            return dbContext.Negozi.Where(n => n.NegozioId == id)
+                    .Select(p => new PubblicitaInputModel
+                    {
+                        NegozioId = p.NegozioId,
+                        Negozio = p
+                    }).FirstOrDefault();
+        }
+
+        public PubblicitaViewModel CreatePubblicita(PubblicitaInputModel model)
+        {
+            var negozio = dbContext.Negozi.Where(n => n.NegozioId == model.NegozioId).Include(p => p.Pubblicita).FirstOrDefault();
+
+            if(negozio.Token >= model.Durata && model.Durata > 0){
+                model.Attiva = 1;
+                negozio.DecrementaToken(model.Durata);
+            }else{
+                model.Attiva = 0;
+                throw new ArgumentException();
+            }
+                
+            var pubblicita = new Pubblicita(negozio, model.NomeEvento, model.Durata);
+
+            dbContext.Add(pubblicita);
+            dbContext.SaveChanges();
+
+            return PubblicitaViewModel.FromEntity(pubblicita);            
+        }
     }
 }
-

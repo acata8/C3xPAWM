@@ -32,8 +32,12 @@ namespace C3xPAWM.Models.InputModel
         [Required(ErrorMessage = "La tipologia è obbligatoria"),]
         public Tipologia Tipologia { get;  set; }
         
-        //TODO
-        public string Email { get;  set; }
-        public string Password { get;  set; }
+        [Required(ErrorMessage = "La mail è obbligatoria")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "La password è obbligatoria"),
+        MinLength(5, ErrorMessage = "Minimi 5 caratteri")]
+        public string Password { get; set; }
+
     }
 }

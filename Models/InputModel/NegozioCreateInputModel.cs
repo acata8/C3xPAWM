@@ -28,13 +28,13 @@ namespace C3xPAWM.Models.InputModel
         [Required(ErrorMessage = "La tipologia è obbligatoria"),]
         public string Tipologia { get;  set; }
 
-        //TODO
-        
-        /*
-        Vedere lezione 116 validazione client per verificare se l'email e' corretta
-        */        
-        public string Email { get;  set; }
-        public string Password { get;  set; }
+        //116
+        [Required(ErrorMessage = "La mail è obbligatoria")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "La password è obbligatoria"),
+        MinLength(5, ErrorMessage = "Minimi 5 caratteri")]
+        public string Password { get; set; }
 
     }
 }
