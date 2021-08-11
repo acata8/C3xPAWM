@@ -71,7 +71,7 @@ namespace C3xPAWM.Models.Services.Application
                 Tipologia x;
                 if (Enum.TryParse(y, true, out x))
                     queryLinq = queryLinq.Where(negozio => negozio.Tipologia == x);
-                queryLinq = queryLinq.Where(negozio => negozio.Tipologia.Equals(x));
+                
             }else{
                 queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
             }
@@ -205,6 +205,37 @@ namespace C3xPAWM.Models.Services.Application
             dbContext.SaveChanges();
 
             return PubblicitaViewModel.FromEntity(pubblicita);            
+        }
+
+        public void CreateOrder(PaccoInputModel model)
+        {
+            Utente utente = dbContext.Utenti.Where(m => m.Email == model.Email).FirstOrDefault();
+            var negozio = dbContext.Negozi.Find(model.NegozioId);
+            model.Utente = utente;
+            model.Negozio = negozio;
+           
+            
+            var pacco = new Pacco(model.Provincia.ToUpper(), model.Via, model.Citta, utente.UtenteId, model.NegozioId);
+
+            dbContext.Add(pacco);
+            dbContext.SaveChanges();
+            
+        }
+
+        public PaccoInputModel GetNegozioPacco(int id)
+        {
+            return dbContext.Negozi.Where(n => n.NegozioId == id)
+                    .Select(p => new PaccoInputModel
+                    {
+                        NegozioId = p.NegozioId,
+                        Negozio = p
+                    }).FirstOrDefault();
+        }
+
+        public async Task<bool> RicercaEmailAsync(string email)
+        {
+            bool emailEsistente = await dbContext.Utenti.AnyAsync(c => EF.Functions.Like(c.Email, email));
+            return emailEsistente;
         }
     }
 }

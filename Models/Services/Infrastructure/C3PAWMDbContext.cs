@@ -1,16 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Enums;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-
-#nullable disable
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace C3xPAWM.Models.Services.Infrastructure
 {
-    public partial class C3PAWMDbContext : DbContext
+    public partial class C3PAWMDbContext : IdentityDbContext
     {
         
     
@@ -22,12 +18,14 @@ namespace C3xPAWM.Models.Services.Infrastructure
         public virtual DbSet<Negozio> Negozi { get; set; }
         public virtual DbSet<Pacco> Pacchi { get; set; }
         public virtual DbSet<Pubblicita> Pubblicita { get; set; }  
-
-         public virtual DbSet<Utente> Utenti { get; set; }  
+        public virtual DbSet<Utente> Utenti { get; set; }  
         public virtual DbSet<Corriere> Corrieri { get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Negozio>(entity => {
                 entity.ToTable("Negozi");
                 entity.HasKey(negozio => negozio.NegozioId);

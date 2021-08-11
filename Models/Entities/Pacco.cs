@@ -17,10 +17,10 @@ namespace C3xPAWM.Models.Entities
         public int CorriereId { get; set; }
         public virtual Corriere Corrieri { get; set; }
 
-        public int UtenteId { get; private set; }
+        public int UtenteId { get; set; }
         public virtual Utente Utenti { get; set; }
 
-        public Pacco(string provincia, string via, string citta, Utente utente, Negozio negozio)
+        public Pacco(string provincia, string via, string citta, int utenteId, int negozioId)
         {
             if (string.IsNullOrWhiteSpace(provincia))
             {
@@ -36,24 +36,17 @@ namespace C3xPAWM.Models.Entities
             {
                 throw new System.ArgumentException($"'{nameof(citta)}' non può essere Null o uno spazio vuoto.", nameof(citta));
             }
-
-            if (utente is null)
-            {
-                throw new ArgumentNullException(nameof(utente));
+            if(negozioId == 0 && utenteId == 0){
+                throw new System.ArgumentException("ID non validi");
             }
 
-            if (negozio is null)
-            {
-                throw new ArgumentNullException(nameof(negozio));
-            }
-
+            this.StatoPacco = StatoPacco.NON_ASSEGNATO;
             this.Citta = citta;
             this.Via = via;
             this.Provincia = provincia;
-            this.NegozioId = negozio.NegozioId;
-            this.UtenteId = utente.UtenteId;
-            this.StatoPacco = StatoPacco.NON_ASSEGNATO;
-            this.CorriereId = 0;
+            this.NegozioId = negozioId;
+            this.UtenteId = utenteId;
+            this.CorriereId = 1; //Primo corriere della lista è null
         }
 
         public Pacco()
@@ -67,6 +60,7 @@ namespace C3xPAWM.Models.Entities
                 throw new ArgumentNullException(nameof(corriere));
             }
             this.CorriereId = corriere.CorriereId;
+            this.StatoPacco = StatoPacco.ASSEGNATO;
         }
 
         

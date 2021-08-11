@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Application;
 using Microsoft.AspNetCore.Mvc;
@@ -20,11 +21,35 @@ namespace C3xPAWM.Controllers
             return View();
         }
 
+         [HttpGet]
+        public IActionResult Pacco(int id){
+            PaccoInputModel inputModel = negoziService.GetNegozioPacco(id);
+            return View(inputModel);
+        }
+
+        [HttpPost]
+        public IActionResult Pacco(PaccoInputModel model){
+
+            if(ModelState.IsValid){
+                negoziService.CreateOrder(model);
+                TempData["Success"] = "Salvataggio eseguito";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
+        
         [HttpGet]
         public IActionResult Creazione()
         {
             var vm = new NegozioCreateInputModel();
             return View(vm);
+        }
+
+        public async Task<IActionResult> emailTrovata(string email)
+        {
+            bool result = await negoziService.RicercaEmailAsync(email);
+            return Json(result);
         }
 
         [HttpPost]

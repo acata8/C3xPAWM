@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace C3xPAWM
 {
@@ -27,7 +28,7 @@ namespace C3xPAWM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddResponseCaching();  
+            services.AddResponseCaching();  
 
             services.AddControllersWithViews(options => {
                 var homeProfile = new CacheProfile();
@@ -42,6 +43,8 @@ namespace C3xPAWM
             .AddRazorRuntimeCompilation()
             #endif
             ;
+
+            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<C3PAWMDbContext>();
             
             services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<ICorriereService, EfCoreCorrieriService>();
@@ -57,7 +60,7 @@ namespace C3xPAWM
             services.Configure<ConnectionsStringsOptions>(configuration.GetSection("ConnectionsStrings"));
             services.Configure<ElencoOptions>(configuration.GetSection("Elenco"));
             services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
-            
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,8 +84,12 @@ namespace C3xPAWM
                
             }
             
+
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseResponseCaching();
            
             app.UseEndpoints(endpoints =>
@@ -90,6 +97,8 @@ namespace C3xPAWM
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
 
 
