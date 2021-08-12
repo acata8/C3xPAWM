@@ -6,13 +6,13 @@
 }
 
 <partial name="_StatusMessage" for="StatusMessage" />
-<h4>@ViewData["Title"]</h4>
+<h4 class="title">@ViewData["Title"]</h4>
 <div>
-    <p>Per usare un app di autenticazione esegui i seguenti step:</p>
+    <p class="font-weight-bold mt-3">Per usare un app di autenticazione esegui i seguenti step:</p>
     <ol class="list">
         <li>
-            <p>
-                Installa un app di 2FA come Microsoft Authenticator per
+            <p class="mt-2">
+                1. Installa un app di 2FA come Microsoft Authenticator per
                 <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> e
                 <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> oppure
                 Google Authenticator per
@@ -21,17 +21,15 @@
             </p>
         </li>
         <li>
-            <p>Scannerizza il QR Code or inserisci la chiave <kbd>@Model.SharedKey</kbd> nella tua app di autenticazione. Spazi e maiuscole non contano.</p>
-            <div class="alert alert-info">Impara a <a href="https://go.microsoft.com/fwlink/?Linkid=852423">abilitare la generazione di QR code</a>.</div>
-            <div id="qrCode"></div>
+            <p class="mt-2"> 2. Scannerizza il <span class="font-weight-bold">QR Code</span> o inserisci la chiave <span class="font-weight-bold" style="border: 1px red solid; padding: 1px;">@Model.SharedKey</span> nella tua app di autenticazione.</p>
+            <div id="qrCode" class="mt-3 mb-3"></div>
             <div id="qrCodeData" data-url="@Html.Raw(@Model.AuthenticatorUri)"></div>
         </li>
         <li>
             <p>
-                Dopo aver scansionato il codice QR o inserito la chiave sopra, l'app di autenticazione a due fattori ti fornirà
-                  con un codice univoco. Inserisci il codice nella casella di conferma sottostante.
+                3. Inserisci il <span class="font-weight-bold">codice</span> nella casella di conferma sottostante.
             </p>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-md-6">
                     <form id="send-code" method="post">
                         <div class="form-group">
@@ -39,7 +37,7 @@
                             <input asp-for="Input.Code" class="form-control" autocomplete="off" />
                             <span asp-validation-for="Input.Code" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Verifica</button>
+                        <button type="submit" class="btn btn-outline-primary">Verifica</button>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     </form>
                 </div>
@@ -50,4 +48,14 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
+    <script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Html.Raw(Model.AuthenticatorUri)",
+                width: 150,
+                height: 150
+            });
+    </script>
+
 }

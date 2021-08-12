@@ -47,7 +47,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Il codice di verifica è obbligatorio")]
             [StringLength(7, ErrorMessage = "Deve essere almeno {2} e massimo {1} caratteri.", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Codice di verifica ")]
