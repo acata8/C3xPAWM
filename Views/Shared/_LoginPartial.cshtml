@@ -1,8 +1,12 @@
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
+
 
 
     @if(SignInManager.IsSignedIn(User))
     {
+        
+        
+        
         <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <form asp-page="/Account/Logout"  asp-area="Identity" class="form-inline" method="post">
@@ -10,7 +14,7 @@
                     </form>
                 </li>
                 <li class="nav-item mt-3">
-                    <A asp-page="/Account/Manage/Index" asp-area="Identity"> Bentornato, @User.Identity.Name</a>
+                    <A asp-page="/Account/Manage/Index" asp-area="Identity"> Bentornato, @User.FindFirst("FullName").Value</a>
                 </li>
         </ul>
     }else{

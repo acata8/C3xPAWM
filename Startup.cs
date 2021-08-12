@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System;
 using Microsoft.AspNetCore.Identity;
+using C3xPAWM.Models.Entities;
+using C3xPAWM.Customizations.Identity;
 
 namespace C3xPAWM
 {
@@ -46,7 +48,7 @@ namespace C3xPAWM
             ;
 
             
-            services.AddDefaultIdentity<IdentityUser>(
+            services.AddDefaultIdentity<ApplicationUser>(
                     option => {
                     option.Password.RequiredLength = 8;
                     option.Password.RequireDigit = true;
@@ -57,7 +59,9 @@ namespace C3xPAWM
 
                     option.SignIn.RequireConfirmedAccount = true;
                     
-                }).AddEntityFrameworkStores<C3PAWMDbContext>();
+                })
+                .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
+                .AddEntityFrameworkStores<C3PAWMDbContext>();
             
 
             services.AddTransient<INegoziService, EfCoreNegoziService>();

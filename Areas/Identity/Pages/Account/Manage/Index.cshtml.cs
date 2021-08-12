@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using C3xPAWM.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,12 +12,12 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,18 +36,24 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Numero telefonico")]
             public string PhoneNumber { get; set; }
+
+            [StringLength(100, MinimumLength = 3, ErrorMessage = "Il nome deve essere almeno {2} e massimo {1} caratteri.")]
+            [Display(Name = "Nome completo")]
+            public string FullName { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(ApplicationUser user)
         {
+
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FullName = @User.FindFirst("FullName").Value
             };
         }
 
@@ -75,6 +82,15 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            var userActive = await _userManager.GetUserAsync(User);
+            userActive.FullName = Input.FullName;
+            IdentityResult result = await _userManager.UpdateAsync(userActive);
+            if(!result.Succeeded){
+                    StatusMessage = "Errore imprevisto durante il tentativo di impostare il nome.";
+                    return RedirectToPage();
+            }
+
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

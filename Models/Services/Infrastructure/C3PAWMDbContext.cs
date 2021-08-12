@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace C3xPAWM.Models.Services.Infrastructure
 {
-    public partial class C3PAWMDbContext : IdentityDbContext
+    public partial class C3PAWMDbContext : IdentityDbContext<ApplicationUser>
     {
         
     
