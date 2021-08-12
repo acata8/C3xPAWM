@@ -9,5 +9,7 @@ namespace C3xPAWM.Models.Services.Application
         CorriereViewModel CreateCorriere(CorriereInputModel model);
         bool EditCorriere (CorriereInputModel model);
         CorriereInputModel GetCorriere(int id);
+        ListViewModel<PaccoViewModel> GetPacchiNonAssegnati();
+        bool AssegnaPacco(PaccoAssegnatoViewModel model);
     }
 }

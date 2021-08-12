@@ -27,6 +27,11 @@
     - operazioni cliente
         1. Revisione stato ordine
 
+##APPUNTI
+
+Hashing ----
+
+    Avviene da parte di .Net tramute un algoritmo di derivazione della password chiamato PBKDF2 che applica HMAC-SHA256 per 10k volte
 
 
 

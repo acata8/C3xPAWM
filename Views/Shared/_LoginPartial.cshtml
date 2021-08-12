@@ -1,0 +1,30 @@
+@inject SignInManager<IdentityUser> SignInManager
+
+
+    @if(SignInManager.IsSignedIn(User))
+    {
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <form asp-page="/Account/Logout"  asp-area="Identity" class="form-inline" method="post">
+                        <button class="btn btn btn-outline-primary" type="submit"><i class="fas fa-key"></i> Logout</button>
+                    </form>
+                </li>
+                <li class="nav-item mt-3">
+                    <A asp-page="/Account/Manage/Index" asp-area="Identity"> Bentornato, @User.Identity.Name</a>
+                </li>
+        </ul>
+    }else{
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="btn btn btn-outline-primary" asp-page="/Account/Login" asp-area="Identity"><i class="fas fa-key"></i> Login </a>
+            </li>
+            <li class="nav-item">
+                   <a class="btn btn btn-outline-primary"asp-page="/Account/Register" asp-area="Identity"> <i class="far fa-id-badge"></i> Registrati</a>
+            </li>
+
+        </ul>
+
+    }
+
+ 
+ 

@@ -1,9 +1,12 @@
+using C3xPAWM.Models.Entities;
+
 namespace C3xPAWM.Models.ViewModel
 {
     public class PacchiListViewModel
     {
-        //TO-DO
-        //Lista di pacchi per la view del corriere
-        
+        public ListViewModel<PaccoViewModel> PacchiNonAssegnati {get; set;}
+         public ListViewModel<PaccoViewModel> PacchiCorriere {get; set;}
+
+         public int CorriereId {get; set;}
     }
 }

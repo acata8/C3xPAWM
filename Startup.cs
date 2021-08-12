@@ -28,7 +28,8 @@ namespace C3xPAWM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddResponseCaching();  
+            services.AddResponseCaching();
+            services.AddRazorPages();
 
             services.AddControllersWithViews(options => {
                 var homeProfile = new CacheProfile();
@@ -44,23 +45,38 @@ namespace C3xPAWM
             #endif
             ;
 
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<C3PAWMDbContext>();
             
+            services.AddDefaultIdentity<IdentityUser>(
+                    option => {
+                    option.Password.RequiredLength = 8;
+                    option.Password.RequireDigit = true;
+                    option.Password.RequireUppercase = true;
+                    option.Password.RequireNonAlphanumeric = false;
+                    option.Password.RequiredUniqueChars = 0;
+                    option.Password.RequireLowercase = true;
+
+                    option.SignIn.RequireConfirmedAccount = true;
+                    
+                }).AddEntityFrameworkStores<C3PAWMDbContext>();
+            
+
             services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<ICorriereService, EfCoreCorrieriService>();
             services.AddTransient<IUtenteService, EfCoreUtentiService>();
-
-            services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
+            
+            
+           services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
             {
                 string connectionString = configuration.GetSection("ConnectionsStrings").GetValue<string>("Default");
                 optionsBuilder.UseSqlite(connectionString);
             });
 
+
             //Options
             services.Configure<ConnectionsStringsOptions>(configuration.GetSection("ConnectionsStrings"));
             services.Configure<ElencoOptions>(configuration.GetSection("Elenco"));
             services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
-            services.AddRazorPages();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +106,7 @@ namespace C3xPAWM
 
             app.UseAuthentication();
             app.UseAuthorization();
+            
             app.UseResponseCaching();
            
             app.UseEndpoints(endpoints =>

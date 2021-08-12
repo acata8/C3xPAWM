@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Application;
+using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C3xPAWM.Controllers
@@ -12,8 +14,44 @@ namespace C3xPAWM.Controllers
             this.corriereService = corriereService;
         }
 
-        public IActionResult Index(){
-            //Ritornare la lista dei pacchi dove lui e corriere
+        [HttpGet]
+        public IActionResult Index()
+        {
+            /*
+            ListViewModel<PaccoViewModel> pacchiCorriere = corriereService.GetPacchiNonAssegnati();
+
+            PacchiListViewModel viewModel = new PacchiListViewModel{
+                PacchiNonAssegnati = pacchiNonAssegnati
+            };
+
+            return View(viewModel);
+            */
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult NonAssegnati(int id){
+            ListViewModel<PaccoViewModel> pacchiNonAssegnati = corriereService.GetPacchiNonAssegnati();
+            var corriere = id;
+            PacchiListViewModel viewModel = new PacchiListViewModel{
+                PacchiNonAssegnati = pacchiNonAssegnati,
+                CorriereId = id
+                
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult NonAssegnati(PaccoAssegnatoViewModel model){
+                        
+            if(ModelState.IsValid){
+                var assegnato = corriereService.AssegnaPacco(model);
+                if(assegnato)
+                    TempData["Success"] = "Pacco assegnato";
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
@@ -56,5 +94,7 @@ namespace C3xPAWM.Controllers
             return View(model);
         }
 
-    }
+        
+    }   
 }
+

@@ -1,7 +1,10 @@
 using C3xPAWM.Models.Entities;
+using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Infrastructure;
 using C3xPAWM.Models.ViewModel;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace C3xPAWM.Models.Services.Application
@@ -55,5 +58,54 @@ namespace C3xPAWM.Models.Services.Application
             }
         }
 
+        public ListViewModel<PaccoViewModel> GetPacchiNonAssegnati()
+        {
+           IQueryable<PaccoViewModel> queryLinq = dbContext.Pacchi
+                    .AsNoTracking()
+                    .Where(n => n.CorriereId == 1)
+                    .Where(n => n.StatoPacco == StatoPacco.NON_ASSEGNATO)
+                    .Select(p => new PaccoViewModel
+                    {
+                        PaccoId = p.PaccoId,
+                        Utente = p.Utenti,
+                        Negozio = p.Negozio,
+                        Via = p.Via,
+                        Citta = p.Citta,
+                        Provincia = p.Provincia,
+                        
+                        StatoPacco = p.StatoPacco
+                    });
+
+            var totale = queryLinq.Count();
+
+            List<PaccoViewModel> Pacco = queryLinq
+            .ToList();
+
+            ListViewModel<PaccoViewModel> listViewModel = new ListViewModel<PaccoViewModel>{
+                Elenco = Pacco,
+                TotaleElenco = totale
+            };
+
+            return listViewModel;
+        }
+
+        public bool AssegnaPacco(PaccoAssegnatoViewModel model)
+        {
+            if(model.CorriereId > 1){
+                int paccoid = model.PaccoId;
+                Corriere corriere = dbContext.Corrieri.Where(r => r.CorriereId == model.CorriereId).First();
+                Pacco paccoScelto = dbContext.Pacchi.Where(p => p.PaccoId == paccoid).First();
+                paccoScelto.SetCorriere(corriere);
+                try{
+                dbContext.SaveChanges();
+                    return true;
+                }catch{
+                    return false;
+                }   
+            }
+
+            return false;
+
+        }
     }  
 }

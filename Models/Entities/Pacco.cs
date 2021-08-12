@@ -63,7 +63,7 @@ namespace C3xPAWM.Models.Entities
             this.StatoPacco = StatoPacco.ASSEGNATO;
         }
 
-        
+
     }
 
 }
