@@ -3,26 +3,53 @@ using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Infrastructure;
 using C3xPAWM.Models.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace C3xPAWM.Models.Services.Application
 {
     public class EfCoreCorrieriService : ICorriereService
     {
         private readonly C3PAWMDbContext dbContext;
+        private readonly IHttpContextAccessor accessor;
 
-        public EfCoreCorrieriService(C3PAWMDbContext dbContext)
+        public EfCoreCorrieriService(C3PAWMDbContext dbContext, IHttpContextAccessor accessor)
         {
+            this.accessor = accessor;
             this.dbContext = dbContext;
 
         }
         public CorriereViewModel CreateCorriere(CorriereInputModel model)
         {
-            var corriere = new Corriere(model.Email, model.Password, model.Nominativo, model.Telefono);
+            string proprietario;
+            string proprietarioId;
+            try
+            {
+                proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
+                proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+            catch (NullReferenceException)
+            {
+
+                throw;
+            }
+
+            var corriere = new Corriere(model.Email, model.Password, model.Nominativo, model.Telefono, proprietario, proprietarioId);
             dbContext.Add(corriere);
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+            
 
             return CorriereViewModel.FromEntity(corriere);
         }
@@ -34,30 +61,29 @@ namespace C3xPAWM.Models.Services.Application
                     {
                         CorriereId = corriere.CorriereId,
                         Nominativo = corriere.Nominativo,
-                        Telefono = corriere.Telefono,
-                        Email =corriere.Email,
-                        Password = corriere.Password
+                        Telefono = corriere.Telefono
                     }).FirstOrDefault();
         }
-        
+
         public bool EditCorriere(CorriereInputModel model)
         {
             Corriere corriere = dbContext.Corrieri.Find(model.CorriereId);
 
             corriere.CambiaNome(model.Nominativo);
             corriere.CambiaTelefono(model.Telefono);
-        
+
             try
             {
-                 dbContext.SaveChanges();
-                 return true;
+                dbContext.SaveChanges();
+                return true;
             }
             catch (System.Exception)
             {
-                return false;    
+                return false;
             }
         }
 
+        /*
         public ListViewModel<PaccoViewModel> GetPacchiNonAssegnati()
         {
            IQueryable<PaccoViewModel> queryLinq = dbContext.Pacchi
@@ -105,7 +131,7 @@ namespace C3xPAWM.Models.Services.Application
             }
 
             return false;
-
-        }
-    }  
+            */
+    }
 }
+

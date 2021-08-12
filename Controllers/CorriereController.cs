@@ -29,6 +29,7 @@ namespace C3xPAWM.Controllers
             return View();
         }
 
+        /*
         [HttpGet]
         public IActionResult NonAssegnati(int id){
             ListViewModel<PaccoViewModel> pacchiNonAssegnati = corriereService.GetPacchiNonAssegnati();
@@ -54,7 +55,8 @@ namespace C3xPAWM.Controllers
 
             return View();
         }
-
+            */
+            
         [HttpGet]
         public IActionResult Creazione()
         {

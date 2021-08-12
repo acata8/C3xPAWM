@@ -21,6 +21,7 @@ namespace C3xPAWM.Controllers
             return View();
         }
 
+        /*
          [HttpGet]
         public IActionResult Pacco(int id){
             PaccoInputModel inputModel = negoziService.GetNegozioPacco(id);
@@ -39,6 +40,13 @@ namespace C3xPAWM.Controllers
             return View(model);
         }
         
+        public async Task<IActionResult> emailTrovata(string email)
+        {
+            bool result = await negoziService.RicercaEmailAsync(email);
+            return Json(result);
+        }
+        */
+
         [HttpGet]
         public IActionResult Creazione()
         {
@@ -46,11 +54,6 @@ namespace C3xPAWM.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> emailTrovata(string email)
-        {
-            bool result = await negoziService.RicercaEmailAsync(email);
-            return Json(result);
-        }
 
         [HttpPost]
         public IActionResult Creazione(NegozioCreateInputModel model)

@@ -40,9 +40,7 @@ namespace C3xPAWM.Models.ViewModel
                 Citta = negozio.Citta,
                 Provincia = negozio.Provincia,
                 Regione = negozio.Regione,
-                Email = negozio.Email,
                 Token = negozio.Token,
-                Password = negozio.Password,     
                 Pubblicita = negozio.Pubblicita
                                     .Select(p => PubblicitaViewModel.FromEntity(p))
                                     .ToList()

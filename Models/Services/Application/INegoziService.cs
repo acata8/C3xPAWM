@@ -15,9 +15,12 @@ namespace C3xPAWM.Models.Services.Application
 
         bool EditNegozio(NegozioEditInputModel model);
         PubblicitaViewModel CreatePubblicita(PubblicitaInputModel model);
-        PaccoInputModel GetNegozioPacco(int id);
         PubblicitaInputModel GetNegozioPubblicita(int id);
+        /*
+        PaccoInputModel GetNegozioPacco(int id);
+        
         void CreateOrder(PaccoInputModel model);
         Task<bool> RicercaEmailAsync(string email);
+        */
     }
 }

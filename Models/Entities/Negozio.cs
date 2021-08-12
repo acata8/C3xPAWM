@@ -15,8 +15,9 @@ namespace C3xPAWM.Models.Entities
         public string Nome { get; private set; }
         public int Token { get; private set; }
         public string Telefono { get; private set; }
-        public string Email { get; private set; }
-        public string Password { get; private set; }
+        public string Proprietario { get; private set; }
+        public string ProprietarioId { get; private set; }
+        public virtual ApplicationUser ProprietarioUser {get; set;}
         public Tipologia Tipologia { get; private set; }
         public Categoria Categoria { get; private set; }
         public string Regione { get; private set; }
@@ -26,8 +27,6 @@ namespace C3xPAWM.Models.Entities
 
         public virtual ICollection<Pubblicita> Pubblicita {get; private set; }
 
-        public virtual ICollection<Pacco> Pacchi {get; private set; }
-
         public Negozio()
         {
             
@@ -35,7 +34,7 @@ namespace C3xPAWM.Models.Entities
 
         public Negozio(string nome, string telefono, string provincia, 
         string regione, string citta, string via, string tipologia,
-        string email, string password)
+        string proprietario, string proprietarioId)
         {
             #region ControlliEmpty
             if(string.IsNullOrWhiteSpace(nome))
@@ -64,16 +63,6 @@ namespace C3xPAWM.Models.Entities
             {
                 throw new ArgumentException($"'{nameof(via)}' non può essere Null o uno spazio vuoto.", nameof(via));
             }
-
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                throw new ArgumentException($"'{nameof(email)}' non può essere Null o uno spazio vuoto.", nameof(email));
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException($"'{nameof(password)}' non può essere Null o uno spazio vuoto.", nameof(password));
-            }
             #endregion
             Nome = nome;
             Telefono = telefono;
@@ -83,11 +72,16 @@ namespace C3xPAWM.Models.Entities
             Via = via;
             settaTipologia(tipologia);
             Categoria = Categoria.NEGOZIO;
-            Email = email;
-            Password = password;
+            settaProprietario(proprietario, proprietarioId);
             Token = 5;
             Pubblicita = new HashSet<Pubblicita>();
-            Pacchi = new HashSet<Pacco>();
+            
+        }
+
+        private void settaProprietario(string proprietario, string proprietarioId)
+        {
+            Proprietario = proprietario;
+            ProprietarioId = proprietarioId;
         }
 
         public void CambiaNome(string nuovoNome){
@@ -121,22 +115,6 @@ namespace C3xPAWM.Models.Entities
                 throw new ArgumentException($"'{nameof(regione)}' non può essere Null o uno spazio vuoto.", nameof(regione));
             }
             Regione = regione;
-        }
-
-        public void CambiaEmail(string email){
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                throw new ArgumentException($"'{nameof(email)}' non può essere Null o uno spazio vuoto.", nameof(email));
-            }
-            Email = email;
-        }
-
-        public void CambiaPassword(string password){
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException($"'{nameof(password)}' non può essere Null o uno spazio vuoto.", nameof(password));
-            }
-            Password = password;
         }
 
          public void CambiaProvincia(string provincia){

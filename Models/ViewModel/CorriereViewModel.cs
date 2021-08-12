@@ -20,8 +20,6 @@ namespace C3xPAWM.Models.ViewModel
                 Nominativo = corriere.Nominativo,
                 Categoria = Categoria.CORRIERE,
                 Telefono = corriere.Telefono,
-                Email =corriere.Email,
-                Password = corriere.Password
            };
         }
     }
