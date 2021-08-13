@@ -1,3 +1,4 @@
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Elenco Negozi";
 }
@@ -94,9 +95,11 @@
                 <div class="col-md-2">
                     <p>@negozio.Telefono</p>
                 </div>
-                <div class="col-md-1">
-                    <a asp-action="Index" asp-controller="Negozio" asp-route-id="@negozio.NegozioId"><i class="fas fa-edit"></i></a>
-                </div>
+                  @if(User.IsInRole(nameof(Categoria.Commerciante))){
+                    <div class="col-md-1">
+                        <a asp-action="Index" asp-controller="Negozio" asp-route-id="@negozio.NegozioId"><i class="fas fa-edit"></i></a>
+                    </div>
+                  }
             </div> 
         </li>
         }

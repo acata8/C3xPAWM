@@ -11,7 +11,9 @@ namespace C3xPAWM.Models.Entities
         public string Telefono { get; private set; }
         public string Proprietario { get; private set; }
         public string ProprietarioId { get; private set; }
-        public virtual ApplicationUser ProprietarioUser {get; set;}
+        public virtual ApplicationUser ProprietarioUser {get; set;}\
+
+        public virtual ICollection<Pacco> Pacchi {get; private set;}
         public Categoria Categoria { get; private set; }
 
          public Corriere(string nominativo, string telefono, string proprietario, string proprietarioId)
@@ -29,8 +31,8 @@ namespace C3xPAWM.Models.Entities
             settaProprietario(proprietario, proprietarioId);
             this.Nominativo = nominativo;
             this.Telefono = telefono;
-           
             this.Categoria = Categoria.Corriere;
+            this.Pacchi = new HashSet<Pacco>();
          }
 
          private void settaProprietario(string proprietario, string proprietarioId)

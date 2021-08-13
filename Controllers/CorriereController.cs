@@ -18,11 +18,10 @@ namespace C3xPAWM.Controllers
         }
 
        
-        
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-
             /*
             ListViewModel<PaccoViewModel> pacchiCorriere = corriereService.GetPacchiNonAssegnati();
 
@@ -32,10 +31,16 @@ namespace C3xPAWM.Controllers
 
             return View(viewModel);
             */
-            return View();
+            CorriereDashboardViewModel vm = new();
+            vm.CorriereId = id;
+            vm.Corriere = corriereService.GetCorriereID(id);
+            return View(vm);
+
+            
         }
 
         /*
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
         public IActionResult NonAssegnati(int id){
             ListViewModel<PaccoViewModel> pacchiNonAssegnati = corriereService.GetPacchiNonAssegnati();
@@ -49,6 +54,7 @@ namespace C3xPAWM.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
         public IActionResult NonAssegnati(PaccoAssegnatoViewModel model){
                         
@@ -75,30 +81,34 @@ namespace C3xPAWM.Controllers
         {
             
             if(ModelState.IsValid){
-                corriereService.CreateCorriere(model);
+                corriereService.CreateCorriereAsync(model);
                 TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Index));
+                return LocalRedirect("/Elenco");
             }
 
+            TempData["Error"] = "Creazione fallita";
             return View(model);
         }
 
         [HttpGet]
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         public IActionResult Modifica(int id){
             CorriereInputModel inputModel = corriereService.GetCorriere(id);
             return View(inputModel);
         }
 
         [HttpPost]
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         public IActionResult Modifica(CorriereInputModel model)
         {
             
             if(ModelState.IsValid){
                 var modificato =  corriereService.EditCorriere(model);
                 TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Modifica), new {id = model.CorriereId});
+                return RedirectToAction(nameof(Index), new {id = model.CorriereId});
             }
 
+            TempData["Error"] = "Modifica fallita";
             return View(model);
         }
 

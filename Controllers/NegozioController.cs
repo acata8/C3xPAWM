@@ -72,7 +72,7 @@ namespace C3xPAWM.Controllers
             if(ModelState.IsValid){
                 negoziService.CreateNegoziAsync(model);
                 TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Index));
+                return LocalRedirect("/Elenco");
             }
 
             return View(model);

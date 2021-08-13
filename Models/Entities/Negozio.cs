@@ -25,6 +25,7 @@ namespace C3xPAWM.Models.Entities
         public string Citta { get; private set; }
         public string Via { get; private set; }
 
+        public virtual ICollection<Pacco> Pacchi {get; private set;}
         public virtual ICollection<Pubblicita> Pubblicita {get; private set; }
 
         public Negozio()
@@ -75,7 +76,7 @@ namespace C3xPAWM.Models.Entities
             settaProprietario(proprietario, proprietarioId);
             Token = 5;
             Pubblicita = new HashSet<Pubblicita>();
-            
+            this.Pacchi = new HashSet<Pacco>();
         }
 
         private void settaProprietario(string proprietario, string proprietarioId)

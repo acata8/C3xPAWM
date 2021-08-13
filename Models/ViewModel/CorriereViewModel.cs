@@ -16,7 +16,7 @@ namespace C3xPAWM.Models.ViewModel
         public static CorriereViewModel FromEntity(Corriere corriere)
         {
            return new CorriereViewModel{
-               CorriereId = corriere.CorriereId,
+                CorriereId = corriere.CorriereId,
                 Nominativo = corriere.Nominativo,
                 Categoria = Categoria.Corriere,
                 Telefono = corriere.Telefono,

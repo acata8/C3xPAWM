@@ -19,22 +19,27 @@
 
             @if(SignInManager.IsSignedIn(User))
             {
-                @if(User.FindFirstValue("Proprietario").Equals("0")){
-                    <hr>
+
+                    @if(User.IsInRole(nameof(Categoria.Corriere)) && User.FindFirstValue("Proprietario").Equals("0")){
+                        <hr>
                         <h4 class="title mb-3"> Lavora per noi! </h4>
-                    <ul>
-                    @if(User.IsInRole(nameof(Categoria.Corriere))){
-                        <li>
-                            <a class="btn btn btn-outline-primary" asp-action="Creazione" asp-controller="Corriere" id="corriere"><i class="fas fa-truck"></i>&nbsp;Corriere </a>
-                        </li>
+                        <ul>
+                            <li>
+                                <a class="btn btn btn-outline-primary" asp-action="Creazione" asp-controller="Corriere" id="corriere"><i class="fas fa-truck"></i>&nbsp;Corriere </a>
+                            </li>
+                        </ul>
                     }
-                    @if(User.IsInRole(nameof(Categoria.Commerciante))){
-                        <li>
-                            <a class="btn btn btn-outline-primary"  asp-action="Creazione" asp-controller="Negozio" id="negozio"><i class="fas fas fa-store-alt"></i>&nbsp;Negozio </a>
-                        </li>
+                    @if(User.IsInRole(nameof(Categoria.Commerciante)) && User.FindFirstValue("Proprietario").Equals("0")){
+                        <hr>
+                        <h4 class="title mb-3"> Lavora per noi! </h4>
+                        <ul>
+                            <li>
+                                <a class="btn btn btn-outline-primary"  asp-action="Creazione" asp-controller="Negozio" id="negozio"><i class="fas fas fa-store-alt"></i>&nbsp;Negozio </a>
+                            </li>
+                        </ul>
                     }
-                    </ul> 
-                }
+                     
+                
                     
             }else{
 
@@ -56,7 +61,8 @@
     
     <br>
     <hr>
-    
+
+        
     
         @if(@Model.NegoziPubblicizzati.Elenco.Any(p => p.Attiva == 1)){
         <h4 class="title mb-3"> Negozi Pubblicizzati </h4>

@@ -10,5 +10,9 @@ namespace C3xPAWM.Models.Entities
         public int Proprietario {get; set;}
         public virtual ICollection<Negozio> ProprietarioNegozi {get; set;}
         public virtual ICollection<Corriere> ProprietarioCorriere {get; set;}
+
+        public virtual ICollection<Pacco> Pacchi {get; set;}
+
+        
     }
 }

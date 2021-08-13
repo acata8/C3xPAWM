@@ -4,11 +4,13 @@ using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Infrastructure;
 using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace C3xPAWM.Models.Services.Application
 {
@@ -16,14 +18,16 @@ namespace C3xPAWM.Models.Services.Application
     {
         private readonly C3PAWMDbContext dbContext;
         private readonly IHttpContextAccessor accessor;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public EfCoreCorrieriService(C3PAWMDbContext dbContext, IHttpContextAccessor accessor)
+        public EfCoreCorrieriService(C3PAWMDbContext dbContext, IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
             this.accessor = accessor;
             this.dbContext = dbContext;
 
         }
-        public CorriereViewModel CreateCorriere(CorriereInputModel model)
+        public async Task<CorriereViewModel> CreateCorriereAsync(CorriereInputModel model)
         {
             string proprietario;
             string proprietarioId;
@@ -31,6 +35,9 @@ namespace C3xPAWM.Models.Services.Application
             {
                 proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
                 proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
+                userActive.Proprietario = 1;
+                IdentityResult result = await userManager.UpdateAsync(userActive);
             }
             catch (NullReferenceException)
             {
@@ -46,10 +53,10 @@ namespace C3xPAWM.Models.Services.Application
             }
             catch (System.Exception)
             {
-                
+
                 throw;
             }
-            
+
 
             return CorriereViewModel.FromEntity(corriere);
         }
@@ -82,6 +89,22 @@ namespace C3xPAWM.Models.Services.Application
                 return false;
             }
         }
+
+        public Task<string> GetCorriereIDAsync(int corriereId)
+        {
+            return dbContext.Corrieri
+                    .Where(n => n.CorriereId == corriereId)
+                    .Select(n => n.ProprietarioId)
+                    .FirstOrDefaultAsync();
+        }
+
+        public Corriere GetCorriereID(int id)
+        {
+            return dbContext.Corrieri
+                    .Where(n => n.CorriereId == id)
+                    .FirstOrDefault();
+        }
+
 
         /*
         public ListViewModel<PaccoViewModel> GetPacchiNonAssegnati()
@@ -134,4 +157,5 @@ namespace C3xPAWM.Models.Services.Application
             */
     }
 }
+
 

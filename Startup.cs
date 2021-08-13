@@ -57,16 +57,20 @@ namespace C3xPAWM
             .AddRazorRuntimeCompilation()
             #endif
             ;
-
-
+    
             services.AddAuthorization( options =>
             {
                 options.AddPolicy(nameof(Policy.ProprietarioNegozio), builder => {
                     builder.Requirements.Add(new ProprietarioNegozioRequirement());
                 });
+
+                 options.AddPolicy(nameof(Policy.CorriereAttivo), builder => {
+                    builder.Requirements.Add(new CorriereAttivoRequirement());
+                });
             });
 
             services.AddScoped<IAuthorizationHandler, ProprietarioNegozioRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, CorriereAttivoRequirementHandler>();
 
             
             services.AddDefaultIdentity<ApplicationUser>(

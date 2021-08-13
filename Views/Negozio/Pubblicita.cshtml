@@ -31,7 +31,7 @@
     <div class="row mt-2">
         <div class="col-md-2 mt-3">
             <label for="Durata">Durata in giorni</label>
-            <input class="form-control" asp-for="Durata" type="number" step="1">
+            <input class="form-control" asp-for="Durata" type="number" step="1" max="@Model.Negozio.Token">
         </div>
     </div>
 
@@ -40,4 +40,14 @@
             <button type="submit" class="btn btn-primary"><i cfar fa-save"></i>&nbsp; Salva</button>
         </div>
     </div>
+}
+
+@section Scripts{
+
+    <script>
+        $("[type='number']").keypress(function (evt) {
+         evt.preventDefault();
+        });
+
+    </script>
 }
