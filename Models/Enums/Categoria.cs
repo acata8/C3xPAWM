@@ -1,9 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace C3xPAWM.Models.Enums
 {
     public enum Categoria
     {
-        NEGOZIO,
-        CORRIERE,
-        UTENTE
+        Commerciante,
+        Corriere,
+        
+        [Display(Name = "Amministratore")]
+        Administrator,
+        Utente
     }
 }

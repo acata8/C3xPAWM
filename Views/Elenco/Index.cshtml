@@ -12,6 +12,7 @@
         </div>
     </div>
     <p class="mt-2 title" style="color: rgb(255,166,0);"> Inizia la ricerca</p>
+    
 
     <div class="mt-3 row">
         <div class="col-md-4 d-flex align-items-center mt-2">
@@ -57,7 +58,7 @@
                 <div class="col-md-2">
                     <a asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){     <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
-                <div class="col-md-3">             
+                <div class="col-md-2">             
                     <p class="font-weight-bold">Citta (Provincia)</p>           
                 </div>
                 <div class="col-md-2">
@@ -66,7 +67,12 @@
                 <div class="col-md-2">
                     <p class="font-weight-bold">Telefono</p>
                 </div>
-
+                @if(User.IsInRole(nameof(Categoria.Commerciante))){
+                    <div class="col-md-1">
+                        <p class="font-weight-bold">Modifica</p>
+                    </div>
+                }
+                
               
             </div> 
         </li>
@@ -79,7 +85,7 @@
                 <div class="col-md-2 text-lowercase font-italic ">
                     <p>@negozio.Tipologia</p>
                 </div>
-                <div class="col-md-3">                            
+                <div class="col-md-2">                            
                     <p>@negozio.Citta (@negozio.Provincia)</p>
                 </div>
                 <div class="col-md-2">
@@ -87,6 +93,9 @@
                 </div>
                 <div class="col-md-2">
                     <p>@negozio.Telefono</p>
+                </div>
+                <div class="col-md-1">
+                    <a asp-action="Index" asp-controller="Negozio" asp-route-id="@negozio.NegozioId"><i class="fas fa-edit"></i></a>
                 </div>
             </div> 
         </li>

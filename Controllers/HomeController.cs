@@ -9,11 +9,13 @@ using C3xPAWM.Models;
 using C3xPAWM.Models.Services.Application;
 using C3xPAWM.Models.ViewModel;
 using C3xPAWM.Models.InputModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace C3xPAWM.Controllers
 {
     public class HomeController : Controller
     {
+        
         private readonly INegoziService negoziService;
 
         public HomeController(INegoziService negoziService)
@@ -22,7 +24,7 @@ namespace C3xPAWM.Controllers
 
         }
 
-       
+       [AllowAnonymous]
         public IActionResult Index(ElencoListInputModel input)
         {
             ListViewModel<PubblicitaViewModel> negoziPubblicizzati =  negoziService.GetNegoziPubblicizzati(input);
@@ -35,7 +37,8 @@ namespace C3xPAWM.Controllers
 
             return View(viewModel);
         }
-
+        
+        [AllowAnonymous]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

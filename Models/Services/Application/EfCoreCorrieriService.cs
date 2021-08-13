@@ -38,7 +38,7 @@ namespace C3xPAWM.Models.Services.Application
                 throw;
             }
 
-            var corriere = new Corriere(model.Email, model.Password, model.Nominativo, model.Telefono, proprietario, proprietarioId);
+            var corriere = new Corriere(model.Nominativo, model.Telefono, proprietario, proprietarioId);
             dbContext.Add(corriere);
             try
             {

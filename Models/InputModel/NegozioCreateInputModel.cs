@@ -4,6 +4,9 @@ namespace C3xPAWM.Models.InputModel
 {
     public class NegozioCreateInputModel
     {
+
+        public int NegozioId {get; set;}
+
         [Required(ErrorMessage = "Il nome è obbligatorio")]
         public string Nome {get; set; }
 
@@ -28,13 +31,6 @@ namespace C3xPAWM.Models.InputModel
         [Required(ErrorMessage = "La tipologia è obbligatoria"),]
         public string Tipologia { get;  set; }
 
-        //116
-        [Required(ErrorMessage = "La mail è obbligatoria")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "La password è obbligatoria"),
-        MinLength(5, ErrorMessage = "Minimi 5 caratteri")]
-        public string Password { get; set; }
 
     }
 }

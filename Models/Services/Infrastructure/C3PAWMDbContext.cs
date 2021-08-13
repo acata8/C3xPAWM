@@ -66,6 +66,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
                 .HasForeignKey(p=>p.NegozioId);
             });
 
+ 
         }
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

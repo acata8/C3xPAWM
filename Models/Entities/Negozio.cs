@@ -71,7 +71,7 @@ namespace C3xPAWM.Models.Entities
             Citta = citta;
             Via = via;
             settaTipologia(tipologia);
-            Categoria = Categoria.NEGOZIO;
+            Categoria = Categoria.Commerciante;
             settaProprietario(proprietario, proprietarioId);
             Token = 5;
             Pubblicita = new HashSet<Pubblicita>();

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,16 +26,7 @@
                         <li class="nav-item">
                             <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Elenco"><i class="fas fa-list"></i> Elenco Negozi </a>
                         </li>
-                        
-                        <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Corriere"><i class="fas fa-edit"></i> Dashboard Corriere </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Utente"><i class="fas fa-edit"></i> Dashboard Utente </a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Negozio"><i class="fas fa-edit"></i> Dashboard Negozio </a>
-                        </li>
+                        @inject SignInManager<ApplicationUser> SignInManager
                     </ul>
                        
                         <partial name="_LoginPartial"></partial>
@@ -47,8 +40,18 @@
             <main role="main" class="pb-3">
                
                         @if(TempData["Success"] != null){
-                            <div class="alert alert-success alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:12%;z-index:10000;opacity:0.9;">
-                                @TempData["Success"]
+                            <div class="alert alert-success alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:12%;z-index:10000;opacity:0.9; width: fit-content;">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <p class="mt-3">  @TempData["Success"] </p>
+                               
+                            </div>
+                        }
+
+                         @if(TempData["Error"] != null){
+                            <div class="alert alert-danger alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:12%;z-index:10000;opacity:0.9; width: fit-content;">
+                                <a href="#" class="close " data-dismiss="alert" aria-label="close">&times;</a>
+                                <p class="mt-3"> @TempData["Error"] </p>
+                                
                             </div>
                         }
                   

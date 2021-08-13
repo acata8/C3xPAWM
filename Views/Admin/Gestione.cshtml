@@ -1,0 +1,64 @@
+@model UserRoleInputModel
+
+@{
+    ViewData["Title"] = "Gestione account";
+}
+<h1 class="title mt-3">@ViewData["Title"]</h1>
+
+
+<div class="row mt-5">
+    <div class="col">
+        <a class="btn btn-outline-primary" asp-action="Users"><i class="fas fa-list"></i> Lista Account </a>
+    </div>
+</div>
+
+<hr>
+ @using (@Html.BeginForm("Assegna", "Admin", FormMethod.Post))
+   {
+        <div class="row mt-5 mb-3">
+         
+            <div class="col-4">
+                <label asp-for="Email"></label>
+                <input type="text" asp-for="Email" class="form-control" placeholder="Email">
+            </div>
+            <div class="col-4">
+                <label asp-for="Ruolo"></label>
+                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>()" class="form-control">
+                </select>
+            </div>
+        <div class="col-4">
+                <label> &nbsp; </label><br>
+                <button class="btn btn-success"> Assegna </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-3" asp-validation-summary="All"></div>
+    </div>
+}
+
+<hr>
+@using (@Html.BeginForm("Revoca", "Admin", FormMethod.Post))
+   {
+        <div class="row mt-5">
+         
+
+            <div class="col-4">
+                <label asp-for="Email"></label>
+                <input type="text" asp-for="Email" class="form-control" placeholder="Email">
+            </div>
+            <div class="col-4">
+                <label asp-for="Ruolo"></label>
+                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(1)" class="form-control">
+                </select>
+            </div>
+        <div class="col-4">
+                <label> &nbsp; </label><br>
+                <button class="btn btn-danger"> Revoca </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-3" asp-validation-summary="All"></div>
+    </div>
+}

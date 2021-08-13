@@ -18,7 +18,7 @@ namespace C3xPAWM.Models.ViewModel
            return new CorriereViewModel{
                CorriereId = corriere.CorriereId,
                 Nominativo = corriere.Nominativo,
-                Categoria = Categoria.CORRIERE,
+                Categoria = Categoria.Corriere,
                 Telefono = corriere.Telefono,
            };
         }

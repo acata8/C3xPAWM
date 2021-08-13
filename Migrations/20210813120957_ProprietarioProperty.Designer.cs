@@ -3,14 +3,16 @@ using System;
 using C3xPAWM.Models.Services.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace C3xPAWM.Migrations
 {
     [DbContext(typeof(C3PAWMDbContext))]
-    partial class C3PAWMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210813120957_ProprietarioProperty")]
+    partial class ProprietarioProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +63,7 @@ namespace C3xPAWM.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Proprietario")
+                    b.Property<bool>("Proprietario")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Ruolo")

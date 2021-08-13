@@ -14,11 +14,6 @@ namespace C3xPAWM.Models.InputModel
         MinLength(10, ErrorMessage = "Numero telefonico non valido" )]
         public string Telefono { get; set; }
 
-        [Required(ErrorMessage = "La mail è obbligatoria")]
-        public string Email { get; set; }
 
-        [Required(ErrorMessage = "La password è obbligatoria"),
-        MinLength(5, ErrorMessage = "Minimi 5 caratteri")]
-        public string Password { get; set; }
     }
 }

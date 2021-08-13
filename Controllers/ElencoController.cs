@@ -5,11 +5,12 @@ using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Application;
 using C3xPAWM.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C3xPAWM.Controllers
 {
-    [ResponseCache(CacheProfileName = "Elenco")]
+    
     public class ElencoController : Controller
     {
         private readonly INegoziService negoziService;
@@ -19,6 +20,7 @@ namespace C3xPAWM.Controllers
             this.negoziService = negoziService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index(ElencoListInputModel input)
         {
             ListViewModel<NegozioViewModel> negozi = await negoziService.GetNegozi(input);

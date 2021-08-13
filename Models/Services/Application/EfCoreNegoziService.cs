@@ -10,6 +10,7 @@ using C3xPAWM.Models.Options;
 using C3xPAWM.Models.Services.Infrastructure;
 using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -20,9 +21,11 @@ namespace C3xPAWM.Models.Services.Application
         private readonly C3PAWMDbContext dbContext;
         private readonly IOptionsMonitor<ElencoOptions> elencoOptions;
         private readonly IHttpContextAccessor accessor;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public EfCoreNegoziService(C3PAWMDbContext dbContext, IOptionsMonitor<ElencoOptions> negozioOptions, IHttpContextAccessor accessor)
+        public EfCoreNegoziService(C3PAWMDbContext dbContext, IOptionsMonitor<ElencoOptions> negozioOptions, IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
             this.accessor = accessor;
             this.elencoOptions = negozioOptions;
             this.dbContext = dbContext;
@@ -66,6 +69,7 @@ namespace C3xPAWM.Models.Services.Application
                    .Select(negozio => new NegozioViewModel
                    {
                        Nome = negozio.Nome,
+                       NegozioId = negozio.NegozioId,
                        Telefono = negozio.Telefono,
                        Tipologia = negozio.Tipologia,
                        Categoria = negozio.Categoria,
@@ -142,7 +146,7 @@ namespace C3xPAWM.Models.Services.Application
             return listViewModel;
         }
 
-        public NegozioViewModel CreateNegozi(NegozioCreateInputModel model)
+        public async Task<NegozioViewModel> CreateNegoziAsync(NegozioCreateInputModel model)
         {
             string proprietario;
             string proprietarioId;
@@ -150,13 +154,16 @@ namespace C3xPAWM.Models.Services.Application
             {
                 proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
                 proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
+                userActive.Proprietario = 1;
+                IdentityResult result = await userManager.UpdateAsync(userActive);
             }
             catch (NullReferenceException)
             {
-                
+
                 throw;
             }
-             
+
             var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione,
              model.Citta, model.Via, model.Tipologia, proprietario, proprietarioId);
             dbContext.Add(negozio);
@@ -168,13 +175,16 @@ namespace C3xPAWM.Models.Services.Application
             {
                 throw;
             }
-            
+
 
             return NegozioViewModel.FromEntity(negozio);
         }
-        
 
-        public NegozioEditInputModel GetNegozio(int id)
+        public Negozio GetNegozio(int id){
+            return dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita).FirstOrDefault(); 
+        }
+
+        public NegozioEditInputModel GetNegozioEdit(int id)
         {
             return dbContext.Negozi.Where(n => n.NegozioId == id)
                     .Select(negozio => new NegozioEditInputModel
@@ -201,7 +211,7 @@ namespace C3xPAWM.Models.Services.Application
             negozio.CambiaVia(model.Via);
             negozio.CambiaRegione(model.Regione);
             negozio.settaTipologia(Convert.ToString(model.Tipologia));
-            
+
             try
             {
                 dbContext.SaveChanges();
@@ -245,6 +255,14 @@ namespace C3xPAWM.Models.Services.Application
             dbContext.SaveChanges();
 
             return PubblicitaViewModel.FromEntity(pubblicita);
+        }
+
+        public Task<string> GetNegozioIdAsync(int negozioId)
+        {
+            return dbContext.Negozi
+                    .Where(n => n.NegozioId == negozioId)
+                    .Select(n => n.ProprietarioId)
+                    .FirstOrDefaultAsync();
         }
 
         /*

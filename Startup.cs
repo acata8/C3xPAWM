@@ -13,6 +13,10 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Customizations.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using C3xPAWM.Models.Authorization;
+using C3xPAWM.Models.Enums;
 
 namespace C3xPAWM
 {
@@ -33,19 +37,36 @@ namespace C3xPAWM
             services.AddResponseCaching();
             services.AddRazorPages();
 
-            services.AddControllersWithViews(options => {
+        
+            services.AddMvc(options => {
                 var homeProfile = new CacheProfile();
                 var elencoProfile = new CacheProfile();
                 //Riempio location e duration tramite il bind
-                configuration.Bind("ResponseCache:Home", homeProfile);
+                //configuration.Bind("ResponseCache:Home", homeProfile);
                 configuration.Bind("ResponseCache:Elenco", elencoProfile);
-                options.CacheProfiles.Add("Home", homeProfile);
+                //options.CacheProfiles.Add("Home", homeProfile);
                 options.CacheProfiles.Add("Elenco", elencoProfile);
+
+                AuthorizationPolicyBuilder policyBuilder = new();
+                AuthorizationPolicy policy = policyBuilder.RequireAuthenticatedUser().Build();
+                AuthorizeFilter filter = new(policy);
+                options.Filters.Add(filter);
+
             })
             #if DEBUG
             .AddRazorRuntimeCompilation()
             #endif
             ;
+
+
+            services.AddAuthorization( options =>
+            {
+                options.AddPolicy(nameof(Policy.ProprietarioNegozio), builder => {
+                    builder.Requirements.Add(new ProprietarioNegozioRequirement());
+                });
+            });
+
+            services.AddScoped<IAuthorizationHandler, ProprietarioNegozioRequirementHandler>();
 
             
             services.AddDefaultIdentity<ApplicationUser>(
@@ -57,7 +78,7 @@ namespace C3xPAWM
                     option.Password.RequiredUniqueChars = 0;
                     option.Password.RequireLowercase = true;
 
-                    option.SignIn.RequireConfirmedAccount = true;
+                    option.SignIn.RequireConfirmedAccount = false;
                     
                 })
                 .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
@@ -66,6 +87,9 @@ namespace C3xPAWM
 
             services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<ICorriereService, EfCoreCorrieriService>();
+            services.AddTransient<IAdminService, EfCoreAdminService>();
+
+            
                      
            services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>
             {
@@ -78,6 +102,7 @@ namespace C3xPAWM
             services.Configure<ConnectionsStringsOptions>(configuration.GetSection("ConnectionsStrings"));
             services.Configure<ElencoOptions>(configuration.GetSection("Elenco"));
             services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
+            services.Configure<UsersOptions>(configuration.GetSection("Users"));
             
         }
 
@@ -88,14 +113,12 @@ namespace C3xPAWM
             {
                 app.UseDeveloperExceptionPage();
 
-            //Setting per BrowserSync
-            try
-            {
-                File.WriteAllText("bin/browsersync-update.txt", DateTime.Now.ToString());
-            }catch { }
-                
-
-            }
+                //Setting per BrowserSync
+                try
+                {
+                    File.WriteAllText("bin/browsersync-update.txt", DateTime.Now.ToString());
+                }catch { }
+           }
             else
             {
                 app.UseExceptionHandler("/Error");
@@ -117,7 +140,7 @@ namespace C3xPAWM
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapRazorPages();
+                endpoints.MapRazorPages().RequireAuthorization();
             });
 
 

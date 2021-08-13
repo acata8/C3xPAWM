@@ -1,11 +1,14 @@
 using System.Threading.Tasks;
+using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Application;
 using C3xPAWM.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C3xPAWM.Controllers
 {
+    [Authorize(Roles = nameof(Categoria.Corriere)+","+nameof(Categoria.Administrator))]
     public class CorriereController : Controller
     {
         private readonly ICorriereService corriereService;
@@ -14,9 +17,12 @@ namespace C3xPAWM.Controllers
             this.corriereService = corriereService;
         }
 
+       
+        
         [HttpGet]
         public IActionResult Index()
         {
+
             /*
             ListViewModel<PaccoViewModel> pacchiCorriere = corriereService.GetPacchiNonAssegnati();
 

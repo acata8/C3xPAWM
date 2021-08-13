@@ -1,10 +1,16 @@
 using System.Threading.Tasks;
+using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Application;
+using C3xPAWM.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C3xPAWM.Controllers
 {
+    
+    [Authorize(Roles = (nameof(Categoria.Commerciante)+","+nameof(Categoria.Administrator)))]
+    
     public class NegozioController : Controller
     {
         private readonly INegoziService negoziService;
@@ -15,10 +21,14 @@ namespace C3xPAWM.Controllers
 
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpGet]
-        public IActionResult Index(){
+        public IActionResult Index(int id){
             //Lista di ordini del negozio
-            return View();
+            NegozioDashboardViewModel vm = new();
+            vm.NegozioId = id;
+            vm.Negozio = negoziService.GetNegozio(id);
+            return View(vm);
         }
 
         /*
@@ -60,7 +70,7 @@ namespace C3xPAWM.Controllers
         {
             
             if(ModelState.IsValid){
-                negoziService.CreateNegozi(model);
+                negoziService.CreateNegoziAsync(model);
                 TempData["Success"] = "Salvataggio eseguito";
                 return RedirectToAction(nameof(Index));
             }
@@ -68,12 +78,14 @@ namespace C3xPAWM.Controllers
             return View(model);
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpGet]
         public IActionResult Modifica(int id){
-            NegozioEditInputModel inputModel = negoziService.GetNegozio(id);
+            NegozioEditInputModel inputModel = negoziService.GetNegozioEdit(id);
             return View(inputModel);
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpPost]
         public IActionResult Modifica(NegozioEditInputModel model)
         {
@@ -82,19 +94,20 @@ namespace C3xPAWM.Controllers
             if(ModelState.IsValid){
                 var modificato =  negoziService.EditNegozio(model);
                 TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Modifica), new {id = model.NegozioId});
+                return RedirectToAction(nameof(Index), new {id = model.NegozioId});
             }
 
             return View(model);
         }
 
-
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpGet]
         public IActionResult Pubblicita(int id){
             PubblicitaInputModel inputModel = negoziService.GetNegozioPubblicita(id);
             return View(inputModel);
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpPost]
         public IActionResult Pubblicita(PubblicitaInputModel model)
         {

@@ -14,17 +14,8 @@ namespace C3xPAWM.Models.Entities
         public virtual ApplicationUser ProprietarioUser {get; set;}
         public Categoria Categoria { get; private set; }
 
-         public Corriere(string email, string password, string nominativo, string telefono, string proprietario, string proprietarioId)
+         public Corriere(string nominativo, string telefono, string proprietario, string proprietarioId)
          {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                throw new System.ArgumentException($"'{nameof(email)}' non può essere Null o uno spazio vuoto.", nameof(email));
-            }
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new System.ArgumentException($"'{nameof(password)}' non può essere Null o uno spazio vuoto.", nameof(password));
-            }
 
             if (string.IsNullOrWhiteSpace(nominativo))
             {
@@ -39,7 +30,7 @@ namespace C3xPAWM.Models.Entities
             this.Nominativo = nominativo;
             this.Telefono = telefono;
            
-            this.Categoria = Categoria.CORRIERE;
+            this.Categoria = Categoria.Corriere;
          }
 
          private void settaProprietario(string proprietario, string proprietarioId)

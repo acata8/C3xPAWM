@@ -4,7 +4,9 @@
     ViewData["Title"] = "Negozio";
 }
 
+
 <h4 class="title mt-3">Aggiungi il tuo negozio!</h4>
+
 
 @using((Html.BeginForm("Creazione", "Negozio", FormMethod.Post))){
         
@@ -57,7 +59,7 @@
     <div class="row mt-3">
 
         <div class="col-md-8">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-store-alt"></i>&nbsp; Crea</button>
+            <button type="submit" class="btn btn-primary" asp-route-id="@Model.NegozioId"><i class="fas fa-store-alt"></i>&nbsp; Crea</button>
         </div>
     </div>
 }
