@@ -34,40 +34,41 @@ namespace C3xPAWM.Controllers
             CorriereDashboardViewModel vm = new();
             vm.CorriereId = id;
             vm.Corriere = corriereService.GetCorriereID(id);
+            vm.Pacchi = corriereService.GetPacchiCorriere(id);
             return View(vm);
 
             
         }
 
-        /*
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
         public IActionResult NonAssegnati(int id){
-            ListViewModel<PaccoViewModel> pacchiNonAssegnati = corriereService.GetPacchiNonAssegnati();
-            var corriere = id;
-            PacchiListViewModel viewModel = new PacchiListViewModel{
-                PacchiNonAssegnati = pacchiNonAssegnati,
-                CorriereId = id
-                
-            };
-
-            return View(viewModel);
+           
+            PacchiListViewModel vm = new();
+            vm.Corriere = corriereService.GetCorriereID(id);
+            vm.CorriereId = id;
+            vm.Pacchi = corriereService.GetPacchiNonAssegnati();
+            return View(vm);
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
-        public IActionResult NonAssegnati(PaccoAssegnatoViewModel model){
+        public IActionResult NonAssegnati(PaccoViewModel model){
                         
             if(ModelState.IsValid){
                 var assegnato = corriereService.AssegnaPacco(model);
                 if(assegnato)
                     TempData["Success"] = "Pacco assegnato";
+                else
+                {
+                    TempData["Error"] = "Pacco non assegnato";
+                }
                 return RedirectToAction(nameof(Index));
             }
 
             return View();
         }
-            */
+            
             
         [HttpGet]
         public IActionResult Creazione()

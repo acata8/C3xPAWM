@@ -105,46 +105,38 @@ namespace C3xPAWM.Models.Services.Application
                     .FirstOrDefault();
         }
 
-
-        /*
-        public ListViewModel<PaccoViewModel> GetPacchiNonAssegnati()
+        public List<Pacco> GetPacchiCorriere(int id)
         {
-           IQueryable<PaccoViewModel> queryLinq = dbContext.Pacchi
-                    .AsNoTracking()
-                    .Where(n => n.CorriereId == 1)
-                    .Where(n => n.StatoPacco == StatoPacco.NON_ASSEGNATO)
-                    .Select(p => new PaccoViewModel
-                    {
-                        PaccoId = p.PaccoId,
-                        Utente = p.Utenti,
-                        Negozio = p.Negozio,
-                        Via = p.Via,
-                        Citta = p.Citta,
-                        Provincia = p.Provincia,
-                        
-                        StatoPacco = p.StatoPacco
-                    });
-
-            var totale = queryLinq.Count();
-
-            List<PaccoViewModel> Pacco = queryLinq
-            .ToList();
-
-            ListViewModel<PaccoViewModel> listViewModel = new ListViewModel<PaccoViewModel>{
-                Elenco = Pacco,
-                TotaleElenco = totale
-            };
-
-            return listViewModel;
+            return dbContext.Pacco.Where(p => p.CorriereId == id).Include(p => p.Utente).Include(p => p.Negozio).ToList();
         }
 
-        public bool AssegnaPacco(PaccoAssegnatoViewModel model)
+
+       
+        public List<PaccoViewModel> GetPacchiNonAssegnati()
         {
-            if(model.CorriereId > 1){
+           return dbContext.Pacco
+                .Where(p => p.CorriereId == 6)
+                .Where(p => p.StatoPacco == StatoPacco.NON_ASSEGNATO)
+                .Include(p => p.Utente)
+                .Include(p => p.Negozio)
+                .Select(p => new PaccoViewModel{
+                    Negozio = p.Negozio,
+                    Corriere = p.Corriere,
+                    Utente = p.Utente,
+                    Destinazione = p.Destinazione,
+                    Partenza = p.Partenza,
+                    StatoPacco = p.StatoPacco
+                })
+                .ToList();
+        }
+
+        public bool AssegnaPacco(PaccoViewModel model)
+        {
+            if(model.CorriereId != 6){
                 int paccoid = model.PaccoId;
                 Corriere corriere = dbContext.Corrieri.Where(r => r.CorriereId == model.CorriereId).First();
-                Pacco paccoScelto = dbContext.Pacchi.Where(p => p.PaccoId == paccoid).First();
-                paccoScelto.SetCorriere(corriere);
+                Pacco paccoScelto = dbContext.Pacco.Where(p => p.PaccoId == paccoid).First();
+                paccoScelto.SettaCorriere(corriere.CorriereId);
                 try{
                 dbContext.SaveChanges();
                     return true;
@@ -154,7 +146,9 @@ namespace C3xPAWM.Models.Services.Application
             }
 
             return false;
-            */
+        }
+
+        
     }
 }
 

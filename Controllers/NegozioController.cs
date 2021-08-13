@@ -28,34 +28,56 @@ namespace C3xPAWM.Controllers
             NegozioDashboardViewModel vm = new();
             vm.NegozioId = id;
             vm.Negozio = negoziService.GetNegozio(id);
+            vm.pacchi = negoziService.GetPacchiNegozio(id);
             return View(vm);
         }
 
-        /*
-         [HttpGet]
+        
+        [HttpGet]
         public IActionResult Pacco(int id){
-            PaccoInputModel inputModel = negoziService.GetNegozioPacco(id);
+            PaccoCreateInputModel inputModel = new PaccoCreateInputModel();
+            inputModel.NegozioId = id;
+            inputModel.Partenza = negoziService.getIndirizzo(id);
             return View(inputModel);
         }
 
         [HttpPost]
-        public IActionResult Pacco(PaccoInputModel model){
-
+        public async Task<IActionResult> PaccoAsync(PaccoCreateInputModel model){
+            try
+            {
+                model.Utente = await negoziService.GetUtenteAsync(model.Email);
+                model.UtenteId = model.Utente.Id;
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+            
             if(ModelState.IsValid){
-                negoziService.CreateOrder(model);
-                TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Index));
+                bool result = negoziService.CreateOrder(model);
+                if(result){
+
+                    TempData["Success"] = "Salvataggio eseguito";
+                }
+                else
+                {
+                    TempData["Error"] = "Creazione fallita";
+                }
+
+                return RedirectToAction(nameof(Index), new {id = model.NegozioId});
             }
 
             return View(model);
         }
+
         
         public async Task<IActionResult> emailTrovata(string email)
         {
             bool result = await negoziService.RicercaEmailAsync(email);
             return Json(result);
         }
-        */
+        
 
         [HttpGet]
         public IActionResult Creazione()

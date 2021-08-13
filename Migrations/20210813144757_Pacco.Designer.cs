@@ -3,14 +3,16 @@ using System;
 using C3xPAWM.Models.Services.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace C3xPAWM.Migrations
 {
     [DbContext(typeof(C3PAWMDbContext))]
-    partial class C3PAWMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210813144757_Pacco")]
+    partial class Pacco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,10 +186,10 @@ namespace C3xPAWM.Migrations
                     b.Property<string>("Partenza")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StatoPacco")
+                    b.Property<int>("UtenteId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UtenteId")
+                    b.Property<string>("UtenteId1")
                         .HasColumnType("TEXT");
 
                     b.HasKey("PaccoId");
@@ -196,7 +198,7 @@ namespace C3xPAWM.Migrations
 
                     b.HasIndex("NegozioId");
 
-                    b.HasIndex("UtenteId");
+                    b.HasIndex("UtenteId1");
 
                     b.ToTable("Pacco");
                 });
@@ -392,7 +394,7 @@ namespace C3xPAWM.Migrations
 
                     b.HasOne("C3xPAWM.Models.Entities.ApplicationUser", "Utente")
                         .WithMany("Pacchi")
-                        .HasForeignKey("UtenteId");
+                        .HasForeignKey("UtenteId1");
 
                     b.Navigation("Corriere");
 

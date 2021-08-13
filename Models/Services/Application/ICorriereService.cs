@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.InputModel;
@@ -14,5 +15,8 @@ namespace C3xPAWM.Models.Services.Application
         CorriereInputModel GetCorriere(int id);
         Task<string> GetCorriereIDAsync(int corriereId);
         Corriere GetCorriereID(int id);
+        List<Pacco> GetPacchiCorriere(int id);
+        List<PaccoViewModel> GetPacchiNonAssegnati();
+        bool AssegnaPacco(PaccoViewModel model);
     }
 }

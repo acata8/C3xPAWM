@@ -16,6 +16,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
         }
 
         public virtual DbSet<Negozio> Negozi { get; set; }
+        public virtual DbSet<Pacco> Pacco { get; set; }
         public virtual DbSet<Pubblicita> Pubblicita { get; set; }  
         public virtual DbSet<Corriere> Corrieri { get; set; }  
 
@@ -64,6 +65,24 @@ namespace C3xPAWM.Models.Services.Infrastructure
                 entity.HasOne(p => p.Negozio)
                 .WithMany(p => p.Pubblicita)
                 .HasForeignKey(p=>p.NegozioId);
+            });
+
+            modelBuilder.Entity<Pacco>(entity =>{
+                entity.ToTable("Pacco");
+                entity.HasKey(p => p.PaccoId);
+
+                entity.HasOne(p => p.Utente)
+                    .WithMany(p => p.Pacchi)
+                    .HasForeignKey(p=>p.UtenteId);
+
+                entity.HasOne(p => p.Corriere)
+                    .WithMany(p => p.Pacchi)
+                    .HasForeignKey(p=>p.CorriereId);
+
+                entity.HasOne(p => p.Negozio)
+                    .WithMany(p => p.Pacchi)
+                    .HasForeignKey(p=>p.NegozioId);
+
             });
 
  

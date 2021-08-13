@@ -33,19 +33,38 @@
         <h3 style="color: rgb(255,166,0); font-size: 25px;"> Lista di ordini</h3>
         <ul class="elenco">
             <li>
-            <div class="row">
-                    <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-4">
                         <p class="font-weight-bold"> Luogo di Consegna </p> @* Indirizzo del pacco *@
                     
                     </div>
-                    <div class="col-md-5">
-                        <p class="font-weight-bold"> Destinatario </p>  @* Nome destinatario *@
+                    <div class="col-md-4">
+                        <p class="font-weight-bold"> Email </p>  @* Nome destinatario *@
                     </div>
-                    <div class="col-md-2">
-                        <p class="font-weight-bold"> Da ritirare </p>
+                    <div class="col-md-4">
+                        <p class="font-weight-bold"> Nome </p>  @* Nome destinatario *@
                     </div>
                 </div> 
             </li>
+            @foreach (var pacco in Model.pacchi)
+            {
+                <li>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p> @pacco.Destinazione </p> @* Indirizzo del pacco *@
+                        
+                        </div>
+                        <div class="col-md-4">
+                            
+                            <p> @pacco.Utente.Email </p>  @* Nome destinatario *@
+                        </div>
+                        <div class="col-md-4">
+                            
+                            <p> @pacco.Utente.FullName </p>  @* Nome destinatario *@
+                        </div>
+                    </div> 
+                </li>
+            }
         </ul>
     </div>
 </div>

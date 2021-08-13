@@ -1,0 +1,59 @@
+@model PaccoCreateInputModel
+
+@{
+    ViewData["Title"] = "Ordine";
+}
+
+<h4 class="title mt-3">Creazione ordine</h4>
+
+    
+@using((Html.BeginForm("Pacco", "Negozio", FormMethod.Post))){
+        
+    @Html.HiddenFor(m =>m.NegozioId)
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div asp-validation-summary="All"></div>
+        </div>
+    </div>
+
+
+    <div class="row mt-2">
+        <div class="col-md-12 mt-3">
+            <label for="Destinazione">Destinazione</label>
+            <input class="form-control" asp-for="Destinazione" type="text">
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12 mt-3">
+            <label for="Partenza"> Luogo di ritiro</label>
+            <input class="form-control" asp-for="Partenza" type="text" readonly>
+        </div>
+    </div>
+    
+    
+    
+     <div class="row mt-3">
+
+        <div class="col-md-4">
+            <label for="Email">Email utente</label>
+            <input class="form-control" asp-for="Email" type="text">
+            <span asp-validation-for="Email" style="color: darkred"></span>
+        </div>
+        
+    </div>
+    
+
+
+    <div class="row mt-3">
+        <div class="col-md-8">
+                <button type="submit" class="btn btn-primary" asp-route-id="@Model.NegozioId"><i class="fas fas fa-cash-register"></i>&nbsp;Crea ordine</button>
+            </div>
+    </div>
+}
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"></partial>
+}
+

@@ -265,38 +265,49 @@ namespace C3xPAWM.Models.Services.Application
                     .FirstOrDefaultAsync();
         }
 
-      
-        /*
-        public void CreateOrder(PaccoInputModel model)
+        public PaccoCreateInputModel GetNegozioPacco(int id)
         {
-            Utente utente = dbContext.Utenti.Where(m => m.Email == model.Email).FirstOrDefault();
-            var negozio = dbContext.Negozi.Find(model.NegozioId);
-            model.Utente = utente;
-            model.Negozio = negozio;
+            throw new NotImplementedException();
+        }
+
+        public string getIndirizzo(int id)
+        {
+            var negozio = dbContext.Negozi.Where(n => n.NegozioId == id).FirstOrDefault();
+
+            return ( negozio.Via +"    "+negozio.Citta+" ("+negozio.Provincia+") ");
+        }
 
 
-            var pacco = new Pacco(model.Provincia.ToUpper(), model.Via, model.Citta, utente.UtenteId, model.NegozioId);
-
+        public bool CreateOrder(PaccoCreateInputModel model)
+        {
+            
+            var pacco = new Pacco(model.Destinazione, model.Partenza, model.NegozioId, model.UtenteId);
+            
             dbContext.Add(pacco);
-            dbContext.SaveChanges();
-
+            try{
+                dbContext.SaveChanges();
+                return true;
+            }catch{
+                return false;
+                throw;
+            }
+            
+            
         }
-
-        public PaccoInputModel GetNegozioPacco(int id)
-        {
-            return dbContext.Negozi.Where(n => n.NegozioId == id)
-                    .Select(p => new PaccoInputModel
-                    {
-                        NegozioId = p.NegozioId,
-                        Negozio = p
-                    }).FirstOrDefault();
-        }
-
         public async Task<bool> RicercaEmailAsync(string email)
         {
-            bool emailEsistente = await dbContext.Utenti.AnyAsync(c => EF.Functions.Like(c.Email, email));
+            bool emailEsistente = await dbContext.Users.AnyAsync(c => EF.Functions.Like(c.Email, email));
             return emailEsistente;
         }
-        */
+
+        public async Task<ApplicationUser> GetUtenteAsync(string email)
+        {
+            return await userManager.FindByEmailAsync(email);
+        }
+
+        public List<Pacco> GetPacchiNegozio(int id)
+        {
+            return dbContext.Pacco.Where(p => p.NegozioId == id).Include(p => p.Utente).ToList();
+        }
     }
 }

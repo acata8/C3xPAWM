@@ -11,7 +11,7 @@ namespace C3xPAWM.Models.Entities
         public string Telefono { get; private set; }
         public string Proprietario { get; private set; }
         public string ProprietarioId { get; private set; }
-        public virtual ApplicationUser ProprietarioUser {get; set;}\
+        public virtual ApplicationUser ProprietarioUser {get; set;}
 
         public virtual ICollection<Pacco> Pacchi {get; private set;}
         public Categoria Categoria { get; private set; }
