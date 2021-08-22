@@ -1,4 +1,5 @@
-﻿@inject SignInManager<ApplicationUser> SignInManager
+﻿@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +12,9 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
-    <header>
+    <header style="margin-bottom: 110px;">
         <div id="navbar">
-            <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
                 <a class="navbar-brand" title="Home" asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" alt="C3 logo" class="logo"></a>
                 <button class="navbar-toggler" data-target="#navbar-brand" data-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,23 +31,41 @@
                         
                         @if(User.Identity.IsAuthenticated){
                             @if(User.IsInRole(nameof(Categoria.Corriere))){
+                                
                                 <li class="nav-item">
-                                    <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Corriere" asp-route-id="2"><i class="fas fa-truck"></i> Dashboard </a>
+                                    <a class="btn btn btn-outline-primary" id="btnCorriere" asp-action="Index" asp-controller="Corriere" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-truck"></i> Dashboard </a>
                                 </li>
                             }
+
+                            @if(User.IsInRole(nameof(Categoria.Commerciante))){
+                                
+                                <li class="nav-item">
+                                    <a class="btn btn btn-outline-primary" id="btnCommerciante" asp-action="Index" asp-controller="Negozio" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-cash-register"></i> Dashboard </a>
+                                </li>
+                            }
+
+                                <li class="nav-item">
+                                    <a class="btn btn btn-outline-primary"  asp-action="Ordini" asp-controller="Utente" asp-route-id='@User.FindFirst(ClaimTypes.Email).Value' ><i class="fas fa-history"></i> Ordini </a>
+                                </li>
+                                
+                            
                         }
                     </ul>
-                       
+
+                        @if(User.IsInRole(nameof(Categoria.Administrator))){
+                        
+                            <partial name="_AdminLayout"></partial>
+                        }
                         <partial name="_LoginPartial"></partial>
-                       
+                    
                 </div>
             </nav>
         </div>
+       
     </header>
-    <section id="section">
-        <div class="container">
+      
+        <div class="container"> 
             <main role="main" class="pb-3">
-               
                         @if(TempData["Success"] != null){
                             <div class="alert alert-success alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:12%;z-index:10000;opacity:0.9; width: fit-content;">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -62,8 +81,7 @@
                                 
                             </div>
                         }
-                  
-               
+
                 @RenderBody()
             </main>
         </div>
@@ -74,7 +92,7 @@
                 &copy; Progetto C3
                 <author>di Andrea Cataluffi</author>
             </div>
-    </section>
+    
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -31,19 +31,9 @@ namespace C3xPAWM.Models.Services.Application
         {
             string proprietario;
             string proprietarioId;
-            try
-            {
-                proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
-                proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
-                userActive.Proprietario = 1;
-                IdentityResult result = await userManager.UpdateAsync(userActive);
-            }
-            catch (NullReferenceException)
-            {
-
-                throw;
-            }
+            proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
+            proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            
 
             var corriere = new Corriere(model.Nominativo, model.Telefono, proprietario, proprietarioId);
             dbContext.Add(corriere);
@@ -57,6 +47,17 @@ namespace C3xPAWM.Models.Services.Application
                 throw;
             }
 
+            try
+            {
+                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
+                userActive.Proprietario = 1;
+                userActive.IdRuolo = corriere.CorriereId;
+                IdentityResult result = await userManager.UpdateAsync(userActive);
+            }
+            catch (NullReferenceException)
+            {
+                throw;
+            }
 
             return CorriereViewModel.FromEntity(corriere);
         }

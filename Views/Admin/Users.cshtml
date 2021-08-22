@@ -1,90 +1,48 @@
+@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
 @model GestioneUserViewModel
 
 <h1 class="title">Lista Account</h1>
 
-<div class="row mt-5">
-    <div class="col">
-        <a class="btn btn-outline-primary" asp-action="Gestione"><i class="fas fa-cogs"></i> Gestione </a>
-    </div>
-</div>
-<hr>
-
+<h2 class="title mb-2"> Amministratori </h2>    
+    @foreach (var user in Model.Amministratori){
+        <p> ~ @user.Email </p> 
+    }
 
 <div class="row mt-5">
-    <div class="col-md-3" >
-            <button class="btn btn-outline-danger mb-2" id="toggle1"> Mostra Corrieri </button>
-            <div id="1">
-                <ul>
-                    @if(Model.Corrieri.Count() == 0){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            <p> Nessun utente nel ruolo </p>
-                        </li> 
-                    }
-                    @foreach (var user in Model.Corrieri){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            @user.Email
-                        </li>     
-                    }
-                </ul>
-            </div>
-    </div>
+   
 
-
-    <div class="col-md-3" >
-            <button class="btn btn-outline-danger mb-2" id="toggle2"> Mostra Commercianti </button>
-            <div id="2">
-                <ul>
-                    @if(Model.Commercianti.Count() == 0){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            <p> Nessun utente nel ruolo </p>
-                        </li> 
-                    }
-                    @foreach (var user in Model.Commercianti){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            @user.Email
-                        </li>     
-                    }
-                </ul>
-            </div>
-    </div>
-
-
-    <div class="col-md-3" >
+    <div class="col-md-12" >
             <button class="btn btn-outline-danger mb-2" id="toggle3"> Mostra Utenti </button>
             <div id="3">
-                <ul>
+                <table class="table table-striped" style="column-count: 4;">
                     @if(Model.Utenti.Count() == 0){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            <p> Nessun utente nel ruolo </p>
-                        </li> 
+                        <tr  class="mb-1">
+                            <td> Nessun utente nel ruolo </td>
+                        </tr> 
                     }
+                    <thead>
+                            <th>Email</th>
+                            <th >Ruolo iniziale</th>
+                    </thead>
                     @foreach (var user in Model.Utenti){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            @user.Email
-                        </li>     
+                        <tr  class="mb-1">
+                                <td> @user.Email </td>
+                                <td> @user.Ruolo </td>
+                        </tr>     
                     }
+
+                </table>
                 </ul>
             </div>
     </div>
-
-
-    <div class="col-md-3" >
-            <button class="btn btn-outline-danger mb-2" id="toggle4"> Mostra Amministratori </button>
-            <div id="4">
-                <ul>
-                    @if(Model.Amministratori.Count() == 0){
-                        <li style="font-size: 18px; border-right: 1px grey solid;" class="mb-1">
-                            <p> Nessun utente nel ruolo </p>
-                        </li> 
-                    }
-                    @foreach (var user in Model.Amministratori){
-                        <li style="font-size: 18px;" class="mb-1">
-                            @user.Email
-                        </li>     
-                    }
-                </ul>
-            </div>
-    </div>
+</div>
+    
+    
+               
+    
 
 
 @section Scripts {

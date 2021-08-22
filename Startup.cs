@@ -92,7 +92,7 @@ namespace C3xPAWM
             services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<ICorriereService, EfCoreCorrieriService>();
             services.AddTransient<IAdminService, EfCoreAdminService>();
-
+            services.AddTransient<IUtenteService, EfCoreUtenteService>();
             
                      
            services.AddDbContextPool<C3PAWMDbContext>(optionsBuilder =>

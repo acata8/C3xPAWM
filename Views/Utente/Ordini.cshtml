@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Elenco Negozi";
+}
+
+@model OrdiniUtenteViewModel
+
+
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="display-4" style="color: rgb(255,166,0);">Ordini</h1>
+        </div>
+    </div>
+
+    
+    <div class="mt-3 row">
+        <div class="col-md-4 d-flex align-items-center mt-2">
+            @using((Html.BeginForm("Ordini", "Utente", FormMethod.Get)))
+            {
+                <div class="input-group">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
+                    <div class="input-group-append">
+                        <button class="input-group-text" title="Cerca"><i class="fas fa-filter"></i></button>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="col-md-4 d-flex align-items-center mt-2">
+            @using((Html.BeginForm("Ordini", "Utente", FormMethod.Get)))
+            {
+                <button type="submit" class="btn btn btn-outline-danger" title="Ricarica"><i class="fas fa-reply"></i> Ricarica</button>
+            }
+            
+        </div>
+    </div>
+    
+
+    
+
+            <p style="font-size: 20px;">
+                Legenda
+                <br>
+                <p> <i class="far fa-times-circle"></i> Non assegnato al corriere  </p>
+                <br>
+                
+                <p> <i class="fas fa-circle-notch fa-spin"></i> Preso in carico  </p>
+                
+                <br>
+                <p> <i class="far fa-check-circle"></i> Consegnato </p>
+            
+            </p>
+
+
+
+            <ul class="elenco mt-4">
+                <li>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p class="font-weight-bold">Negozio </p>    
+                        </div>
+                        <div class="col-md-2">
+                            <p class="font-weight-bold">Corriere </p>    
+                        </div>
+                        <div class="col-md-1">             
+                            <p class="font-weight-bold">Stato </p>           
+                        </div>
+                        <div class="col-md-4">             
+                            <p class="font-weight-bold"> Indirizzo </p>           
+                        </div>
+                        <div class="col-md-2">
+                            <p class="font-weight-bold"> Data consegna </p>
+                        </div>
+                        
+                    </div> 
+                </li>
+                @foreach(var pacco in Model.Ordini.Elenco){
+                <li>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p> @pacco.Negozio.Nome </p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>@pacco.Corriere.Nominativo </p>
+                        </div>
+                        <div class="col-md-1">                            
+                            @if(pacco.StatoPacco == StatoPacco.NON_ASSEGNATO){
+                                <i class="far fa-times-circle"></i>
+                            }
+                            @if(pacco.StatoPacco == StatoPacco.ASSEGNATO){
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            }
+                            @if(pacco.StatoPacco == StatoPacco.CONSEGNATO){
+                                <i class="far fa-check-circle"></i>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <p>@pacco.Destinazione </p>
+                        </div>
+                        <div class="col-md-2">
+                             @if(pacco.StatoPacco != StatoPacco.CONSEGNATO){
+                                <p> Previsti 1-2 giorni</p>
+                            }else{
+                                @pacco.Data
+                            }
+                        </div>
+                        
+
+                    </div> 
+                </li>
+                }
+            </ul>
+            <p class="mt-2" style="color: grey "> Totale: @Model.Ordini.TotaleElenco </p>
+        <vc:pagination model="@Model" />
+    

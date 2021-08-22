@@ -10,7 +10,7 @@ namespace C3xPAWM.Models.Services.Application
     public interface INegoziService
     {
         Task<NegozioViewModel> CreateNegoziAsync(NegozioCreateInputModel model);
-        Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model);
+        Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model, bool admin);
         
         ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input);
         NegozioEditInputModel GetNegozioEdit(int id);
@@ -20,14 +20,9 @@ namespace C3xPAWM.Models.Services.Application
         PubblicitaInputModel GetNegozioPubblicita(int id);
         Task<string> GetNegozioIdAsync(int negozioId);
         Negozio GetNegozio(int id);
-        PaccoCreateInputModel GetNegozioPacco(int id);
         string getIndirizzo(int id);
         List<Pacco> GetPacchiNegozio(int id);
 
-        /*
-PaccoInputModel GetNegozioPacco(int id);
-
-*/
         Task<bool> RicercaEmailAsync(string email);
         Task<ApplicationUser> GetUtenteAsync(string email);
         bool CreateOrder(PaccoCreateInputModel model);

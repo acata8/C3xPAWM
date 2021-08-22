@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Options;
 using C3xPAWM.Models.Services.Infrastructure;
+using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace C3xPAWM.Models.Services.Application
@@ -15,7 +17,7 @@ namespace C3xPAWM.Models.Services.Application
         private readonly C3PAWMDbContext dbContext;
         private readonly IOptionsMonitor<ElencoOptions> elencoOptions;
         private readonly UserManager<ApplicationUser> userManager;
-
+        
         public EfCoreAdminService(C3PAWMDbContext dbContext, IOptionsMonitor<ElencoOptions> elencoOptions, UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
@@ -23,6 +25,7 @@ namespace C3xPAWM.Models.Services.Application
             this.dbContext = dbContext;
         }
 
+       
 
         public async Task<IList<ApplicationUser>> GetUtentiAsync(string ruolo)
         {

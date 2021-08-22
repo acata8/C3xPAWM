@@ -24,6 +24,7 @@ namespace C3xPAWM.Models.Entities
         public string Provincia { get; private set; }
         public string Citta { get; private set; }
         public string Via { get; private set; }
+        public int Revocato {get; private set;}
 
         public virtual ICollection<Pacco> Pacchi {get; private set;}
         public virtual ICollection<Pubblicita> Pubblicita {get; private set; }
@@ -84,7 +85,14 @@ namespace C3xPAWM.Models.Entities
             Proprietario = proprietario;
             ProprietarioId = proprietarioId;
         }
+        
+         public void Revoca(){
+             this.Revocato = 1;
+         }
 
+         public void Assegna(){
+             this.Revocato = 0;
+         }
         public void CambiaNome(string nuovoNome){
             if(string.IsNullOrWhiteSpace(nuovoNome)){
                 throw new ArgumentException("Il negozio deve avere un nome valido");

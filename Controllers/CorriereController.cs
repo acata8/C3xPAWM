@@ -56,11 +56,11 @@ namespace C3xPAWM.Controllers
                 else
                 {
                     TempData["Error"] = "Pacco non assegnato";
-                    return View(new {id = model.CorriereId});
+                    return RedirectToAction(nameof(Index), new {id = model.CorriereId});
                 }
             }
             TempData["Error"] = "Pacco non assegnato";
-            return View(new {id = model.CorriereId});
+            return RedirectToAction(nameof(Index), new {id = model.CorriereId});
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
@@ -78,7 +78,7 @@ namespace C3xPAWM.Controllers
                 return RedirectToAction(nameof(Consegna), new {id = model.CorriereId});
             }
 
-            return View(new {id = model.CorriereId} );
+           return RedirectToAction(nameof(Index), new {id = model.CorriereId});
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Ordine";
 }
 
-<h4 class="title mt-3">Creazione ordine</h4>
+<h4 class="title mt-3"> Creazione ordine <i class="fas fa-shopping-basket"></i> </h4>
 
     
 @using((Html.BeginForm("Pacco", "Negozio", FormMethod.Post))){
@@ -19,26 +19,24 @@
 
 
     <div class="row mt-2">
-        <div class="col-md-12 mt-3">
+        <div class="col-md-4 mt-3">
             <label for="Destinazione">Destinazione</label>
             <input class="form-control" asp-for="Destinazione" type="text">
         </div>
     </div>
 
     <div class="row mt-2">
-        <div class="col-md-12 mt-3">
+        <div class="col-md-4 mt-3">
             <label for="Partenza"> Luogo di ritiro</label>
-            <input class="form-control" asp-for="Partenza" type="text" readonly>
+            <input class="form-control" asp-for="Partenza" type="text">
         </div>
     </div>
     
     
-    
      <div class="row mt-3">
-
         <div class="col-md-4">
             <label for="Email">Email utente</label>
-            <input class="form-control" asp-for="Email" type="text">
+            <input class="form-control mb-2" asp-for="Email" type="text">
             <span asp-validation-for="Email" style="color: darkred"></span>
         </div>
         
@@ -46,7 +44,7 @@
     
 
 
-    <div class="row mt-3">
+    <div class="row mt-4">
         <div class="col-md-8">
                 <button type="submit" class="btn btn-primary" asp-route-id="@Model.NegozioId"><i class="fas fas fa-cash-register"></i>&nbsp;Crea ordine</button>
             </div>

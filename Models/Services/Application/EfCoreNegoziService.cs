@@ -31,11 +31,14 @@ namespace C3xPAWM.Models.Services.Application
             this.dbContext = dbContext;
         }
 
-        public async Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model)
+        public async Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model, bool admin)
         {
-
             IQueryable<Negozio> baseQuery = dbContext.Negozi;
 
+            if(!admin){
+                baseQuery = dbContext.Negozi.Where(n => n.Revocato == 0);
+            }
+           
             var orderBy = model.OrderBy;
             var ascending = model.Ascending;
             var tipologia = model.Tipologia;
@@ -74,9 +77,15 @@ namespace C3xPAWM.Models.Services.Application
                        Tipologia = negozio.Tipologia,
                        Categoria = negozio.Categoria,
                        Via = negozio.Via,
+                       Proprietario = negozio.Proprietario,
                        Citta = negozio.Citta,
                        Provincia = negozio.Provincia,
-                       Regione = negozio.Regione
+                       Token = negozio.Token,
+                       Revocato = negozio.Revocato,
+                       Regione = negozio.Regione,
+                       ProprietarioUser = negozio.ProprietarioUser,
+                       Pubblicita = negozio.Pubblicita.Select(p => PubblicitaViewModel.FromEntity(p))
+                                    .ToList()
                    });
 
             if (tipologia)
@@ -118,6 +127,7 @@ namespace C3xPAWM.Models.Services.Application
             var limit = input.Limit;
             var queryLinq = baseQuery
                         .AsNoTracking()
+                        .Where(p => p.Negozio.Revocato == 0)
                         .Where(p => p.Attiva == 1)
                         .Select(p => new PubblicitaViewModel
                         {
@@ -126,7 +136,6 @@ namespace C3xPAWM.Models.Services.Application
                             Durata = p.Durata,
                             Attiva = p.Attiva,
                             Negozio = p.Negozio
-
                         })
                         .ToList();
 
@@ -150,19 +159,9 @@ namespace C3xPAWM.Models.Services.Application
         {
             string proprietario;
             string proprietarioId;
-            try
-            {
-                proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
-                proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
-                userActive.Proprietario = 1;
-                IdentityResult result = await userManager.UpdateAsync(userActive);
-            }
-            catch (NullReferenceException)
-            {
-
-                throw;
-            }
+            
+            proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
+            proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione,
              model.Citta, model.Via, model.Tipologia, proprietario, proprietarioId);
@@ -176,6 +175,19 @@ namespace C3xPAWM.Models.Services.Application
                 throw;
             }
 
+            try
+            {
+                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
+                userActive.Proprietario = 1;
+                userActive.IdRuolo = negozio.NegozioId;
+                IdentityResult result = await userManager.UpdateAsync(userActive);
+            }
+            catch (NullReferenceException)
+            {
+
+                throw;
+            }
+            
 
             return NegozioViewModel.FromEntity(negozio);
         }
@@ -265,10 +277,6 @@ namespace C3xPAWM.Models.Services.Application
                     .FirstOrDefaultAsync();
         }
 
-        public PaccoCreateInputModel GetNegozioPacco(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public string getIndirizzo(int id)
         {
@@ -309,5 +317,6 @@ namespace C3xPAWM.Models.Services.Application
         {
             return dbContext.Pacco.Where(p => p.NegozioId == id).Include(p => p.Utente).ToList();
         }
+
     }
 }

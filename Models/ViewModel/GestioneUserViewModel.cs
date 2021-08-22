@@ -15,5 +15,6 @@ namespace C3xPAWM.Models.ViewModel
         public IList<ApplicationUser> Corrieri {get; set;}
 
         public IList<ApplicationUser> Utenti {get; set;}
+
     }
 }

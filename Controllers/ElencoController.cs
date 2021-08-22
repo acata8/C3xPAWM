@@ -23,7 +23,7 @@ namespace C3xPAWM.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(ElencoListInputModel input)
         {
-            ListViewModel<NegozioViewModel> negozi = await negoziService.GetNegozi(input);
+            ListViewModel<NegozioViewModel> negozi = await negoziService.GetNegozi(input, false);
             
 
             ElencoListViewModel viewModel = new ElencoListViewModel

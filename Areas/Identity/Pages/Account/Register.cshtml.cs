@@ -66,6 +66,8 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             [Display(Name = "Seleziona ruolo")]
             public string Ruolo {get; set;}
 
+            
+
             [Required(ErrorMessage = "Password obbligatoria")]
             [StringLength(50, ErrorMessage = "Deve essere almeno {2} e massimo {1} caratteri.", MinimumLength = 8)]
             [DataType(DataType.Password)]
@@ -90,7 +92,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FullName = Input.FullName, Ruolo= Input.Ruolo, Proprietario=0};
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, FullName = Input.FullName, Ruolo= Input.Ruolo, Proprietario=0, IdRuolo=0};
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

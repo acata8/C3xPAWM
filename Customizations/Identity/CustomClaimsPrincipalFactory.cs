@@ -16,6 +16,7 @@ namespace C3xPAWM.Customizations.Identity
             ClaimsIdentity identity = await base.GenerateClaimsAsync(user);
             identity.AddClaim(new Claim("FullName", user.FullName));
             identity.AddClaim(new Claim("Proprietario", user.Proprietario.ToString()));
+            identity.AddClaim(new Claim("IdRuolo", user.IdRuolo.ToString()));
             return identity;
         }
     }

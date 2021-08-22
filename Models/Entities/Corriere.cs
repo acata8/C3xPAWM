@@ -16,6 +16,8 @@ namespace C3xPAWM.Models.Entities
         public virtual ICollection<Pacco> Pacchi {get; private set;}
         public Categoria Categoria { get; private set; }
 
+        public int Revocato {get; private set;}
+
          public Corriere(string nominativo, string telefono, string proprietario, string proprietarioId)
          {
 
@@ -33,6 +35,15 @@ namespace C3xPAWM.Models.Entities
             this.Telefono = telefono;
             this.Categoria = Categoria.Corriere;
             this.Pacchi = new HashSet<Pacco>();
+            this.Revocato = 0;
+         }
+
+         public void Revoca(){
+             this.Revocato = 1;
+         }
+
+         public void Assegna(){
+             this.Revocato = 0;
          }
 
          private void settaProprietario(string proprietario, string proprietarioId)
