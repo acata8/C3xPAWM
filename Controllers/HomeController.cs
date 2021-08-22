@@ -1,47 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using C3xPAWM.Models;
 using C3xPAWM.Models.Services.Application;
 using C3xPAWM.Models.ViewModel;
 using C3xPAWM.Models.InputModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using C3xPAWM.Models.Entities;
 
 namespace C3xPAWM.Controllers
 {
     public class HomeController : Controller
     {
-        
+
         private readonly INegoziService negoziService;
 
-        public HomeController(INegoziService negoziService)
-        {
-            this.negoziService = negoziService;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
+        public HomeController(INegoziService negoziService, SignInManager<ApplicationUser> signInManager)
+        {
+            this.signInManager = signInManager;
+            this.negoziService = negoziService;
         }
 
-       [AllowAnonymous]
+        [AllowAnonymous]
         public IActionResult Index(ElencoListInputModel input)
         {
-            ListViewModel<PubblicitaViewModel> negoziPubblicizzati =  negoziService.GetNegoziPubblicizzati(input);
+            ListViewModel<PubblicitaViewModel> negoziPubblicizzati = negoziService.GetNegoziPubblicizzati(input);
 
-            PubblicitaListViewModel viewModel = new PubblicitaListViewModel{
+            PubblicitaListViewModel viewModel = new PubblicitaListViewModel
+            {
                 NegoziPubblicizzati = negoziPubblicizzati,
                 Input = input
-                
+
             };
 
             return View(viewModel);
         }
-        
+
         [AllowAnonymous]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            TempData["Success"] = "Logout riuscito";
+            return RedirectToAction(nameof(Index));
+        }
+        
     }
 }

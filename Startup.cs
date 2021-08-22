@@ -83,10 +83,11 @@ namespace C3xPAWM
                     option.Password.RequireLowercase = true;
 
                     option.SignIn.RequireConfirmedAccount = false;
-                    
+       
                 })
                 .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
                 .AddEntityFrameworkStores<C3PAWMDbContext>();
+
             
 
             services.AddTransient<INegoziService, EfCoreNegoziService>();
@@ -135,6 +136,7 @@ namespace C3xPAWM
 
             app.UseAuthentication();
             app.UseAuthorization();
+            
             
             app.UseResponseCaching();
            
