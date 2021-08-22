@@ -1,3 +1,4 @@
+using System;
 using C3xPAWM.Models.Enums;
 
 namespace C3xPAWM.Models.Entities
@@ -19,6 +20,7 @@ namespace C3xPAWM.Models.Entities
         public virtual ApplicationUser Utente {get; set;}
 
         public StatoPacco StatoPacco {get; set;}
+        public DateTime dataConsegna {get; set;}
 
         public Pacco(string dest, string part, int negozioId, string utenteId)
         {
@@ -36,6 +38,10 @@ namespace C3xPAWM.Models.Entities
         public void SettaCorriere(int id){
             this.CorriereId = id;
             StatoPacco = StatoPacco.ASSEGNATO;
+        }
+
+        public void SettaConsegnato(){
+            StatoPacco = StatoPacco.CONSEGNATO;
         }
     }
 }

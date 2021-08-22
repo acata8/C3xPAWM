@@ -1,3 +1,4 @@
+using System;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Enums;
 
@@ -6,7 +7,6 @@ namespace C3xPAWM.Models.ViewModel
     public class PaccoViewModel
     {
         public int PaccoId { get; set; }
-
         public string Destinazione {get; set;}
         public string Partenza {get; set;}
 
@@ -19,6 +19,6 @@ namespace C3xPAWM.Models.ViewModel
         public string UtenteId {get; set;}
         public ApplicationUser Utente {get; set;}
         public StatoPacco StatoPacco {get; set;}
-
+        public DateTime Data {get; set;}
     }
 }

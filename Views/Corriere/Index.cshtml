@@ -13,7 +13,10 @@
         <a class="btn btn btn-outline-primary" asp-action="Modifica" asp-controller="Corriere" asp-route-id="@Model.CorriereId"><i class="fas fa-user-edit"></i> Modifica Account </a>
     </div>
      <div class="col-md-4">
-        <a class="btn btn btn-outline-primary" asp-action="NonAssegnati" asp-controller="Corriere" asp-route-id="@Model.CorriereId"><i class="fas fas fa-dolly-flatbed"></i> Ordini non assegnati </a>
+        <a class="btn btn btn-outline-primary" asp-action="NonAssegnati" asp-controller="Corriere" asp-route-id="@Model.CorriereId"><i class="fas fa-dolly-flatbed"></i> Ordini non assegnati </a>
+    </div>
+     <div class="col-md-4">
+        <a class="btn btn btn-outline-primary" asp-action="Cronologia" asp-controller="Corriere" asp-route-id="@Model.CorriereId"><i class="fas fa-history"></i> Ordini </a>
     </div>
 </div>
 
@@ -23,26 +26,46 @@
 <div class="row">
     <div class="col-md-12">
         <h3> Lista dei tuoi ordini ASSEGNATI</h3>
-    <ul class="elenco">
-        <li>
-        <div class="row">
-                <div class="col-md-4">
-                    Luogo di Ritiro @* Via del Negozio. *@
-                </div>
-                <div class="col-md-4">
-                    Luogo di Consegna  @* Indirizzo del pacco *@
-                </div>
-                <div class="col-md-3">
-                    Destinatario  @* Nome destinatario *@
-                </div>
-                <div class="col-md-1" >
-                    CONSEGNA
-
-                    @* bottone da usare su ogni ordine <button style="width: 70px; height: 30px;"><i class="fas fa-clipboard-check"></i>&nbsp;  </button> *@
-                </div>
-            </div> 
-        </li>
-    </ul>           
+         
+            <ul class="elenco">
+                <li>
+                    <div class="row">
+                        <div class="col-md-4">
+                                <p class="font-weight-bold"> LUOGO DI RITIRO </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="font-weight-bold"> LUOGO DI CONSEGNA </p>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="font-weight-bold"> DESTINATARIO </p>
+                            </div>
+                            <div class="col-md-1">
+                                <p class="font-weight-bold"> CONSEGNA </p>
+                            </div>
+                    </div>
+                </li>
+                @foreach (var pacco in Model.Pacchi)
+                {
+                    @using(Html.BeginForm("Assegna", "Corriere", FormMethod.Post)){
+                    <li>
+                        <div class="row">
+                            <div class="col-md-4 mt-2">
+                            @pacco.Partenza
+                            </div>
+                            <div class="col-md-4 mt-2">
+                                @pacco.Destinazione
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                @pacco.Utente.FullName
+                            </div>
+                            <div class="col-md-1" >
+                                <button class="btn btn-outline-danger"><i class="fas fa-clipboard-check"></i></button>
+                            </div>
+                        </div> 
+                    </li>
+                }
+            }
+        </ul>           
     </div>
 </div>
 

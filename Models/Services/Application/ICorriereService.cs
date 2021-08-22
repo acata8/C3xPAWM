@@ -15,8 +15,10 @@ namespace C3xPAWM.Models.Services.Application
         CorriereInputModel GetCorriere(int id);
         Task<string> GetCorriereIDAsync(int corriereId);
         Corriere GetCorriereID(int id);
-        List<Pacco> GetPacchiCorriere(int id);
+        List<PaccoViewModel> GetPacchiCorriere(int id);
         List<PaccoViewModel> GetPacchiNonAssegnati();
         bool AssegnaPacco(PaccoViewModel model);
+        List<PaccoViewModel> GetCronologiaPacchi(int id);
+        bool ConsegnaPacco(PaccoViewModel model);
     }
 }

@@ -21,23 +21,12 @@ namespace C3xPAWM.Controllers
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
         public IActionResult Index(int id)
-        {
-            /*
-            ListViewModel<PaccoViewModel> pacchiCorriere = corriereService.GetPacchiNonAssegnati();
-
-            PacchiListViewModel viewModel = new PacchiListViewModel{
-                PacchiNonAssegnati = pacchiNonAssegnati
-            };
-
-            return View(viewModel);
-            */
+        {  
             CorriereDashboardViewModel vm = new();
             vm.CorriereId = id;
             vm.Corriere = corriereService.GetCorriereID(id);
             vm.Pacchi = corriereService.GetPacchiCorriere(id);
             return View(vm);
-
-            
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
@@ -51,17 +40,48 @@ namespace C3xPAWM.Controllers
             return View(vm);
         }
 
+
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
+        [HttpGet]
+        public IActionResult Cronologia(int id){
+           
+            PacchiListViewModel vm = new();
+            vm.Pacchi = corriereService.GetCronologiaPacchi(id);
+            return View(vm);
+        }
+
+
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
         public IActionResult NonAssegnati(PaccoViewModel model){
                         
             if(ModelState.IsValid){
                 var assegnato = corriereService.AssegnaPacco(model);
-                if(assegnato)
+                if(assegnato){
                     TempData["Success"] = "Pacco assegnato";
+                    return RedirectToAction(nameof(Index)); 
+                }
                 else
                 {
                     TempData["Error"] = "Pacco non assegnato";
+                    return View();
+                }
+            }
+            TempData["Error"] = "Pacco non assegnato";
+            return View();
+        }
+
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
+        [HttpPost]
+        public IActionResult Consegna(PaccoViewModel model){
+            model.Data = System.DateTime.Now;     
+            if(ModelState.IsValid){
+                var consegnato = corriereService.ConsegnaPacco(model);
+                if(consegnato)
+                    TempData["Success"] = "Pacco consegnato";
+                else
+                {
+                    TempData["Error"] = "Pacco non consegnato";
                 }
                 return RedirectToAction(nameof(Index));
             }

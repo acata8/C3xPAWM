@@ -1,20 +1,17 @@
 @{
-    ViewData["Title"] = "Non Assegnati";
+    ViewData["Title"] = "Cronologia ";
 }
 
 @model PacchiListViewModel
 
 
-<h2 class="title mt-2"> Lista ordini non assegnati </h2>
+<h2 class="title mt-2"> Lista ordini </h2>
 
 <div class="row mt-3">
     <div class="col-md-12">
         <ul class="elenco">
             <li>
                 <div class="row">
-                    <div class="col-md-3">
-                        <p class="font-weight-bold"> MITTENTE </p>
-                    </div>
                     <div class="col-md-4">
                         <p class="font-weight-bold"> LUOGO DI RITIRO </p>
                     </div>
@@ -24,36 +21,26 @@
                     <div class="col-md-3">
                         <p class="font-weight-bold"> DESTINATARIO </p>
                     </div>
-                     
                 </div> 
             </li>
-            @using(Html.BeginForm("NonAssegnati", "Corriere", FormMethod.Post)){
-                @Html.HiddenFor(m => m.CorriereId);
                     @foreach (var pacco in Model.Pacchi)
                     {
                         @Html.HiddenFor(m => m.Pacchi)
                         <li>
                             <div class="row">
-                                
-                                <div class="col-md-4">
-                                    @pacco.Negozio.Nome
-                                </div>
+                                <input type="hidden" name="PaccoId" value=@pacco.PaccoId>
                                 <div class="col-md-4">
                                     @pacco.Partenza
                                 </div>
-                                 <div class="col-md-3">
+                                <div class="col-md-4">
+                                   @pacco.Destinazione
+                                </div>
+                                <div class="col-md-3">
                                    @pacco.Utente.FullName
-                                </div>
-                                <div class="col-md-4">
-                                   @pacco.Destinazione
-                                </div>
-                                <div class="col-md-4">
-                                   @pacco.Destinazione
                                 </div>
                             </div> 
                         </li>
                     }
-            }
         </ul>
     </div>
 </div>
