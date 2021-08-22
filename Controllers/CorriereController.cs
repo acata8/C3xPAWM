@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
@@ -25,10 +26,11 @@ namespace C3xPAWM.Controllers
             CorriereDashboardViewModel vm = new();
             vm.CorriereId = id;
             vm.Corriere = corriereService.GetCorriereID(id);
-            vm.Pacchi = corriereService.GetPacchiCorriere(id);
+            vm.Pacchi = corriereService.GetCronologiaPacchi(id);
             return View(vm);
         }
 
+        
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
         public IActionResult NonAssegnati(int id){
@@ -42,16 +44,6 @@ namespace C3xPAWM.Controllers
 
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
-        [HttpGet]
-        public IActionResult Cronologia(int id){
-           
-            PacchiListViewModel vm = new();
-            vm.Pacchi = corriereService.GetCronologiaPacchi(id);
-            return View(vm);
-        }
-
-
-        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
         public IActionResult NonAssegnati(PaccoViewModel model){
                         
@@ -59,22 +51,22 @@ namespace C3xPAWM.Controllers
                 var assegnato = corriereService.AssegnaPacco(model);
                 if(assegnato){
                     TempData["Success"] = "Pacco assegnato";
-                    return RedirectToAction(nameof(Index)); 
+                    return RedirectToAction(nameof(Index), new {id = model.CorriereId} ); 
                 }
                 else
                 {
                     TempData["Error"] = "Pacco non assegnato";
-                    return View();
+                    return View(new {id = model.CorriereId});
                 }
             }
             TempData["Error"] = "Pacco non assegnato";
-            return View();
+            return View(new {id = model.CorriereId});
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
         public IActionResult Consegna(PaccoViewModel model){
-            model.Data = System.DateTime.Now;     
+            model.Data = DateTime.Now;
             if(ModelState.IsValid){
                 var consegnato = corriereService.ConsegnaPacco(model);
                 if(consegnato)
@@ -83,10 +75,20 @@ namespace C3xPAWM.Controllers
                 {
                     TempData["Error"] = "Pacco non consegnato";
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Consegna), new {id = model.CorriereId});
             }
 
-            return View();
+            return View(new {id = model.CorriereId} );
+        }
+
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
+        [HttpGet]
+        public IActionResult Consegna(int id){
+            PacchiListViewModel vm = new();
+            vm.Corriere = corriereService.GetCorriereID(id);
+            vm.CorriereId = id;
+            vm.Pacchi = corriereService.GetPacchiCorriere(id);
+            return View(vm);
         }
             
             
@@ -133,7 +135,14 @@ namespace C3xPAWM.Controllers
             return View(model);
         }
 
-        
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
+        [HttpGet]
+        public IActionResult Cronologia(int id){
+           
+            PacchiListViewModel vm = new();
+            vm.Pacchi = corriereService.GetCronologiaPacchi(id);
+            return View(vm);
+        }
     }   
 }
 

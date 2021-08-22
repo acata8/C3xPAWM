@@ -15,14 +15,17 @@
                     <div class="col-md-3">
                         <p class="font-weight-bold"> MITTENTE </p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <p class="font-weight-bold"> LUOGO DI RITIRO </p>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <p class="font-weight-bold"> LUOGO DI CONSEGNA </p>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <p class="font-weight-bold"> DESTINATARIO </p>
+                    </div>
+                    <div class="col-md-1">
+                        <p class="font-weight-bold"> PRENDI </p>
                     </div>
                      
                 </div> 
@@ -34,7 +37,7 @@
                         @Html.HiddenFor(m => m.Pacchi)
                         <li>
                             <div class="row">
-                                
+                                <input type="hidden" name="PaccoId" id="PaccoId" value="@pacco.PaccoId">
                                 <div class="col-md-4">
                                     @pacco.Negozio.Nome
                                 </div>
@@ -47,8 +50,8 @@
                                 <div class="col-md-4">
                                    @pacco.Destinazione
                                 </div>
-                                <div class="col-md-4">
-                                   @pacco.Destinazione
+                                <div class="col-md-1" >
+                                    <button class="btn btn-outline-warning"><i class="fas fa-dolly"></i></button>
                                 </div>
                             </div> 
                         </li>

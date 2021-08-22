@@ -189,6 +189,7 @@ namespace C3xPAWM.Models.Services.Application
                 
                 Pacco paccoScelto = dbContext.Pacco.Where(p => p.PaccoId == model.PaccoId).First();
                 paccoScelto.SettaConsegnato();
+                paccoScelto.dataConsegna = model.Data;
                 try{
                     dbContext.SaveChanges();
                     return true;

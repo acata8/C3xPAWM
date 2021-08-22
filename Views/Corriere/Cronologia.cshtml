@@ -1,25 +1,28 @@
 @{
-    ViewData["Title"] = "Cronologia ";
+    ViewData["Title"] = "Cronologia ordini";
 }
 
 @model PacchiListViewModel
 
 
-<h2 class="title mt-2"> Lista ordini </h2>
+<h3 class="title mt-3"> Cronologia ordini </h5>
 
-<div class="row mt-3">
+<div class="row mt-2">
     <div class="col-md-12">
         <ul class="elenco">
             <li>
                 <div class="row">
-                    <div class="col-md-4">
-                        <p class="font-weight-bold"> LUOGO DI RITIRO </p>
+                    <div class="col-md-3">
+                        <p class="font-weight-bold"> NEGOZIO </p>
                     </div>
                     <div class="col-md-4">
                         <p class="font-weight-bold"> LUOGO DI CONSEGNA </p>
                     </div>
                     <div class="col-md-3">
                         <p class="font-weight-bold"> DESTINATARIO </p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="font-weight-bold"> DATA </p>
                     </div>
                 </div> 
             </li>
@@ -28,15 +31,17 @@
                         @Html.HiddenFor(m => m.Pacchi)
                         <li>
                             <div class="row">
-                                <input type="hidden" name="PaccoId" value=@pacco.PaccoId>
-                                <div class="col-md-4">
-                                    @pacco.Partenza
+                                <div class="col-md-3">
+                                    @pacco.Negozio.Nome
                                 </div>
                                 <div class="col-md-4">
                                    @pacco.Destinazione
                                 </div>
                                 <div class="col-md-3">
                                    @pacco.Utente.FullName
+                                </div>
+                                <div class="col-md-2">
+                                   @pacco.Data
                                 </div>
                             </div> 
                         </li>
