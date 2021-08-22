@@ -26,7 +26,8 @@ namespace C3xPAWM.Models.Services.Application
         public async Task<ListViewModel<PaccoViewModel>> GetOrdini(ElencoListInputModel model)
         {
             var baseQuery = dbContext.Pacco;
-
+            
+            var search = model.Search;
             var offset = model.Offset;
             var limit = model.Limit;
 
@@ -41,6 +42,7 @@ namespace C3xPAWM.Models.Services.Application
                        Destinazione = p.Destinazione
                    });
 
+            queryLinq = queryLinq.Where(negozio => negozio.Negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
             var totale = queryLinq.Count();
 
             List<PaccoViewModel> pacchi = await queryLinq

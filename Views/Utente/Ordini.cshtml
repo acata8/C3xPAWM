@@ -35,23 +35,26 @@
     </div>
     
 
-    
-
-            <p style="font-size: 20px;">
-                Legenda
-                <br>
-                <p> <i class="far fa-times-circle"></i> Non assegnato al corriere  </p>
-                <br>
-                
-                <p> <i class="fas fa-circle-notch fa-spin"></i> Preso in carico  </p>
-                
-                <br>
-                <p> <i class="far fa-check-circle"></i> Consegnato </p>
+    <h1 class="color mt-3" style="font-size: 23px;"> Legenda </h1>
+    <div class="row">
+        <div class="col-md-5">
+            <ul>
+                <li class="mt-3">
+                   <p> &nbsp;&nbsp;&nbsp;<i class="far fa-times-circle"></i> Non assegnato al corriere  </p>
+                </li>
+                 <li class="mt-2">
+                    <p> &nbsp;&nbsp;&nbsp;<i class="fas fa-circle-notch fa-spin"></i> Preso in carico  </p>
+                </li>
+                 <li class="mt-2">
+                    <p> &nbsp;&nbsp;&nbsp;<i class="far fa-check-circle"></i> Consegnato </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+           
+    <div class="row">
+        <div class="col-md-12">
             
-            </p>
-
-
-
             <ul class="elenco mt-4">
                 <li>
                     <div class="row">
@@ -103,12 +106,12 @@
                                 @pacco.Data
                             }
                         </div>
-                        
-
                     </div> 
                 </li>
                 }
             </ul>
+        </div>
+    </div>
             <p class="mt-2" style="color: grey "> Totale: @Model.Ordini.TotaleElenco </p>
         <vc:pagination model="@Model" />
     

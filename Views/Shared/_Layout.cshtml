@@ -27,26 +27,32 @@
                         <li class="nav-item">
                             <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Elenco"><i class="fas fa-list"></i> Elenco Negozi </a>
                         </li>
+
+                       
+
                         @inject SignInManager<ApplicationUser> SignInManager
                         
                         @if(User.Identity.IsAuthenticated){
-                            @if(User.IsInRole(nameof(Categoria.Corriere))){
+
+                             <li class="nav-item">
+                                    <a class="btn btn btn-outline-primary"  asp-action="Ordini" asp-controller="Utente" ><i class="fas fa-history"></i> Ordini </a>
+                            </li>   
+                            
+                            @if(User.IsInRole(nameof(Categoria.Corriere)) && User.FindFirstValue("Proprietario") == "1"){
                                 
                                 <li class="nav-item">
                                     <a class="btn btn btn-outline-primary" id="btnCorriere" asp-action="Index" asp-controller="Corriere" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-truck"></i> Dashboard </a>
                                 </li>
                             }
 
-                            @if(User.IsInRole(nameof(Categoria.Commerciante))){
+                            @if(User.IsInRole(nameof(Categoria.Commerciante)) && User.FindFirstValue("Proprietario") == "1"){
                                 
                                 <li class="nav-item">
                                     <a class="btn btn btn-outline-primary" id="btnCommerciante" asp-action="Index" asp-controller="Negozio" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-cash-register"></i> Dashboard </a>
                                 </li>
                             }
 
-                                <li class="nav-item">
-                                    <a class="btn btn btn-outline-primary"  asp-action="Ordini" asp-controller="Utente" asp-route-id='@User.FindFirst(ClaimTypes.Email).Value' ><i class="fas fa-history"></i> Ordini </a>
-                                </li>
+                                
                                 
                             
                         }

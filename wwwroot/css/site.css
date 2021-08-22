@@ -149,3 +149,14 @@ author{
 .color{
   color: rgb(255,166,0);
 }
+
+fieldset {
+  background-color: #eeeeee;
+  border: #d12121 1px solid;
+}
+
+legend {
+  
+  color: rgb(255,166,0);
+  padding: 5px 10px;
+}
