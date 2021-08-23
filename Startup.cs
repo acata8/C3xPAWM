@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using C3xPAWM.Models.Authorization;
 using C3xPAWM.Models.Enums;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace C3xPAWM
 {
@@ -71,7 +72,7 @@ namespace C3xPAWM
 
             services.AddScoped<IAuthorizationHandler, ProprietarioNegozioRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, CorriereAttivoRequirementHandler>();
-
+            services.AddSingleton<IEmailSender, MailKitEmailSender>();
             
             services.AddDefaultIdentity<ApplicationUser>(
                     option => {
@@ -82,7 +83,7 @@ namespace C3xPAWM
                     option.Password.RequiredUniqueChars = 0;
                     option.Password.RequireLowercase = true;
 
-                    option.SignIn.RequireConfirmedAccount = false;
+                    option.SignIn.RequireConfirmedAccount = true;
        
                 })
                 .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
@@ -108,7 +109,7 @@ namespace C3xPAWM
             services.Configure<ElencoOptions>(configuration.GetSection("Elenco"));
             services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
             services.Configure<UsersOptions>(configuration.GetSection("Users"));
-            
+            services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,8 +137,7 @@ namespace C3xPAWM
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            
+        
             app.UseResponseCaching();
            
             app.UseEndpoints(endpoints =>

@@ -147,6 +147,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
                         
                         return LocalRedirect(returnUrl);
                     }
+                    
                 }
                 foreach (var error in result.Errors)
                 {
@@ -154,7 +155,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            
             return Page();
         }
     }

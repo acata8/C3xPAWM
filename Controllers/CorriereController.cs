@@ -1,28 +1,32 @@
 using System;
 using System.Threading.Tasks;
+using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Services.Application;
 using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace C3xPAWM.Controllers
 {
-    [Authorize(Roles = nameof(Categoria.Corriere)+","+nameof(Categoria.Administrator))]
+    [Authorize(Roles = nameof(Categoria.Corriere) + "," + nameof(Categoria.Administrator))]
     public class CorriereController : Controller
     {
         private readonly ICorriereService corriereService;
-        public CorriereController(ICorriereService corriereService)
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public CorriereController(ICorriereService corriereService, SignInManager<ApplicationUser> signInManager)
         {
+            this.signInManager = signInManager;
             this.corriereService = corriereService;
         }
 
-       
+
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
         public IActionResult Index(int id)
-        {  
+        {
             CorriereDashboardViewModel vm = new();
             vm.CorriereId = id;
             vm.Corriere = corriereService.GetCorriereID(id);
@@ -30,11 +34,12 @@ namespace C3xPAWM.Controllers
             return View(vm);
         }
 
-        
+
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
-        public IActionResult NonAssegnati(int id){
-           
+        public IActionResult NonAssegnati(int id)
+        {
+
             PacchiListViewModel vm = new();
             vm.Corriere = corriereService.GetCorriereID(id);
             vm.CorriereId = id;
@@ -45,53 +50,59 @@ namespace C3xPAWM.Controllers
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
-        public IActionResult NonAssegnati(PaccoViewModel model){
-                        
-            if(ModelState.IsValid){
+        public IActionResult NonAssegnati(PaccoViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
                 var assegnato = corriereService.AssegnaPacco(model);
-                if(assegnato){
+                if (assegnato)
+                {
                     TempData["Success"] = "Pacco assegnato";
-                    return RedirectToAction(nameof(Index), new {id = model.CorriereId} ); 
+                    return RedirectToAction(nameof(Index), new { id = model.CorriereId });
                 }
                 else
                 {
                     TempData["Error"] = "Pacco non assegnato";
-                    return RedirectToAction(nameof(Index), new {id = model.CorriereId});
+                    return RedirectToAction(nameof(Index), new { id = model.CorriereId });
                 }
             }
             TempData["Error"] = "Pacco non assegnato";
-            return RedirectToAction(nameof(Index), new {id = model.CorriereId});
+            return RedirectToAction(nameof(Index), new { id = model.CorriereId });
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
-        public IActionResult Consegna(PaccoViewModel model){
+        public IActionResult Consegna(PaccoViewModel model)
+        {
             model.Data = DateTime.Now;
-            if(ModelState.IsValid){
+            if (ModelState.IsValid)
+            {
                 var consegnato = corriereService.ConsegnaPacco(model);
-                if(consegnato)
+                if (consegnato)
                     TempData["Success"] = "Pacco consegnato";
                 else
                 {
                     TempData["Error"] = "Pacco non consegnato";
                 }
-                return RedirectToAction(nameof(Consegna), new {id = model.CorriereId});
+                return RedirectToAction(nameof(Consegna), new { id = model.CorriereId });
             }
 
-           return RedirectToAction(nameof(Index), new {id = model.CorriereId});
+            return RedirectToAction(nameof(Index), new { id = model.CorriereId });
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
-        public IActionResult Consegna(int id){
+        public IActionResult Consegna(int id)
+        {
             PacchiListViewModel vm = new();
             vm.Corriere = corriereService.GetCorriereID(id);
             vm.CorriereId = id;
             vm.Pacchi = corriereService.GetPacchiCorriere(id);
             return View(vm);
         }
-            
-            
+
+
         [HttpGet]
         public IActionResult Creazione()
         {
@@ -100,22 +111,33 @@ namespace C3xPAWM.Controllers
         }
 
         [HttpPost]
-        public IActionResult Creazione(CorriereInputModel model)
+        public async Task<IActionResult> CreazioneAsync(CorriereInputModel model)
         {
-            
-            if(ModelState.IsValid){
-                corriereService.CreateCorriereAsync(model);
-                TempData["Success"] = "Salvataggio eseguito";
-                return LocalRedirect("/Elenco");
+
+            if (ModelState.IsValid)
+            {
+                await corriereService.CreateCorriereAsync(model);
+                
+                return await Logout();
             }
 
             TempData["Error"] = "Creazione fallita";
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            TempData["Success"] = "Salvataggio eseguito! Rieffettua il Login";
+            return RedirectToAction("Index", new { controller = "Home" });
+        }
+
+
         [HttpGet]
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
-        public IActionResult Modifica(int id){
+        public IActionResult Modifica(int id)
+        {
             CorriereInputModel inputModel = corriereService.GetCorriere(id);
             return View(inputModel);
         }
@@ -124,11 +146,12 @@ namespace C3xPAWM.Controllers
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         public IActionResult Modifica(CorriereInputModel model)
         {
-            
-            if(ModelState.IsValid){
-                var modificato =  corriereService.EditCorriere(model);
+
+            if (ModelState.IsValid)
+            {
+                var modificato = corriereService.EditCorriere(model);
                 TempData["Success"] = "Salvataggio eseguito";
-                return RedirectToAction(nameof(Index), new {id = model.CorriereId});
+                return RedirectToAction(nameof(Index), new { id = model.CorriereId });
             }
 
             TempData["Error"] = "Modifica fallita";
@@ -137,12 +160,13 @@ namespace C3xPAWM.Controllers
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpGet]
-        public IActionResult Cronologia(int id){
-           
+        public IActionResult Cronologia(int id)
+        {
+
             PacchiListViewModel vm = new();
             vm.Pacchi = corriereService.GetCronologiaPacchi(id);
             return View(vm);
         }
-    }   
+    }
 }
 

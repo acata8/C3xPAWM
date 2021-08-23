@@ -50,7 +50,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, "Email di verifica mandata. Controlla la tua mail.");
                 return Page();
             }
 
@@ -65,7 +65,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "conferma la tua email",
-                $"Per favore conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.");
+                $"Per favore conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'> cliccando qui</a>.");
 
             ModelState.AddModelError(string.Empty, "Email di verifica inviata. Si prega di controllare la tua email.");
             return Page();

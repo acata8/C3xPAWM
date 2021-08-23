@@ -4,9 +4,9 @@
     ViewData["Title"] = "2fa autenticazione";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="title">@ViewData["Title"]</h1>
 <hr />
-<p>Il tuo accesso è protetto con un'app di autenticazione. Inserisci il tuo codice autenticatore di seguito.</p>
+<p class="color mt-2">Il tuo accesso è protetto con un'app di autenticazione. Inserisci il tuo codice autenticatore di seguito.</p>
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
@@ -31,7 +31,7 @@
         </form>
     </div>
 </div>
-<p>
+<p class="color mt-2">
    Non hai accesso al tuo dispositivo di autenticazione? Puoi
     <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">accededere con un codice di ripristino</a>.
 </p>
