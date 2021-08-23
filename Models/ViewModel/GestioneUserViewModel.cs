@@ -9,11 +9,6 @@ namespace C3xPAWM.Models.ViewModel
         
         public UserRoleInputModel Input {get; set;}
         public IList<ApplicationUser> Amministratori {get; set;}
-
-        public IList<ApplicationUser> Commercianti {get; set;}
-
-        public IList<ApplicationUser> Corrieri {get; set;}
-
         public IList<ApplicationUser> Utenti {get; set;}
 
     }

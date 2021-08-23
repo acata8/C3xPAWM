@@ -201,6 +201,51 @@ namespace C3xPAWM.Models.Services.Application
 
             return false;
         }
+
+        public async Task<ListViewModel<CorriereViewModel>> GetCorriere(ElencoListInputModel model, bool admin)
+        {
+           IQueryable<Corriere> baseQuery = dbContext.Corrieri;
+
+            if(!admin){
+                baseQuery = baseQuery.Where(n => n.Revocato == 0);
+            }
+           
+            var offset = model.Offset;
+            var limit = model.Limit;
+
+
+            IQueryable<CorriereViewModel> queryLinq = baseQuery
+                   .AsNoTracking()
+                   .Where(c => c.CorriereId != 6)
+                   .Select(corriere => new CorriereViewModel
+                   {
+                       Nominativo = corriere.Nominativo,
+                       Revocato = corriere.Revocato,
+                       Proprietario = corriere.Proprietario,
+                       Telefono = corriere.Telefono,
+                       Pacchi = corriere.Pacchi.Select(p => new PaccoViewModel{
+                           StatoPacco = p.StatoPacco
+                       }).ToList()
+                   }).OrderBy(c => c.Nominativo);
+
+           
+            queryLinq = queryLinq.Where(corriere => corriere.Nominativo.ToUpper().Contains(model.Search.ToUpper()));
+            
+            var totale = queryLinq.Count();
+
+            List<CorriereViewModel> corrieri = await queryLinq
+            .Skip(offset)
+            .Take(limit)
+            .ToListAsync();
+
+            ListViewModel<CorriereViewModel> listViewModel = new ListViewModel<CorriereViewModel>
+            {
+                Elenco = corrieri,
+                TotaleElenco = totale
+            };
+
+            return listViewModel;
+        }
     }
 }
 

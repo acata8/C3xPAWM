@@ -21,10 +21,11 @@ namespace C3xPAWM.Models.Services.Application
         Task<string> GetNegozioIdAsync(int negozioId);
         Negozio GetNegozio(int id);
         string getIndirizzo(int id);
-        List<Pacco> GetPacchiNegozio(int id);
+        List<PaccoViewModel> GetPacchiNegozio(int id);
 
         Task<bool> RicercaEmailAsync(string email);
         Task<ApplicationUser> GetUtenteAsync(string email);
         bool CreateOrder(PaccoCreateInputModel model);
+        
     }
 }

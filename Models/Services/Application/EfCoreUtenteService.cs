@@ -39,7 +39,8 @@ namespace C3xPAWM.Models.Services.Application
                        Corriere = p.Corriere,
                        Data = p.dataConsegna,
                        Negozio = p.Negozio,
-                       Destinazione = p.Destinazione
+                       Destinazione = p.Destinazione,
+                       StatoPacco = p.StatoPacco
                    });
 
             queryLinq = queryLinq.Where(negozio => negozio.Negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));

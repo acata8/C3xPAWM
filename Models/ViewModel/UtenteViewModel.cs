@@ -4,7 +4,10 @@ namespace C3xPAWM.Models.ViewModel
 {
     public class UtenteViewModel
     {
-        
-        public ListViewModel<ApplicationUser> Utenti {get; set; }
+        public string Email {get; set; }
+
+        public int Proprietario { get; set; }
+        public string Nome {get; set;}
+        public string Ruolo {get; set;}
     }
 }

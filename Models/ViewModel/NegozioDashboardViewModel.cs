@@ -5,11 +5,11 @@ namespace C3xPAWM.Models.ViewModel
 {
     public class NegozioDashboardViewModel
     {
+        
         public int NegozioId { get; set; }
 
         public Negozio Negozio {get; set;}
 
-        public List<Pacco> pacchi {get; set;}
-
+        
     }
 }

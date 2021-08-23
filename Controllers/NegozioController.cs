@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Entities;
@@ -33,14 +34,26 @@ namespace C3xPAWM.Controllers
         [HttpGet]
         public IActionResult Index(int id)
         {
-            //Lista di ordini del negozio
+           //Lista di ordini del negozio
             NegozioDashboardViewModel vm = new();
             vm.NegozioId = id;
             vm.Negozio = negoziService.GetNegozio(id);
-            vm.pacchi = negoziService.GetPacchiNegozio(id);
+            
             return View(vm);
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
+        [HttpGet]
+        public IActionResult Cronologia(int id)
+        {
+            PacchiNegozioViewModel vm = new();
+            vm.Pacchi = negoziService.GetPacchiNegozio(id);
+            vm.NegozioId = id;
+            vm.Negozio = negoziService.GetNegozio(id);
+
+            return View(vm);
+           
+        }
 
         [HttpGet]
         public IActionResult Pacco(int id)

@@ -1,0 +1,94 @@
+@{
+    ViewData["Title"] = "Cronologia ordini";
+}
+
+@model PacchiNegozioViewModel 
+
+
+<h3 class="title mt-3"> Cronologia ordini </h5>
+
+<h1 class="color mt-3" style="font-size: 23px;"> Legenda </h1>
+    <div class="row">
+        <div class="col-md-5">
+            <ul>
+                <li class="mt-3">
+                   <p> &nbsp;&nbsp;&nbsp;<i style="color: red;" class="far fa-times-circle"></i> Non assegnato al corriere  </p>
+                </li>
+                 <li class="mt-2">
+                    <p> &nbsp;&nbsp;&nbsp;<i style="color: orange;" class="fas fa-circle-notch fa-spin"></i> Preso in carico  </p>
+                </li>
+                 <li class="mt-2">
+                    <p> &nbsp;&nbsp;&nbsp;<i style="color: green;" class="far fa-check-circle"></i> Consegnato </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <h3 style="color: rgb(255,166,0); font-size: 25px;"> Lista di ordini</h3>
+        <ul class="elenco mt-2">
+            <li>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="font-weight-bold"> Luogo di Consegna </p> @* Indirizzo del pacco *@
+                    </div>
+                    <div class="col-md-3">
+                        <p class="font-weight-bold"> Email </p>  @* Nome destinatario *@
+                    </div>
+                    <div class="col-md-2">
+                        <p class="font-weight-bold"> Nome </p>  @* Nome destinatario *@
+                    </div>
+                    <div class="col-md-1">
+                        <p class="font-weight-bold"> Stato </p>  @* Nome destinatario *@
+                    </div>
+                     <div class="col-md-2">
+                        <p class="font-weight-bold"> Data Consegna </p>  @* Nome destinatario *@
+                    </div>
+                </div> 
+            </li>
+            @foreach (var pacco in Model.Pacchi)
+            {
+                <li>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p> @pacco.Destinazione </p> @* Indirizzo del pacco *@
+                        
+                        </div>
+                        <div class="col-md-3">
+                            
+                            <p> @pacco.Utente.Email </p>  @* Nome destinatario *@
+                        </div>
+                        <div class="col-md-2">
+                            
+                            <p> @pacco.Utente.FullName </p>  @* Nome destinatario *@
+                        </div>
+                        <div class="col-md-1">
+                            @if(pacco.StatoPacco == StatoPacco.NON_ASSEGNATO){
+                                <i style="color: red;" class="far fa-times-circle"></i>
+                            }
+                            @if(pacco.StatoPacco == StatoPacco.ASSEGNATO){
+                                <i style="color: orange;"class="fas fa-circle-notch fa-spin"></i>
+                            }
+                            @if(pacco.StatoPacco == StatoPacco.CONSEGNATO){
+                                <i style="color: green;" class="far fa-check-circle"></i>
+                            }
+                        </div>
+                          <div class="col-md-2">
+                            
+                            <p> @if(pacco.StatoPacco != StatoPacco.CONSEGNATO){
+                                <p> Previsti 1-2 giorni</p>
+                            }else{
+                                @pacco.Data
+                            }</p> 
+                        </div>
+                    </div> 
+                </li>
+            }
+        </ul>
+
+        
+    </div>
+</div>

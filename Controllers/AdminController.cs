@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -23,22 +24,34 @@ namespace C3xPAWM.Controllers
         private readonly IAdminService adminService;
         private readonly C3PAWMDbContext dbContext;
         private readonly INegoziService negoziService;
+        private readonly ICorriereService corriereService;
 
-        public AdminController(UserManager<ApplicationUser> userManager, IAdminService adminService, C3PAWMDbContext dbContext, INegoziService negoziService)
+        public AdminController(UserManager<ApplicationUser> userManager, IAdminService adminService, C3PAWMDbContext dbContext, INegoziService negoziService, ICorriereService corriereService)
         {
+            this.corriereService = corriereService;
             this.negoziService = negoziService;
             this.dbContext = dbContext;
             this.adminService = adminService;
             this.userManager = userManager;
         }
-        public async Task<IActionResult> UsersAsync()
-        {
 
-            GestioneUserViewModel vm = new();
-            vm.Utenti = await adminService.GetUtentiAsync("Utente");
-            vm.Amministratori = await adminService.GetUtentiAsync("Administrator");
-            return View(vm);
+        [HttpGet]
+        public async Task<IActionResult> UsersAsync(ElencoListInputModel model)
+        {
+            ListViewModel<UtenteViewModel> utenti = await adminService.GetUtenteEmailAsync(model);
+
+
+            UtenteListViewModel viewModel = new UtenteListViewModel
+            {
+                Utenti = utenti,
+                Input = model
+            };
+
+            return View(viewModel);
         }
+
+        #region GESTIONE
+
 
         public IActionResult Gestione()
         {
@@ -136,7 +149,6 @@ namespace C3xPAWM.Controllers
             return RedirectToAction(nameof(Gestione));
         }
 
-        #region Revoca e Assegna
         private void RevocaNegozio(ApplicationUser user)
         {
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
@@ -163,7 +175,6 @@ namespace C3xPAWM.Controllers
             corriere.Assegna();
             dbContext.SaveChanges();
         }
-
         #endregion
 
         public async Task<IActionResult> NegoziAsync(ElencoListInputModel input)
@@ -174,6 +185,21 @@ namespace C3xPAWM.Controllers
             ElencoListViewModel viewModel = new ElencoListViewModel
             {
                 Negozi = negozi,
+                Input = input
+            };
+
+            return View(viewModel);
+        }
+
+
+        public async Task<IActionResult> CorrieriAsync(ElencoListInputModel input)
+        {
+            ListViewModel<CorriereViewModel> corrieri = await corriereService.GetCorriere(input, true);
+
+
+            CorriereListViewModel viewModel = new CorriereListViewModel
+            {
+                Corrieri = corrieri,
                 Input = input
             };
 

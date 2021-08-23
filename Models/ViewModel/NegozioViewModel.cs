@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using C3xPAWM.Models.Entities;
@@ -48,6 +49,11 @@ namespace C3xPAWM.Models.ViewModel
                                     .Select(p => PubblicitaViewModel.FromEntity(p))
                                     .ToList()
             };
+        }
+
+        public static implicit operator NegozioViewModel(string v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

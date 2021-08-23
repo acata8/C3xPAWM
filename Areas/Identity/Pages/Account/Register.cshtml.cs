@@ -103,6 +103,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
 
                     if(user.Email.Equals(_userOptions.CurrentValue.AssignAdministratorRoleOnRegistration, StringComparison.OrdinalIgnoreCase)){
                         Claim claim = new (ClaimTypes.Role, "Administrator");
+                        Input.Ruolo = "Administrator";
                         IdentityResult roleAssignement = await _userManager.AddClaimAsync(user, claim);
                         if(!roleAssignement.Succeeded){
                             _logger.LogWarning("Ruolo di amministratore non assegnato");

@@ -313,10 +313,28 @@ namespace C3xPAWM.Models.Services.Application
             return await userManager.FindByEmailAsync(email);
         }
 
-        public List<Pacco> GetPacchiNegozio(int id)
+        public List<PaccoViewModel> GetPacchiNegozio(int id)
         {
-            return dbContext.Pacco.Where(p => p.NegozioId == id).Include(p => p.Utente).ToList();
+            return dbContext.Pacco
+                        .Where(p => p.NegozioId == id)
+                        .Include(p => p.Utente)
+                        .Include(p => p.Negozio)
+                        .Select(p => new PaccoViewModel{
+                            PaccoId = p.PaccoId,
+                            Negozio = p.Negozio,
+                            Corriere = p.Corriere,
+                            Utente = p.Utente,
+                            Destinazione = p.Destinazione,
+                            Partenza = p.Partenza,
+                            StatoPacco = p.StatoPacco,
+                            Data = p.dataConsegna
+                        })
+                        .ToList();
         }
 
+
     }
+
+        
 }
+
