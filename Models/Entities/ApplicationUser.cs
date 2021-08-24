@@ -8,6 +8,7 @@ namespace C3xPAWM.Models.Entities
         public string FullName {get; set;}
         public string Ruolo {get; set;}
         public int Proprietario {get; set;}
+        public int Revocato {get; set;}
         public int IdRuolo {get; set;}
         public virtual ICollection<Negozio> ProprietarioNegozi {get; set;}
         public virtual ICollection<Corriere> ProprietarioCorriere {get; set;}

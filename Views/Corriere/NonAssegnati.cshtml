@@ -36,24 +36,22 @@
                 
                     @foreach (var pacco in Model.Pacchi)
                     {
-                        @Html.HiddenFor(m => m.Pacchi)
                         <li>
                             <div class="row">
-                                <input type="hidden" name="PaccoId" id="PaccoId" value="@pacco.PaccoId">
-                                <div class="col-md-2">
+                                <div class="col-md-2 mt-2">
                                     @pacco.Negozio.Nome
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 mt-2">
                                     @pacco.Partenza
                                 </div>
-                                 <div class="col-md-2">
+                                 <div class="col-md-2 mt-2">
                                    @pacco.Utente.FullName
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3 mt-2">
                                    @pacco.Destinazione
                                 </div>
                                 <div class="col-md-2" >
-                                    <button class="btn btn-warning"><i class="fas fa-dolly"></i></button>
+                                    <button class="btn btn-warning" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="fas fa-dolly"></i></button>
                                 </div>
                             </div> 
                         </li>

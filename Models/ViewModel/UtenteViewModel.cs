@@ -6,6 +6,7 @@ namespace C3xPAWM.Models.ViewModel
     {
         public string Email {get; set; }
 
+        public int Revocato {get; set;}
         public int Proprietario { get; set; }
         public string Nome {get; set;}
         public string Ruolo {get; set;}

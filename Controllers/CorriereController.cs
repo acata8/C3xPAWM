@@ -8,6 +8,7 @@ using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace C3xPAWM.Controllers
 {
@@ -16,8 +17,10 @@ namespace C3xPAWM.Controllers
     {
         private readonly ICorriereService corriereService;
         private readonly SignInManager<ApplicationUser> signInManager;
-        public CorriereController(ICorriereService corriereService, SignInManager<ApplicationUser> signInManager)
+        private readonly ILogger<CorriereController> logger;
+        public CorriereController(ICorriereService corriereService, SignInManager<ApplicationUser> signInManager, ILogger<CorriereController> logger)
         {
+            this.logger = logger;
             this.signInManager = signInManager;
             this.corriereService = corriereService;
         }
@@ -31,6 +34,7 @@ namespace C3xPAWM.Controllers
             vm.CorriereId = id;
             vm.Corriere = corriereService.GetCorriereID(id);
             vm.Pacchi = corriereService.GetCronologiaPacchi(id);
+            vm.PacchiAssegnati = corriereService.GetNumeroPacchi(id);
             return View(vm);
         }
 
@@ -59,15 +63,18 @@ namespace C3xPAWM.Controllers
                 if (assegnato)
                 {
                     TempData["Success"] = "Pacco assegnato";
-                    return RedirectToAction(nameof(Index), new { id = model.CorriereId });
+                    logger.LogInformation("Pacco assegnato");
+                    
                 }
                 else
                 {
                     TempData["Error"] = "Pacco non assegnato";
-                    return RedirectToAction(nameof(Index), new { id = model.CorriereId });
+                    logger.LogInformation("Pacco non assegnato");
                 }
+                return RedirectToAction(nameof(Index), new { id = model.CorriereId });
             }
             TempData["Error"] = "Pacco non assegnato";
+            logger.LogInformation("Informazioni inserite non valide,, Pacco non assegnato");
             return RedirectToAction(nameof(Index), new { id = model.CorriereId });
         }
 
@@ -79,15 +86,20 @@ namespace C3xPAWM.Controllers
             if (ModelState.IsValid)
             {
                 var consegnato = corriereService.ConsegnaPacco(model);
-                if (consegnato)
+                if (consegnato){
                     TempData["Success"] = "Pacco consegnato";
+                    logger.LogInformation("Pacco consegnato");
+                }
                 else
                 {
                     TempData["Error"] = "Pacco non consegnato";
+                    logger.LogInformation("Pacco non consegnato");
                 }
-                return RedirectToAction(nameof(Consegna), new { id = model.CorriereId });
+                return RedirectToAction(nameof(Index), new { id = model.CorriereId });
             }
 
+            TempData["Error"] = "Pacco non consegnato";
+            logger.LogInformation("Informazioni inserite non valide,, Pacco non consegnato");
             return RedirectToAction(nameof(Index), new { id = model.CorriereId });
         }
 
@@ -117,11 +129,12 @@ namespace C3xPAWM.Controllers
             if (ModelState.IsValid)
             {
                 await corriereService.CreateCorriereAsync(model);
-                
+                logger.LogInformation("Creazione Corriere riuscita!");
                 return await Logout();
             }
 
             TempData["Error"] = "Creazione fallita";
+            logger.LogInformation("Informazioni inserite non valide,, creazione corriere fallita!");
             return View(model);
         }
 
@@ -130,6 +143,7 @@ namespace C3xPAWM.Controllers
         {
             await signInManager.SignOutAsync();
             TempData["Success"] = "Salvataggio eseguito! Rieffettua il Login";
+            logger.LogInformation("Utente non loggato. Salvataggio infomazioni effettuato.");
             return RedirectToAction("Index", new { controller = "Home" });
         }
 
@@ -151,10 +165,12 @@ namespace C3xPAWM.Controllers
             {
                 var modificato = corriereService.EditCorriere(model);
                 TempData["Success"] = "Salvataggio eseguito";
+                
                 return RedirectToAction(nameof(Index), new { id = model.CorriereId });
             }
 
             TempData["Error"] = "Modifica fallita";
+            logger.LogInformation("Informazioni inserite non valide, errore nella modifica");
             return View(model);
         }
 

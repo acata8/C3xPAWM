@@ -6,6 +6,7 @@ using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,11 @@ namespace C3xPAWM.Models.Services.Application
         private readonly C3PAWMDbContext dbContext;
         private readonly IHttpContextAccessor accessor;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<EfCoreCorrieriService> logger;
 
-        public EfCoreCorrieriService(C3PAWMDbContext dbContext, IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager)
+        public EfCoreCorrieriService(C3PAWMDbContext dbContext, IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager, ILogger<EfCoreCorrieriService> logger)
         {
+            this.logger = logger;
             this.userManager = userManager;
             this.accessor = accessor;
             this.dbContext = dbContext;
@@ -33,17 +36,18 @@ namespace C3xPAWM.Models.Services.Application
             string proprietarioId;
             proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
             proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            
+
 
             var corriere = new Corriere(model.Nominativo, model.Telefono, proprietario, proprietarioId);
             dbContext.Add(corriere);
             try
             {
                 dbContext.SaveChanges();
+                logger.LogInformation($"{corriere.ToString()} creato");
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-
+                logger.LogWarning("Errore nella creazione del corriere. Eccezione {e}", e);
                 throw;
             }
 
@@ -53,12 +57,14 @@ namespace C3xPAWM.Models.Services.Application
                 userActive.Proprietario = 1;
                 userActive.IdRuolo = corriere.CorriereId;
                 IdentityResult result = await userManager.UpdateAsync(userActive);
+                logger.LogInformation("Informazioni {userActive} aggiornate", userActive);
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException e)
             {
+                logger.LogWarning("Errore nell'aggiornamento info. Eccezione {e}", e);
                 throw;
             }
-            
+
             return CorriereViewModel.FromEntity(corriere);
         }
 
@@ -83,10 +89,12 @@ namespace C3xPAWM.Models.Services.Application
             try
             {
                 dbContext.SaveChanges();
+                logger.LogInformation($"Informazioni {corriere.ToString()} aggiornate");
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                logger.LogWarning($"Informazioni {corriere.ToString()}. Eccezione {e}. ");
                 return false;
             }
         }
@@ -113,7 +121,8 @@ namespace C3xPAWM.Models.Services.Application
                 .Where(p => p.StatoPacco == StatoPacco.ASSEGNATO)
                 .Include(p => p.Utente)
                 .Include(p => p.Negozio)
-                .Select(p => new PaccoViewModel{
+                .Select(p => new PaccoViewModel
+                {
                     PaccoId = p.PaccoId,
                     Negozio = p.Negozio,
                     Corriere = p.Corriere,
@@ -126,39 +135,47 @@ namespace C3xPAWM.Models.Services.Application
         }
 
 
-       
+
         public List<PaccoViewModel> GetPacchiNonAssegnati()
         {
-           return dbContext.Pacco
-                .Where(p => p.CorriereId == 6)
-                .Where(p => p.StatoPacco == StatoPacco.NON_ASSEGNATO)
-                .Include(p => p.Utente)
-                .Include(p => p.Negozio)
-                .Select(p => new PaccoViewModel{
-                    PaccoId = p.PaccoId,
-                    Negozio = p.Negozio,
-                    Corriere = p.Corriere,
-                    Utente = p.Utente,
-                    Destinazione = p.Destinazione,
-                    Partenza = p.Partenza,
-                    StatoPacco = p.StatoPacco
-                    
-                })
-                .ToList();
+            return dbContext.Pacco
+                 .Where(p => p.CorriereId == 6)
+                 .Where(p => p.StatoPacco == StatoPacco.NON_ASSEGNATO)
+                 .Include(p => p.Utente)
+                 .Include(p => p.Negozio)
+                 .Select(p => new PaccoViewModel
+                 {
+                     PaccoId = p.PaccoId,
+                     Negozio = p.Negozio,
+                     Corriere = p.Corriere,
+                     Utente = p.Utente,
+                     Destinazione = p.Destinazione,
+                     Partenza = p.Partenza,
+                     StatoPacco = p.StatoPacco
+
+                 })
+                 .ToList();
         }
 
         public bool AssegnaPacco(PaccoViewModel model)
         {
-            if(model.CorriereId != 6){
+            if (model.CorriereId != 6)
+            {
                 Corriere corriere = dbContext.Corrieri.Where(r => r.CorriereId == model.CorriereId).First();
                 Pacco paccoScelto = dbContext.Pacco.Where(p => p.PaccoId == model.PaccoId).First();
                 paccoScelto.SettaCorriere(corriere.CorriereId);
-                try{
+                try
+                {
+                
                     dbContext.SaveChanges();
+                    logger.LogInformation($"Pacco {model.PaccoId} assegnato al corriere {corriere.Nominativo}");
                     return true;
-                }catch{
+                }
+                catch(Exception e)
+                {
+                    logger.LogWarning($"Errore nell'assegnamento del pacco {model.PaccoId}. Eccezione {e}. ");
                     return false;
-                }   
+                }
             }
 
             return false;
@@ -171,7 +188,8 @@ namespace C3xPAWM.Models.Services.Application
                 .Where(p => p.StatoPacco == StatoPacco.CONSEGNATO)
                 .Include(p => p.Utente)
                 .Include(p => p.Negozio)
-                .Select(p => new PaccoViewModel{
+                .Select(p => new PaccoViewModel
+                {
                     PaccoId = p.PaccoId,
                     Negozio = p.Negozio,
                     Corriere = p.Corriere,
@@ -186,17 +204,24 @@ namespace C3xPAWM.Models.Services.Application
 
         public bool ConsegnaPacco(PaccoViewModel model)
         {
-            if(model.CorriereId != 6){
-                
+            if (model.CorriereId != 6)
+            {
+
                 Pacco paccoScelto = dbContext.Pacco.Where(p => p.PaccoId == model.PaccoId).First();
                 paccoScelto.SettaConsegnato();
+
                 paccoScelto.dataConsegna = model.Data;
-                try{
+                try
+                {
                     dbContext.SaveChanges();
+                    logger.LogInformation($"Pacco {model.PaccoId} consegnato dal corriere {model.Corriere.Nominativo}");
                     return true;
-                }catch{
+                }
+                catch(Exception e)
+                {
+                    logger.LogWarning($"Errore nella consegna del pacco {model.PaccoId}. Eccezione {e}. ");
                     return false;
-                }   
+                }
             }
 
             return false;
@@ -204,12 +229,13 @@ namespace C3xPAWM.Models.Services.Application
 
         public async Task<ListViewModel<CorriereViewModel>> GetCorriere(ElencoListInputModel model, bool admin)
         {
-           IQueryable<Corriere> baseQuery = dbContext.Corrieri;
+            IQueryable<Corriere> baseQuery = dbContext.Corrieri;
 
-            if(!admin){
+            if (!admin)
+            {
                 baseQuery = baseQuery.Where(n => n.Revocato == 0);
             }
-           
+
             var offset = model.Offset;
             var limit = model.Limit;
 
@@ -223,14 +249,15 @@ namespace C3xPAWM.Models.Services.Application
                        Revocato = corriere.Revocato,
                        Proprietario = corriere.Proprietario,
                        Telefono = corriere.Telefono,
-                       Pacchi = corriere.Pacchi.Select(p => new PaccoViewModel{
+                       Pacchi = corriere.Pacchi.Select(p => new PaccoViewModel
+                       {
                            StatoPacco = p.StatoPacco
                        }).ToList()
                    }).OrderBy(c => c.Nominativo);
 
-           
+
             queryLinq = queryLinq.Where(corriere => corriere.Nominativo.ToUpper().Contains(model.Search.ToUpper()));
-            
+
             var totale = queryLinq.Count();
 
             List<CorriereViewModel> corrieri = await queryLinq
@@ -245,6 +272,11 @@ namespace C3xPAWM.Models.Services.Application
             };
 
             return listViewModel;
+        }
+
+        public int GetNumeroPacchi(int id)
+        {
+            return dbContext.Pacco.Where(p => p.StatoPacco == StatoPacco.ASSEGNATO).Where(p => p.CorriereId == id).Count();
         }
     }
 }

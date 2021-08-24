@@ -10,5 +10,6 @@ namespace C3xPAWM.Models.ViewModel
         public Corriere Corriere { get; set; }
 
         public List<PaccoViewModel> Pacchi {get; set;}
+        public int PacchiAssegnati {get; set;}
     }
 }

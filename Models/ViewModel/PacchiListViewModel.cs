@@ -8,7 +8,6 @@ namespace C3xPAWM.Models.ViewModel
     {
 
         public Corriere Corriere;
-
         public int CorriereId;
         public List<PaccoViewModel> Pacchi {get; set;}
         

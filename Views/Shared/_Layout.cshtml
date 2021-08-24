@@ -22,10 +22,10 @@
                 <div id="navbar-brand" class="collapse navbar-collapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Home" title="HOME"> <i class="fas fa-home"></i></a>
+                            <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Home" title="HOME"> <i class="fas fa-home"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn btn-outline-primary" asp-action="Index" asp-controller="Elenco"><i class="fas fa-list"></i> Elenco Negozi </a>
+                            <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Elenco"><i class="fas fa-list"></i> Elenco Negozi </a>
                         </li>
 
                         
@@ -35,20 +35,20 @@
                         @if(User.Identity.IsAuthenticated){
 
                              <li class="nav-item">
-                                    <a class="btn btn btn-outline-primary"  asp-action="Ordini" asp-controller="Utente" ><i class="fas fa-history"></i> Ordini </a>
+                                    <a class="btn btn-outline-primary"  asp-action="Ordini" asp-controller="Utente" ><i class="fas fa-history"></i> Ordini </a>
                             </li>   
                             
                             @if(User.IsInRole(nameof(Categoria.Corriere)) && User.FindFirstValue("Proprietario") == "1"){
                                 
                                 <li class="nav-item">
-                                    <a class="btn btn btn-outline-primary" id="btnCorriere" asp-action="Index" asp-controller="Corriere" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-truck"></i> Dashboard </a>
+                                    <a class="btn btn-outline-primary" id="btnCorriere" asp-action="Index" asp-controller="Corriere" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-truck"></i> Dashboard </a>
                                 </li>
                             }
 
                             @if(User.IsInRole(nameof(Categoria.Commerciante)) && User.FindFirstValue("Proprietario") == "1"){
                                 
                                 <li class="nav-item">
-                                    <a class="btn btn btn-outline-primary" id="btnCommerciante" asp-action="Index" asp-controller="Negozio" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-cash-register"></i> Dashboard </a>
+                                    <a class=" btn btn-outline-primary" id="btnCommerciante" asp-action="Index" asp-controller="Negozio" asp-route-id='@User.FindFirst("IdRuolo").Value' ><i class="fas fa-cash-register"></i> Dashboard </a>
                                 </li>
                             }
 

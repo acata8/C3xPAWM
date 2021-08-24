@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace C3xPAWM.Controllers
 {
@@ -21,10 +22,12 @@ namespace C3xPAWM.Controllers
         private readonly INegoziService negoziService;
         private readonly SignInManager<ApplicationUser> signInManager;
 
-        
 
-        public NegozioController(INegoziService negoziService, SignInManager<ApplicationUser> signInManager)
+        private readonly ILogger<NegozioController> logger;
+
+        public NegozioController(INegoziService negoziService, SignInManager<ApplicationUser> signInManager, ILogger<NegozioController> logger)
         {
+            this.logger = logger;
             this.signInManager = signInManager;
             this.negoziService = negoziService;
 
@@ -34,11 +37,11 @@ namespace C3xPAWM.Controllers
         [HttpGet]
         public IActionResult Index(int id)
         {
-           //Lista di ordini del negozio
+            //Lista di ordini del negozio
             NegozioDashboardViewModel vm = new();
             vm.NegozioId = id;
             vm.Negozio = negoziService.GetNegozio(id);
-            
+
             return View(vm);
         }
 
@@ -52,7 +55,7 @@ namespace C3xPAWM.Controllers
             vm.Negozio = negoziService.GetNegozio(id);
 
             return View(vm);
-           
+
         }
 
         [HttpGet]
@@ -67,33 +70,26 @@ namespace C3xPAWM.Controllers
         [HttpPost]
         public async Task<IActionResult> PaccoAsync(PaccoCreateInputModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
                 model.Utente = await negoziService.GetUtenteAsync(model.Email);
                 model.UtenteId = model.Utente.Id;
-            }
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-
-            if (ModelState.IsValid)
-            {
                 bool result = negoziService.CreateOrder(model);
                 if (result)
                 {
-
                     TempData["Success"] = "Salvataggio eseguito";
+                    logger.LogInformation("Salvataggio eseguito con successo. Pacco Creato");
                 }
                 else
                 {
                     TempData["Error"] = "Creazione fallita";
+                    logger.LogInformation("Pacco non creato");
                 }
 
                 return RedirectToAction(nameof(Index), new { id = model.NegozioId });
             }
 
+            logger.LogInformation("Informazioni inserite non valide, Pacco non creato");
             return View(model);
         }
 
@@ -120,10 +116,12 @@ namespace C3xPAWM.Controllers
             if (ModelState.IsValid)
             {
                 await negoziService.CreateNegoziAsync(model);
+                logger.LogInformation("Creazione negozio riuscita.");
                 return await Logout();
             }
 
             TempData["Error"] = "Creazione fallita";
+            logger.LogInformation("Informazioni inserite non valide, Pacco non creato");
             return View(model);
         }
 
@@ -132,8 +130,9 @@ namespace C3xPAWM.Controllers
         {
             await signInManager.SignOutAsync();
             TempData["Success"] = "Salvataggio eseguito! Rieffettua il Login";
+            logger.LogInformation("Utente non loggato. Salvataggio eseguito con successo!");
             return RedirectToAction("Index", new { controller = "Home" });
-            
+
         }
 
         [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
@@ -156,7 +155,7 @@ namespace C3xPAWM.Controllers
                 TempData["Success"] = "Salvataggio eseguito";
                 return RedirectToAction(nameof(Index), new { id = model.NegozioId });
             }
-
+            logger.LogInformation("Informazioni inserite non valide, Pacco non creato");
             return View(model);
         }
 
@@ -180,6 +179,7 @@ namespace C3xPAWM.Controllers
                 return RedirectToAction(nameof(Index), new { id = model.NegozioId });
             }
 
+            logger.LogInformation("Informazioni inserite non valide, Pacco non creato");
             return View(model);
         }
 

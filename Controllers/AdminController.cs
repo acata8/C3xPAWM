@@ -13,6 +13,7 @@ using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace C3xPAWM.Controllers
 {
@@ -25,9 +26,12 @@ namespace C3xPAWM.Controllers
         private readonly C3PAWMDbContext dbContext;
         private readonly INegoziService negoziService;
         private readonly ICorriereService corriereService;
+        private readonly ILogger<AdminController> logger;
 
-        public AdminController(UserManager<ApplicationUser> userManager, IAdminService adminService, C3PAWMDbContext dbContext, INegoziService negoziService, ICorriereService corriereService)
+        public AdminController(UserManager<ApplicationUser> userManager, IAdminService adminService,
+         C3PAWMDbContext dbContext, INegoziService negoziService, ICorriereService corriereService, ILogger<AdminController> logger)
         {
+            this.logger = logger;
             this.corriereService = corriereService;
             this.negoziService = negoziService;
             this.dbContext = dbContext;
@@ -64,6 +68,7 @@ namespace C3xPAWM.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Inserimento non valido";
+                logger.LogWarning("Informazioni inserite non valide,");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -71,6 +76,7 @@ namespace C3xPAWM.Controllers
             if (user == null)
             {
                 TempData["Error"] = "Non corrisponde ad nessun utente";
+                logger.LogWarning("User non trovato");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -80,6 +86,7 @@ namespace C3xPAWM.Controllers
             if (claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
             {
                 TempData["Error"] = "Ruolo già assegnato all'utente";
+                logger.LogWarning("Ruolo gia' assegnato");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -87,19 +94,24 @@ namespace C3xPAWM.Controllers
             if (!result.Succeeded)
             {
                 TempData["Error"] = "Operazione fallita";
+                logger.LogWarning("Assegnazione ruolo fallita");
                 return RedirectToAction(nameof(Gestione));
             }
 
             if (model.Ruolo == Categoria.Commerciante)
             {
                 AssegnaNegozio(user);
+                logger.LogInformation("Negozio assegnato");
             }
             else if (model.Ruolo == Categoria.Corriere)
             {
                 AssegnaCorriere(user);
+                logger.LogInformation("Corriere assegnato");
             }
-
+            user.Revocato = 0;
+            await userManager.UpdateAsync(user);
             TempData["Success"] = "Ruolo assegnato!";
+            logger.LogInformation($"Ruolo assegnato con successo a {user.Email}");
             return RedirectToAction(nameof(Gestione));
         }
 
@@ -110,6 +122,7 @@ namespace C3xPAWM.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Inserimento non valido";
+                logger.LogWarning("Informazioni inserite non valide,");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -117,6 +130,7 @@ namespace C3xPAWM.Controllers
             if (user == null)
             {
                 TempData["Error"] = "Non corrisponde ad nessun utente";
+                logger.LogWarning("User non trovato");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -126,6 +140,7 @@ namespace C3xPAWM.Controllers
             if (!claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
             {
                 TempData["Error"] = "Ruolo non assegnato all'utente";
+                logger.LogWarning("Ruolo non assegnato all'utente");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -133,19 +148,24 @@ namespace C3xPAWM.Controllers
             if (!result.Succeeded)
             {
                 TempData["Error"] = "Operazione fallita";
+                logger.LogWarning("Assegnamento fallito");
                 return RedirectToAction(nameof(Gestione));
             }
 
             if (model.Ruolo == Categoria.Commerciante)
             {
                 RevocaNegozio(user);
+                logger.LogInformation("Negozio revocato");
             }
             else if (model.Ruolo == Categoria.Corriere)
             {
                 RevocaCorriere(user);
+                logger.LogInformation("Corriere revocato");
             }
 
+            await userManager.UpdateAsync(user);
             TempData["Success"] = "Ruolo revocato!";
+            logger.LogInformation($"Ruolo revocato con successo a {user.Email}");
             return RedirectToAction(nameof(Gestione));
         }
 
@@ -153,6 +173,7 @@ namespace C3xPAWM.Controllers
         {
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
             negozio.Revoca();
+            user.Revocato = 1;
             dbContext.SaveChanges();
         }
 
@@ -160,6 +181,7 @@ namespace C3xPAWM.Controllers
         {
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
             corriere.Revoca();
+            user.Revocato = 1;
             dbContext.SaveChanges();
         }
 
@@ -167,12 +189,14 @@ namespace C3xPAWM.Controllers
         {
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
             negozio.Assegna();
+            user.Revocato = 0;
             dbContext.SaveChanges();
         }
         private void AssegnaCorriere(ApplicationUser user)
         {
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
             corriere.Assegna();
+            user.Revocato = 0;
             dbContext.SaveChanges();
         }
         #endregion

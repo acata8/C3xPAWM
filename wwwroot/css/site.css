@@ -80,19 +80,31 @@ header{
   padding-top: 140px;
 }
 
+/* end navbar section */
+
 @media (max-width: 768px){
   header .nav-item a{
-    margin-top: 1em;
+    margin-top: 0.5em;
   }
+  
   h1{
     font: 3em;
+  }
+
+  .btn{
+    margin-top: 1em;
   }
 }
 
 header .nav-item a{
   margin-left: 1em;
 }
-/* end navbar section */
+
+.size{
+  margin-top: 1em;
+  width: 200px;
+  height: 40px;
+} 
 
 h1{
   z-index: 1;
@@ -106,10 +118,6 @@ h1{
 author{
   font-style: italic;
 }
-
-
-
-
 
 .title{
     color: rgb(255,166,0);

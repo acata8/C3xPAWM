@@ -1,5 +1,9 @@
     @model IPagination
-    <p class="mt-2" style="color: grey; "> Totale: @Model.TotalResults</p>
+
+    @if(Model.TotalResults > 0){
+
+        <p class="mt-2" style="color: grey; "> Totale: @Model.TotalResults</p>
+    }
 
     @{
     int pagine = (int) Math.Ceiling(Model.TotalResults / (decimal) Model.Limit);

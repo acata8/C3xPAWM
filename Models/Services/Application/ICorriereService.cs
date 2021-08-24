@@ -21,5 +21,6 @@ namespace C3xPAWM.Models.Services.Application
         List<PaccoViewModel> GetCronologiaPacchi(int id);
         bool ConsegnaPacco(PaccoViewModel model);
         Task<ListViewModel<CorriereViewModel>> GetCorriere(ElencoListInputModel input, bool v);
+        int GetNumeroPacchi(int id);
     }
 }

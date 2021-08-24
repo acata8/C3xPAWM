@@ -3,14 +3,14 @@
     ViewData["Title"] = "Errore";
 }
 
-<h1 class="display-4">@ViewData["Title"]</h1>
+<h1 class="title display-4">@ViewData["Title"]</h1>
 <section class="mt-3">
-    <p>Ci scusiamo, si è verificato un errore.</p> <br>
-    <p class="font-italic">La pagina che stai cercando non &egrave; disponibile!</p> <br>
+    <p class="color">Ci scusiamo, si è verificato un errore.</p> <br>
+    <p class="font-italic color">La pagina che stai cercando non &egrave; disponibile!</p> <br>
 
     <ul>
         <li><a asp-action="Index" asp-controller="Home">Homepage</a> </li>
-        <li><a asp-action="Index" asp-controller="Elenco">Homepage Elenco</a></li>
+        <li class="mt-2"><a asp-action="Index" asp-controller="Elenco">Homepage Elenco</a></li>
     </ul>
 </section>
 

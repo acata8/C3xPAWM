@@ -31,7 +31,6 @@ namespace C3xPAWM.Models.Services.Application
         {
             IQueryable<ApplicationUser> baseQuery = dbContext.Users;
 
-
             IQueryable<UtenteViewModel> queryLinq = baseQuery
                    .AsNoTracking()
                    .Select(u => new UtenteViewModel
@@ -39,13 +38,12 @@ namespace C3xPAWM.Models.Services.Application
                        Email = u.Email,
                        Ruolo =u.Ruolo,
                        Nome = u.FullName,
-                       Proprietario = u.Proprietario
+                       Proprietario = u.Proprietario,
+                       Revocato = u.Revocato
                    }).OrderBy(c => c.Ruolo);
 
-           
             queryLinq = queryLinq.Where(u => u.Email.Contains(model.Search.ToLower()));
-            
-            
+             
             var totale = queryLinq.Count();
 
             List<UtenteViewModel> utenti = await queryLinq
@@ -70,9 +68,6 @@ namespace C3xPAWM.Models.Services.Application
 
             return userInRole;
         }
-
-
-
 
     }
 }

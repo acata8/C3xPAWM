@@ -12,6 +12,7 @@ using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace C3xPAWM.Models.Services.Application
@@ -22,9 +23,12 @@ namespace C3xPAWM.Models.Services.Application
         private readonly IOptionsMonitor<ElencoOptions> elencoOptions;
         private readonly IHttpContextAccessor accessor;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<EfCoreNegoziService> logger;
 
-        public EfCoreNegoziService(C3PAWMDbContext dbContext, IOptionsMonitor<ElencoOptions> negozioOptions, IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager)
+        public EfCoreNegoziService(C3PAWMDbContext dbContext,
+        IOptionsMonitor<ElencoOptions> negozioOptions, IHttpContextAccessor accessor, UserManager<ApplicationUser> userManager, ILogger<EfCoreNegoziService> logger)
         {
+            this.logger = logger;
             this.userManager = userManager;
             this.accessor = accessor;
             this.elencoOptions = negozioOptions;
@@ -35,10 +39,11 @@ namespace C3xPAWM.Models.Services.Application
         {
             IQueryable<Negozio> baseQuery = dbContext.Negozi;
 
-            if(!admin){
+            if (!admin)
+            {
                 baseQuery = dbContext.Negozi.Where(n => n.Revocato == 0);
             }
-           
+
             var orderBy = model.OrderBy;
             var ascending = model.Ascending;
             var tipologia = model.Tipologia;
@@ -144,6 +149,7 @@ namespace C3xPAWM.Models.Services.Application
             List<PubblicitaViewModel> negozi = queryLinq
                     .Skip(offset)
                     .Take(limit)
+                    .OrderBy(p => p.Durata)
                     .ToList();
 
             ListViewModel<PubblicitaViewModel> listViewModel = new ListViewModel<PubblicitaViewModel>
@@ -159,7 +165,7 @@ namespace C3xPAWM.Models.Services.Application
         {
             string proprietario;
             string proprietarioId;
-            
+
             proprietario = accessor.HttpContext.User.FindFirst("FullName").Value;
             proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -169,9 +175,11 @@ namespace C3xPAWM.Models.Services.Application
             try
             {
                 dbContext.SaveChanges();
+                logger.LogInformation($"Negozio creato. {negozio.ToString()}");
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                logger.LogWarning($"Errore nella creazione del negozio. Eccezione {e}.");
                 throw;
             }
 
@@ -181,19 +189,21 @@ namespace C3xPAWM.Models.Services.Application
                 userActive.Proprietario = 1;
                 userActive.IdRuolo = negozio.NegozioId;
                 IdentityResult result = await userManager.UpdateAsync(userActive);
+                logger.LogInformation($"Informazioni {negozio.ToString()} aggiornate");
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException e)
             {
-
+            logger.LogWarning($"Errore nell'aggiornamento del negozio. Eccezione {e}.");
                 throw;
             }
-            
+
 
             return NegozioViewModel.FromEntity(negozio);
         }
 
-        public Negozio GetNegozio(int id){
-            return dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita).FirstOrDefault(); 
+        public Negozio GetNegozio(int id)
+        {
+            return dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita).FirstOrDefault();
         }
 
         public NegozioEditInputModel GetNegozioEdit(int id)
@@ -227,10 +237,12 @@ namespace C3xPAWM.Models.Services.Application
             try
             {
                 dbContext.SaveChanges();
+                logger.LogInformation($"Creazione del negozio riuscita.");
                 return true;
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
+                logger.LogWarning($"Errore nella modifica del negozio. Eccezione {e}.");
                 return false;
             }
         }
@@ -258,13 +270,19 @@ namespace C3xPAWM.Models.Services.Application
             else
             {
                 model.Attiva = 0;
-                throw new ArgumentException();
+                logger.LogWarning("Attivazione pubblicita non riuscita");
             }
 
             var pubblicita = new Pubblicita(negozio, model.NomeEvento, model.Durata);
 
             dbContext.Add(pubblicita);
-            dbContext.SaveChanges();
+            try{
+                dbContext.SaveChanges();
+                logger.LogWarning("Attivazione pubblicita riuscita");
+            }catch(Exception e){
+                logger.LogWarning($"Attivazione pubblicita non riuscita. Eccezione {e}");
+                throw;
+            }
 
             return PubblicitaViewModel.FromEntity(pubblicita);
         }
@@ -282,25 +300,30 @@ namespace C3xPAWM.Models.Services.Application
         {
             var negozio = dbContext.Negozi.Where(n => n.NegozioId == id).FirstOrDefault();
 
-            return ( negozio.Via +"    "+negozio.Citta+" ("+negozio.Provincia+") ");
+            return (negozio.Via + "    " + negozio.Citta + " (" + negozio.Provincia + ") ");
         }
 
 
         public bool CreateOrder(PaccoCreateInputModel model)
         {
-            
+
             var pacco = new Pacco(model.Destinazione, model.Partenza, model.NegozioId, model.UtenteId);
-            
+
             dbContext.Add(pacco);
-            try{
+            try
+            {
                 dbContext.SaveChanges();
+                logger.LogInformation("Creazione pacco con successo");
                 return true;
-            }catch{
-                return false;
-                throw;
             }
-            
-            
+            catch(Exception e)
+            {
+                logger.LogWarning($"Creazione pacco non riuscito. Eccezione {e}");
+                return false;
+                
+            }
+
+
         }
         public async Task<bool> RicercaEmailAsync(string email)
         {
@@ -319,7 +342,8 @@ namespace C3xPAWM.Models.Services.Application
                         .Where(p => p.NegozioId == id)
                         .Include(p => p.Utente)
                         .Include(p => p.Negozio)
-                        .Select(p => new PaccoViewModel{
+                        .Select(p => new PaccoViewModel
+                        {
                             PaccoId = p.PaccoId,
                             Negozio = p.Negozio,
                             Corriere = p.Corriere,
@@ -335,6 +359,6 @@ namespace C3xPAWM.Models.Services.Application
 
     }
 
-        
+
 }
 

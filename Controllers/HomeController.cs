@@ -32,6 +32,7 @@ namespace C3xPAWM.Controllers
             ListViewModel<PubblicitaViewModel> negoziPubblicizzati = negoziService.GetNegoziPubblicizzati(input);
 
             PubblicitaListViewModel viewModel = new PubblicitaListViewModel
+            
             {
                 NegoziPubblicizzati = negoziPubblicizzati,
                 Input = input
@@ -39,12 +40,6 @@ namespace C3xPAWM.Controllers
             };
 
             return View(viewModel);
-        }
-
-        [AllowAnonymous]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
 

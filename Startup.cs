@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using C3xPAWM.Models.Authorization;
 using C3xPAWM.Models.Enums;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Threading.Tasks;
 
 namespace C3xPAWM
 {
@@ -147,6 +148,11 @@ namespace C3xPAWM
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapRazorPages().RequireAuthorization();
+
+                endpoints.MapFallback( context => {
+                    context.Response.Redirect("/Error");
+                    return Task.CompletedTask;
+                });
             });
 
 

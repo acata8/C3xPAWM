@@ -14,7 +14,6 @@ namespace C3xPAWM.Models.InputModel
 
         [Required(ErrorMessage = "Ruolo obbligatorio")]
         [Display(Name = "Ruolo")]
-        
         public Categoria Ruolo {get; set;}
   
     }

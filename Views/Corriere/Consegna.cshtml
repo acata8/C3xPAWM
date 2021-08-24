@@ -7,47 +7,49 @@
 
 <h2 class="title mt-2"> Lista ordini </h2>
 
-<div class="row  mt-3">
-    <div class="col-md-12">
-            <ul class="elenco">
-                <li>
-                    <div class="row">
-                        <div class="col-md-4">
-                                <p class="font-weight-bold"> LUOGO DI SPEDIZIONE </p>
-                            </div>
-                            <div class="col-md-4">
-                                <p class="font-weight-bold"> LUOGO DI CONSEGNA </p>
-                            </div>
-                            <div class="col-md-3">
-                                <p class="font-weight-bold"> DESTINATARIO </p>
-                            </div>
-                            <div class="col-md-1">
-                                <p class="font-weight-bold"> CONSEGNA </p>
-                            </div>
-                    </div>
-                </li>
-                @foreach (var pacco in Model.Pacchi)
-                {
-                    @using(Html.BeginForm("Consegna", "Corriere", FormMethod.Post)){
+@using(Html.BeginForm("Consegna", "Corriere", FormMethod.Post)){
+    @Html.HiddenFor( c => c.CorriereId)
+    <div class="row mt-3">
+        <div class="col-md-12">
+                <ul class="elenco">
                     <li>
                         <div class="row">
-                            <input type="hidden" name="PaccoId" id="PaccoId" value="@pacco.PaccoId">
-                            <div class="col-md-4 mt-2">
-                            @pacco.Partenza
-                            </div>
-                            <div class="col-md-4 mt-2">
-                                @pacco.Destinazione
-                            </div>
-                            <div class="col-md-3 mt-2">
-                                @pacco.Utente.FullName
-                            </div>
-                            <div class="col-md-1" >
-                                <button class="btn btn-outline-danger"><i class="fas fa-clipboard-check"></i></button>
-                            </div>
-                        </div> 
+                            <div class="col-md-4">
+                                    <p class="font-weight-bold"> LUOGO DI SPEDIZIONE </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="font-weight-bold"> LUOGO DI CONSEGNA </p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p class="font-weight-bold"> DESTINATARIO </p>
+                                </div>
+                                <div class="col-md-1">
+                                    <p class="font-weight-bold"> CONSEGNA </p>
+                                </div>
+                        </div>
                     </li>
-                }
-            }
-        </ul>           
+                    @foreach (var pacco in Model.Pacchi)
+                    {
+                        
+                        <li>
+                            <div class="row">
+                               
+                                <div class="col-md-4 mt-2">
+                                @pacco.Partenza
+                                </div>
+                                <div class="col-md-4 mt-2">
+                                    @pacco.Destinazione
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    @pacco.Utente.FullName
+                                </div>
+                                <div class="col-md-1" >
+                                    <button class="btn btn-outline-danger" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="fas fa-clipboard-check"></i></button>
+                                </div>
+                            </div> 
+                        </li>
+                    }
+            </ul>           
+        </div>
     </div>
-</div>
+}
