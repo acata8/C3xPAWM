@@ -108,7 +108,6 @@ namespace C3xPAWM
             //Options
             services.Configure<ConnectionsStringsOptions>(configuration.GetSection("ConnectionsStrings"));
             services.Configure<ElencoOptions>(configuration.GetSection("Elenco"));
-            services.Configure<CacheOptions>(configuration.GetSection("MemoryCache"));
             services.Configure<UsersOptions>(configuration.GetSection("Users"));
             services.Configure<SmtpOptions>(configuration.GetSection("Smtp"));
         }

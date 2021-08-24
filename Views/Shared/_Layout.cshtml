@@ -73,16 +73,16 @@
         <div class="container"> 
             <main role="main" class="pb-3">
                         @if(TempData["Success"] != null){
-                            <div class="alert alert-success alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:9%;z-index:10000;opacity:0.9; width: fit-content; height: fit-content;">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <div class="alert alert-success alert-dismissable mt-3" id="success-alert"role="alert" style="position:absolute;right:1%;top:9%;z-index:10000;opacity:0.9; width: fit-content; height: fit-content;">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">x</a>
                                 <p class="mt-3">  @TempData["Success"] </p>
                                
                             </div>
                         }
 
                          @if(TempData["Error"] != null){
-                            <div class="alert alert-danger alert-dismissable mt-3" role="alert" style="position:absolute;right:1%;top:9%;z-index:10000;opacity:0.9; width: fit-content;  height: fit-content;">
-                                <a href="#" class="close " data-dismiss="alert" aria-label="close">&times;</a>
+                            <div class="alert alert-danger alert-dismissable mt-3" id="error-alert" role="alert" style="position:absolute;right:1%;top:9%;z-index:10000;opacity:0.9; width: fit-content;  height: fit-content;">
+                                <a href="#" class="close " data-dismiss="alert" aria-label="close">x</a>
                                 <p class="mt-3"> @TempData["Error"] </p>
                                 
                             </div>
