@@ -20,41 +20,29 @@
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
                 <div class="input-group">
-                    <input class="form-control" type="text" name="search" placeholder="Cerca un negozio" aria-label="Search" aria-describedby="searchAddon">
+                    <input id="inp3" class="form-control" type="text" name="search" placeholder="Cerca un negozio" value="@Model.Input.Search">
                     <div class="input-group-append">
-                        <button class="input-group-text" title="Cerca"><i class="fas fa-filter"></i></button>
+                        <button class="input-group-text" title="Cerca" name="Nome" value="True"><i class="fas fa-filter"></i></button>
                     </div>
                 </div>
             }
         </div>
-        <div class="col-md-4  d-flex align-items-center mt-2">
-            @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
-            {
-
-                <div class="input-group">
-                    <input class="form-control" type="text" name="search" placeholder="Cerca una tipologia">
-                    <div class="input-group-append">
-                        <button type="submit" class="input-group-text" title="Cerca" name="Tipologia" value="True"><i class="fas fa-filter"></i></button>
-                    </div>
-                </div>
-            
-            }
-            
-        </div>
+       
 
          <div class="col-md-4  d-flex align-items-center mt-2">
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
 
                 <div class="input-group">
-                    <input class="form-control" type="text" name="search" placeholder="Cerca una citt&agrave;">
+                    <input id="inp3" class="form-control" type="text" name="luogo" placeholder="Cerca una citt&agrave;"  value="@Model.Input.Luogo">
                     <div class="input-group-append">
                         <button type="submit" class="input-group-text" title="Cerca" name="Citta" value="True"><i class="fas fa-filter"></i></button>
                     </div>
                 </div>
-            
             }
             
+    
+
         </div>
 
         <div class="col-md-4 d-flex align-items-center mt-2">
@@ -70,13 +58,14 @@
         <li>
             <div class="row">
                 <div class="col-md-3">
-                    <a asp-route-orderby="Nome" asp-route-ascending="@(Model.Input.OrderBy == "Nome" ? !Model.Input.Ascending : true)">Nome @if(@Model.Input.OrderBy == "Nome"){    <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                    <a asp-route-orderby="Nome" asp-route-page="@Model.Input.Page"  asp-route-search="@Model.Input.Search" asp-route-ascending="@(Model.Input.OrderBy == "Nome" ? !Model.Input.Ascending : true)">Nome @if(@Model.Input.OrderBy == "Nome"){    <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
                 <div class="col-md-2">
-                    <a asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){     <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                    <a asp-route-orderby="Tipologia" asp-route-page="@Model.Input.Page"  asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){<i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
-                <div class="col-md-3">             
-                    <p class="font-weight-bold">Citta (Provincia)</p>           
+                <div class="col-md-3">
+                    <a asp-route-orderby="Citta" asp-route-page="@Model.Input.Page" asp-route-citta="@Model.Input.Citta" asp-route-search="@Model.Input.Luogo"  asp-route-ascending="@(Model.Input.OrderBy == "Citta" ? !Model.Input.Ascending : true)">Citta (Provincia) @if(@Model.Input.OrderBy == "Citta"){<i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                              
                 </div>
                 <div class="col-md-2">
                     <p class="font-weight-bold">Via</p>
@@ -109,6 +98,7 @@
         </li>
         }
     </ul>
+
 
 <vc:pagination model="@Model" />
 

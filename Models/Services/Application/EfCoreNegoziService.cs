@@ -57,6 +57,8 @@ namespace C3xPAWM.Models.Services.Application
                 ("Nome", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Nome),
                 ("Tipologia", true) => baseQuery.OrderBy(ordinamento => ordinamento.Tipologia),
                 ("Tipologia", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia),
+                ("Citta", true) => baseQuery.OrderBy(ordinamento => ordinamento.Citta),
+                ("Citta", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Citta),
                 _ => baseQuery
             };
             
@@ -84,26 +86,31 @@ namespace C3xPAWM.Models.Services.Application
 
             List<NegozioViewModel> negozi;
 
-            if (tipologia){
-                var y = model.Search.ToUpper();
-                Tipologia x;
-                if (Enum.TryParse(y, true, out x))
-                    queryLinq = queryLinq.Where(negozio => negozio.Tipologia == x);
-                
-                negozi = await queryLinq
-                            .ToListAsync();
-            }else if(citta){
-                queryLinq = queryLinq.Where(negozio => negozio.Citta.ToUpper().Contains(model.Search.ToUpper()));
+            
+            if(citta){
+                queryLinq = queryLinq.Where(negozio => negozio.Citta.ToUpper().Equals(model.Luogo.ToUpper()));
+                    
+                    model.Paginare = false;
                     negozi = await queryLinq
                             .ToListAsync();
             }
-            else{
-                queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
+            else if(model.Nome){
+                queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Equals(model.Search.ToUpper()));
+                
+                model.Paginare = false;
+
+                negozi = await queryLinq
+                            .ToListAsync();
+            }else{
+                
+                model.Paginare = true;
 
                 negozi = await queryLinq
                             .Skip(offset)
                             .Take(limit)
                             .ToListAsync();
+
+                
             }
             
             var totale = queryLinq.Count();

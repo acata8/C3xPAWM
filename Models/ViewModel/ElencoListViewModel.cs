@@ -19,5 +19,15 @@ namespace C3xPAWM.Models.ViewModel
         bool IPagination.Ascending => Input.Ascending;
 
         int IPagination.Limit => Input.Limit;
+
+        bool IPagination.Tipologia => Input.Tipologia;
+        
+        bool IPagination.Citta => Input.Citta;
+
+        bool IPagination.Nome => Input.Nome;
+
+        string IPagination.Luogo => Input.Luogo;
+
+        bool IPagination.Paginare => Input.Paginare;
     }
 }

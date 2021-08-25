@@ -18,5 +18,15 @@ namespace C3xPAWM.Models.ViewModel
         bool IPagination.Ascending => Input.Ascending;
 
         int IPagination.Limit => Input.Limit;
+
+        bool IPagination.Tipologia => throw new System.NotImplementedException();
+
+        bool IPagination.Citta => throw new System.NotImplementedException();
+
+        bool IPagination.Nome => throw new System.NotImplementedException();
+
+        string IPagination.Luogo => throw new System.NotImplementedException();
+
+        bool IPagination.Paginare => throw new System.NotImplementedException(); 
     }
 }
