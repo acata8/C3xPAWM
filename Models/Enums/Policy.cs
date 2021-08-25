@@ -4,7 +4,9 @@ namespace C3xPAWM.Models.Enums
     {
         ProprietarioNegozio,
 
-        CorriereAttivo
+        CorriereAttivo,
+
+        NuovaAttivita
         
     }
 }

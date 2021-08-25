@@ -32,7 +32,7 @@
             {
 
                 <div class="input-group">
-                    <input class="form-control" type="text" name="search" placeholder="Cerca una tipologia" aria-label="Search" aria-describedby="searchAddon">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca una tipologia">
                     <div class="input-group-append">
                         <button type="submit" class="input-group-text" title="Cerca" name="Tipologia" value="True"><i class="fas fa-filter"></i></button>
                     </div>
@@ -41,6 +41,22 @@
             }
             
         </div>
+
+         <div class="col-md-4  d-flex align-items-center mt-2">
+            @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
+            {
+
+                <div class="input-group">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca una citt&agrave;">
+                    <div class="input-group-append">
+                        <button type="submit" class="input-group-text" title="Cerca" name="Citta" value="True"><i class="fas fa-filter"></i></button>
+                    </div>
+                </div>
+            
+            }
+            
+        </div>
+
         <div class="col-md-4 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
@@ -74,19 +90,19 @@
         <li>
             <div class="row">
                 <div class="col-md-3">
-                    <p> @negozio.Nome</p>
+                    <p html-sanitize> @negozio.Nome</p>
                 </div>
                 <div class="col-md-2 text-lowercase font-italic ">
-                    <p>@negozio.Tipologia</p>
+                    <p html-sanitize>@negozio.Tipologia</p>
                 </div>
                 <div class="col-md-3">                            
-                    <p>@negozio.Citta (@negozio.Provincia)</p>
+                    <p html-sanitize>@negozio.Citta (@negozio.Provincia)</p>
                 </div>
                 <div class="col-md-2">
-                    <p>@negozio.Via</p>
+                    <p html-sanitize>@negozio.Via</p>
                 </div>
                 <div class="col-md-2">
-                    <p>@negozio.Telefono</p>
+                    <p html-sanitize>@negozio.Telefono</p>
                 </div>
 
             </div> 

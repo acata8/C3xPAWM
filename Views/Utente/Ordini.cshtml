@@ -83,7 +83,7 @@
                             <p> @pacco.Negozio.Nome </p>
                         </div>
                         <div class="col-md-2">
-                            <p>@pacco.Corriere.Nominativo </p>
+                            <p html-sanitize>@pacco.Corriere.Nominativo </p>
                         </div>
                         <div class="col-md-1">                            
                             @if(pacco.StatoPacco == StatoPacco.NON_ASSEGNATO){
@@ -97,11 +97,11 @@
                             }
                         </div>
                         <div class="col-md-4">
-                            <p>@pacco.Destinazione </p>
+                            <p html-sanitize>@pacco.Destinazione </p>
                         </div>
                         <div class="col-md-2">
                              @if(pacco.StatoPacco != StatoPacco.CONSEGNATO){
-                                <p> Previsti 1-2 giorni</p>
+                                <p> Previsto 1 giorno</p>
                             }else{
                                 @pacco.Data
                             }

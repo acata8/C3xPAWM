@@ -47,30 +47,19 @@ namespace C3xPAWM.Models.Services.Application
             var orderBy = model.OrderBy;
             var ascending = model.Ascending;
             var tipologia = model.Tipologia;
+            var citta = model.Citta;
             var offset = model.Offset;
             var limit = model.Limit;
 
-            switch (orderBy)
+            baseQuery = (orderBy, ascending) switch
             {
-                case "Nome":
-                    if (ascending)
-                    {
-                        baseQuery = baseQuery.OrderBy(ordinamento => ordinamento.Nome);
-                    }
-                    else
-                        baseQuery = baseQuery.OrderByDescending(ordinamento => ordinamento.Nome);
-                    break;
-
-                case "Tipologia":
-                    if (model.Ascending)
-                    {
-                        baseQuery = baseQuery.OrderBy(ordinamento => ordinamento.Tipologia);
-                    }
-                    else
-                        baseQuery = baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia);
-                    break;
-
-            }
+                ("Nome", true) => baseQuery.OrderBy(ordinamento => ordinamento.Nome),
+                ("Nome", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Nome),
+                ("Tipologia", true) => baseQuery.OrderBy(ordinamento => ordinamento.Tipologia),
+                ("Tipologia", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia),
+                _ => baseQuery
+            };
+            
 
             IQueryable<NegozioViewModel> queryLinq = baseQuery
                    .AsNoTracking()
@@ -93,26 +82,31 @@ namespace C3xPAWM.Models.Services.Application
                                     .ToList()
                    });
 
-            if (tipologia)
-            {
+            List<NegozioViewModel> negozi;
+
+            if (tipologia){
                 var y = model.Search.ToUpper();
                 Tipologia x;
                 if (Enum.TryParse(y, true, out x))
                     queryLinq = queryLinq.Where(negozio => negozio.Tipologia == x);
-
+                
+                negozi = await queryLinq
+                            .ToListAsync();
+            }else if(citta){
+                queryLinq = queryLinq.Where(negozio => negozio.Citta.ToUpper().Contains(model.Search.ToUpper()));
+                    negozi = await queryLinq
+                            .ToListAsync();
             }
-            else
-            {
+            else{
                 queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
+
+                negozi = await queryLinq
+                            .Skip(offset)
+                            .Take(limit)
+                            .ToListAsync();
             }
-
-
+            
             var totale = queryLinq.Count();
-
-            List<NegozioViewModel> negozi = await queryLinq
-            .Skip(offset)
-            .Take(limit)
-            .ToListAsync();
 
             ListViewModel<NegozioViewModel> listViewModel = new ListViewModel<NegozioViewModel>
             {
@@ -161,7 +155,7 @@ namespace C3xPAWM.Models.Services.Application
             return listViewModel;
         }
 
-        public async Task<NegozioViewModel> CreateNegoziAsync(NegozioCreateInputModel model)
+        public async Task<NegozioViewModel> CreateNegoziAsync(NegozioInputModel model)
         {
             string proprietario;
             string proprietarioId;
@@ -170,7 +164,7 @@ namespace C3xPAWM.Models.Services.Application
             proprietarioId = accessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione,
-             model.Citta, model.Via, model.Tipologia, proprietario, proprietarioId);
+             model.Citta, model.Via, model.Tipologia.ToString(), proprietario, proprietarioId);
             dbContext.Add(negozio);
             try
             {
@@ -206,10 +200,10 @@ namespace C3xPAWM.Models.Services.Application
             return dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita).FirstOrDefault();
         }
 
-        public NegozioEditInputModel GetNegozioEdit(int id)
+        public NegozioInputModel GetNegozioEdit(int id)
         {
             return dbContext.Negozi.Where(n => n.NegozioId == id)
-                    .Select(negozio => new NegozioEditInputModel
+                    .Select(negozio => new NegozioInputModel
                     {
                         NegozioId = negozio.NegozioId,
                         Nome = negozio.Nome,
@@ -222,7 +216,7 @@ namespace C3xPAWM.Models.Services.Application
                     }).FirstOrDefault();
         }
 
-        public bool EditNegozio(NegozioEditInputModel model)
+        public bool EditNegozio(NegozioInputModel model)
         {
             Negozio negozio = dbContext.Negozi.Find(model.NegozioId);
 

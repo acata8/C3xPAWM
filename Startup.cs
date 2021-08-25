@@ -19,6 +19,8 @@ using C3xPAWM.Models.Authorization;
 using C3xPAWM.Models.Enums;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
+using C3xPAWM.Models.Validators;
 
 namespace C3xPAWM
 {
@@ -55,6 +57,13 @@ namespace C3xPAWM
                 options.Filters.Add(filter);
 
             })
+            .AddFluentValidation(opt => {
+                opt.RegisterValidatorsFromAssemblyContaining<CorriereValidator>();
+                opt.RegisterValidatorsFromAssemblyContaining<NegozioCreateValidator>();
+                opt.RegisterValidatorsFromAssemblyContaining<PaccoCreateValidator>();
+                opt.RegisterValidatorsFromAssemblyContaining<PubblicitaValidator>();
+                opt.RegisterValidatorsFromAssemblyContaining<UserRoleValidator>();
+            })
             #if DEBUG
             .AddRazorRuntimeCompilation()
             #endif
@@ -69,10 +78,15 @@ namespace C3xPAWM
                  options.AddPolicy(nameof(Policy.CorriereAttivo), builder => {
                     builder.Requirements.Add(new CorriereAttivoRequirement());
                 });
+
+                options.AddPolicy(nameof(Policy.NuovaAttivita), builder => {
+                    builder.Requirements.Add(new CreazioneAttivitaRequirement());
+                });
             });
 
             services.AddScoped<IAuthorizationHandler, ProprietarioNegozioRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, CorriereAttivoRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, CreazioneAttivitaRequirementHandler>();
             services.AddSingleton<IEmailSender, MailKitEmailSender>();
             
             services.AddDefaultIdentity<ApplicationUser>(

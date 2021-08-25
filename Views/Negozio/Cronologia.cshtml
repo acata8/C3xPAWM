@@ -33,19 +33,19 @@
             <li>
                 <div class="row">
                     <div class="col-md-4">
-                        <p class="font-weight-bold"> Luogo di Consegna </p> @* Indirizzo del pacco *@
+                        <p class="font-weight-bold"> Luogo di Consegna </p> 
                     </div>
                     <div class="col-md-3">
-                        <p class="font-weight-bold"> Email </p>  @* Nome destinatario *@
+                        <p class="font-weight-bold"> Email </p>  
                     </div>
                     <div class="col-md-2">
-                        <p class="font-weight-bold"> Nome </p>  @* Nome destinatario *@
+                        <p class="font-weight-bold"> Nome </p>  
                     </div>
                     <div class="col-md-1">
-                        <p class="font-weight-bold"> Stato </p>  @* Nome destinatario *@
+                        <p class="font-weight-bold"> Stato </p>  
                     </div>
                      <div class="col-md-2">
-                        <p class="font-weight-bold"> Data Consegna </p>  @* Nome destinatario *@
+                        <p class="font-weight-bold"> Data Consegna </p>  
                     </div>
                 </div> 
             </li>
@@ -54,16 +54,16 @@
                 <li>
                     <div class="row">
                         <div class="col-md-4">
-                            <p> @pacco.Destinazione </p> @* Indirizzo del pacco *@
+                            <p html-sanitize> @pacco.Destinazione </p> 
                         
                         </div>
                         <div class="col-md-3">
                             
-                            <p> @pacco.Utente.Email </p>  @* Nome destinatario *@
+                            <p html-sanitize> @pacco.Utente.Email </p> 
                         </div>
                         <div class="col-md-2">
                             
-                            <p> @pacco.Utente.FullName </p>  @* Nome destinatario *@
+                            <p html-sanitize> @pacco.Utente.FullName </p> 
                         </div>
                         <div class="col-md-1">
                             @if(pacco.StatoPacco == StatoPacco.NON_ASSEGNATO){
@@ -79,9 +79,9 @@
                           <div class="col-md-2">
                             
                             <p> @if(pacco.StatoPacco != StatoPacco.CONSEGNATO){
-                                <p> Previsti 1-2 giorni</p>
+                                <p> Previsto 1 giorno</p>
                             }else{
-                                @pacco.Data
+                               <p html-sanitize> @pacco.Data </p> 
                             }</p> 
                         </div>
                     </div> 

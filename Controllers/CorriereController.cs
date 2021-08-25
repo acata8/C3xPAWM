@@ -114,7 +114,7 @@ namespace C3xPAWM.Controllers
             return View(vm);
         }
 
-
+        [Authorize(Policy = nameof(Policy.NuovaAttivita))]
         [HttpGet]
         public IActionResult Creazione()
         {
@@ -122,6 +122,7 @@ namespace C3xPAWM.Controllers
             return View(vm);
         }
 
+        [Authorize(Policy = nameof(Policy.NuovaAttivita))]
         [HttpPost]
         public async Task<IActionResult> CreazioneAsync(CorriereInputModel model)
         {
@@ -138,6 +139,8 @@ namespace C3xPAWM.Controllers
             return View(model);
         }
 
+
+        [Authorize(Policy = nameof(Policy.CorriereAttivo))]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -148,8 +151,8 @@ namespace C3xPAWM.Controllers
         }
 
 
-        [HttpGet]
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]
+        [HttpGet]
         public IActionResult Modifica(int id)
         {
             CorriereInputModel inputModel = corriereService.GetCorriere(id);

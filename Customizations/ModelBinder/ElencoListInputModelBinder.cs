@@ -23,9 +23,9 @@ namespace C3xPAWM.Customizations.ModelBinder
             var ascending = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Ascending").FirstValue);
             string orderby = bindingContext.ValueProvider.GetValue("OrderBy").FirstValue;
             var tipologia = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Tipologia").FirstValue);
-            var provincia = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Provincia").FirstValue);
-
-            var inputModel = new ElencoListInputModel(search, page, orderby, ascending, elencoOptions.CurrentValue.PerPage, elencoOptions.CurrentValue.Order, tipologia, provincia);
+            var provincia = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Citta").FirstValue);
+            var citta = Convert.ToBoolean(bindingContext.ValueProvider.GetValue("Citta").FirstValue);
+            var inputModel = new ElencoListInputModel(search, page, orderby, ascending, elencoOptions.CurrentValue.PerPage, elencoOptions.CurrentValue.Order, tipologia, citta);
             
             bindingContext.Result = ModelBindingResult.Success(inputModel);
 

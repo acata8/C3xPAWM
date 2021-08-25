@@ -20,8 +20,8 @@ namespace C3xPAWM.Models.InputModel
 
        public bool Tipologia { get; set; }
 
-        public bool Provincia { get; set; }
-        public ElencoListInputModel(string search, int page, string orderby, bool ascending, int limit, ElencoOrderOptions elencoOptions, bool tipologia = false, bool provincia = false)
+        public bool Citta { get; set; }
+        public ElencoListInputModel(string search, int page, string orderby, bool ascending, int limit, ElencoOrderOptions elencoOptions, bool tipologia = false, bool citta = false)
         {
             //Sanitizzazione
             if (!elencoOptions.Allow.Contains(orderby))
@@ -36,7 +36,7 @@ namespace C3xPAWM.Models.InputModel
             Offset = (Page - 1) * Limit;
             OrderBy = orderby;
             Tipologia = tipologia;
-            Provincia = provincia;
+            Citta = citta;
             Ascending = ascending;
         }
     }

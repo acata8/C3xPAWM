@@ -35,13 +35,13 @@
                             <div class="row">
                                
                                 <div class="col-md-4 mt-2">
-                                @pacco.Partenza
+                                <p html-sanitize>@pacco.Partenza </p>
                                 </div>
                                 <div class="col-md-4 mt-2">
-                                    @pacco.Destinazione
+                                   <p html-sanitize>@pacco.Destinazione</p> 
                                 </div>
                                 <div class="col-md-3 mt-2">
-                                    @pacco.Utente.FullName
+                                   <p html-sanitize>@pacco.Utente.FullName </p> 
                                 </div>
                                 <div class="col-md-1" >
                                     <button class="btn btn-outline-danger" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="fas fa-clipboard-check"></i></button>

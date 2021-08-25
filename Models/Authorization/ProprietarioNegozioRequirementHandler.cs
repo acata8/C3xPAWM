@@ -27,7 +27,7 @@ namespace C3xPAWM.Models.Authorization
             string proprietario = await service.GetNegozioIdAsync(NegozioId);
 
             isAuthorized = (userId == proprietario);
-
+            
             if (isAuthorized)
             {
                 context.Succeed(requirement);

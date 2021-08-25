@@ -9,13 +9,13 @@ namespace C3xPAWM.Models.Services.Application
     
     public interface INegoziService
     {
-        Task<NegozioViewModel> CreateNegoziAsync(NegozioCreateInputModel model);
+        Task<NegozioViewModel> CreateNegoziAsync(NegozioInputModel model);
         Task<ListViewModel<NegozioViewModel>> GetNegozi(ElencoListInputModel model, bool admin);
         
         ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input);
-        NegozioEditInputModel GetNegozioEdit(int id);
+        NegozioInputModel GetNegozioEdit(int id);
 
-        bool EditNegozio(NegozioEditInputModel model);
+        bool EditNegozio(NegozioInputModel model);
         PubblicitaViewModel CreatePubblicita(PubblicitaInputModel model);
         PubblicitaInputModel GetNegozioPubblicita(int id);
         Task<string> GetNegozioIdAsync(int negozioId);

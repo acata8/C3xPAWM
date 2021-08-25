@@ -61,18 +61,18 @@
         <li>
             <div class="row">
                 <div class="col-md-2">
-                    <p> @negozio.Nome</p>
+                    <p html-sanitize> @negozio.Nome</p>
                 </div>
                 
                 <div class="col-md-2">                            
-                    <p>@negozio.Citta</p>
+                    <p html-sanitize>@negozio.Citta</p>
                 </div>
                
-                <div class="col-md-2">
-                    @negozio.Proprietario
+                <div class="col-md-2" >
+                   <p html-sanitize> @negozio.Proprietario </p> 
                 </div>
                 <div class="col-md-3">
-                    @negozio.ProprietarioUser.Email
+                     <p html-sanitize>@negozio.ProprietarioUser.Email </p>
                 </div>
 
                 <div class="col-md-1">
@@ -91,7 +91,7 @@
                     }
                 </div>
                 <div class="col-md-1">
-                    @negozio.Token
+                    <p html-sanitize>@negozio.Token </p>
                 </div>
             </div> 
         </li>

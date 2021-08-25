@@ -58,6 +58,7 @@ namespace C3xPAWM.Controllers
 
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpGet]
         public IActionResult Pacco(int id)
         {
@@ -67,6 +68,7 @@ namespace C3xPAWM.Controllers
             return View(inputModel);
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpPost]
         public async Task<IActionResult> PaccoAsync(PaccoCreateInputModel model)
         {
@@ -100,17 +102,17 @@ namespace C3xPAWM.Controllers
             return Json(result);
         }
 
-
+        [Authorize(Policy = nameof(Policy.NuovaAttivita))]
         [HttpGet]
         public IActionResult Creazione()
         {
-            var vm = new NegozioCreateInputModel();
+            var vm = new NegozioInputModel();
             return View(vm);
         }
 
-
+        [Authorize(Policy = nameof(Policy.NuovaAttivita))]
         [HttpPost]
-        public async Task<IActionResult> CreazioneAsync(NegozioCreateInputModel model)
+        public async Task<IActionResult> CreazioneAsync(NegozioInputModel model)
         {
 
             if (ModelState.IsValid)
@@ -125,6 +127,7 @@ namespace C3xPAWM.Controllers
             return View(model);
         }
 
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -139,13 +142,13 @@ namespace C3xPAWM.Controllers
         [HttpGet]
         public IActionResult Modifica(int id)
         {
-            NegozioEditInputModel inputModel = negoziService.GetNegozioEdit(id);
+            NegozioInputModel inputModel = negoziService.GetNegozioEdit(id);
             return View(inputModel);
         }
 
         [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpPost]
-        public IActionResult Modifica(NegozioEditInputModel model)
+        public IActionResult Modifica(NegozioInputModel model)
         {
 
 
@@ -178,12 +181,23 @@ namespace C3xPAWM.Controllers
                 TempData["Success"] = "Salvataggio eseguito!";
                 return RedirectToAction(nameof(Index), new { id = model.NegozioId });
             }
-
+            
             logger.LogInformation("Informazioni inserite non valide, Pacco non creato");
             return View(model);
         }
 
+       public IActionResult TipologiaNonEsistente(string tipologia)
+        {
+            bool result = false;
 
+            Tipologia tipoInput;
+            
+            if(Enum.TryParse(tipologia, true, out tipoInput)){
+               result = true;
+            }
+                
+            return Json(result);
 
+        }
     }
 }

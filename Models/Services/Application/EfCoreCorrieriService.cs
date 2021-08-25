@@ -134,8 +134,6 @@ namespace C3xPAWM.Models.Services.Application
                 .ToList();
         }
 
-
-
         public List<PaccoViewModel> GetPacchiNonAssegnati()
         {
             return dbContext.Pacco
@@ -253,7 +251,7 @@ namespace C3xPAWM.Models.Services.Application
                        {
                            StatoPacco = p.StatoPacco
                        }).ToList()
-                   }).OrderBy(c => c.Nominativo);
+                   });
 
 
             queryLinq = queryLinq.Where(corriere => corriere.Nominativo.ToUpper().Contains(model.Search.ToUpper()));
@@ -263,6 +261,7 @@ namespace C3xPAWM.Models.Services.Application
             List<CorriereViewModel> corrieri = await queryLinq
             .Skip(offset)
             .Take(limit)
+            .OrderBy(c => c.Nominativo)
             .ToListAsync();
 
             ListViewModel<CorriereViewModel> listViewModel = new ListViewModel<CorriereViewModel>
