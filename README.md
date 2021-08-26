@@ -1,6 +1,7 @@
 # C3xPAWM
 
-##TECNOLOGIE UTILIZZATE
+##TECNOLOGIE UTILIZZATE 
+
 Per la creazione di un’applicazione web dinamica è stato utilizzato C#, tramite il framework ASP.NET Core 5.0 e basandosi sull’architettura MVC. 
 Nell’implementazione dell’interfaccia utente sono stati utilizzati:
 •	Bootstrap 4, per rendere fruibile l’applicazione sia in visualizzazione web sia su mobile;
