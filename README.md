@@ -60,6 +60,8 @@ Il commerciante avrà a disposizione una dashboard che permetterà di:
 - attivare una pubblicità;
 - creare un nuovo ordine;
 - visualizzare la cronologia di tutti ordini effettuati.
+
+
 Il corriere, a sua volta, tramite una dashboard avrà la possibilità di 
 - modificare i dati del servizio offerto;
 - visualizzare l’elenco degli ordini non assegnati a nessun corriere e prenderli in carico;
