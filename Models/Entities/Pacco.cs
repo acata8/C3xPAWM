@@ -40,6 +40,11 @@ namespace C3xPAWM.Models.Entities
             StatoPacco = StatoPacco.ASSEGNATO;
         }
 
+        public void RevocaCorriere(){
+            this.CorriereId = 6;
+            StatoPacco = StatoPacco.NON_ASSEGNATO;
+        }
+
         public void SettaConsegnato(){
             StatoPacco = StatoPacco.CONSEGNATO;
         }

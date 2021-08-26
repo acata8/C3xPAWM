@@ -11,7 +11,7 @@
             @using((Html.BeginForm("Users","Admin", FormMethod.Get)))
             {
                 <div class="input-group">
-                    <input class="form-control" type="text" name="search" placeholder="Cerca un utente per email" aria-label="Search" aria-describedby="searchAddon">
+                    <input class="form-control" type="text" name="search" placeholder="Cerca un utente per email" aria-label="Search" aria-describedby="searchAddon" value="@Model.Input.Search">
                     <div class="input-group-append">
                         <button class="input-group-text" title="Cerca"><i class="fas fa-filter"></i></button>
                     </div>
@@ -24,7 +24,7 @@
         <div class="col-md-4 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Users", "Admin", FormMethod.Get)))
             {
-                <button type="submit" class="btn btn btn-outline-danger" title="Ricarica"><i class="fas fa-reply"></i> Ricarica</button>
+                <button type="submit" class="btn btn btn-outline-danger" title="Ricarica"><i class="fas fa-redo-alt fa-flip-horizontal fa-spin" aria-hidden="true"></i> Ricarica</button>
             }
         </div>
     </div>

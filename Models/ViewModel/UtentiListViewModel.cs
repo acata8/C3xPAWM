@@ -20,18 +20,21 @@ namespace C3xPAWM.Models.ViewModel
 
         int IPagination.Limit => Input.Limit;
 
-        bool IPagination.Tipologia => throw new System.NotImplementedException();
+        bool IPagination.Tipologia => Input.Tipologia;
 
-        bool IPagination.Citta => throw new System.NotImplementedException();
+         bool IPagination.Citta => Input.Citta ;
 
-        string IPagination.OrderBy => throw new System.NotImplementedException();
 
-        bool IPagination.Ascending => throw new System.NotImplementedException();
+        string IPagination.OrderBy => Input.OrderBy;
 
-        bool IPagination.Nome => throw new System.NotImplementedException();
+        bool IPagination.Ascending => Input.Ascending;
 
-        string IPagination.Luogo => throw new System.NotImplementedException();
+         bool IPagination.Nome => Input.Nome;
 
-        bool IPagination.Paginare => throw new System.NotImplementedException(); 
+
+        string IPagination.Luogo => Input.Luogo;
+
+
+        bool IPagination.Paginare => Input.Paginare;
     }
 }

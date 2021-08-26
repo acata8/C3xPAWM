@@ -42,9 +42,13 @@ namespace C3xPAWM.Models.Services.Application
                        Revocato = u.Revocato
                    }).OrderBy(c => c.Ruolo);
 
-            queryLinq = queryLinq.Where(u => u.Email.Contains(model.Search.ToLower()));
+            if(!string.IsNullOrWhiteSpace(model.Search)){
+                queryLinq = queryLinq.Where(u => u.Email.ToLower().Equals(model.Search.ToLower()));
+            }
              
             var totale = queryLinq.Count();
+
+            model.Paginare = true;
 
             List<UtenteViewModel> utenti = await queryLinq
             .Skip(model.Offset)

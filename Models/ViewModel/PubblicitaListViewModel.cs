@@ -21,12 +21,15 @@ namespace C3xPAWM.Models.ViewModel
 
         bool IPagination.Tipologia => throw new System.NotImplementedException();
 
-        bool IPagination.Citta => throw new System.NotImplementedException();
+         bool IPagination.Citta => Input.Citta ;
 
-        bool IPagination.Nome => throw new System.NotImplementedException();
 
-        string IPagination.Luogo => throw new System.NotImplementedException();
+         bool IPagination.Nome => Input.Nome;
 
-        bool IPagination.Paginare => throw new System.NotImplementedException(); 
+
+        string IPagination.Luogo => Input.Luogo;
+
+
+        bool IPagination.Paginare => Input.Paginare;
     }
 }

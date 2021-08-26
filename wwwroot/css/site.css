@@ -162,9 +162,27 @@ fieldset {
   background-color: #eeeeee;
   border: #d12121 1px solid;
 }
+@keyframes blink {
+  
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+
+    25%, 75% {
+        opacity: 0;
+    }
+    
+  }
+
+  .blink {
+  animation: blink 4s infinite both;
+}
 
 legend {
   
   color: rgb(255,166,0);
   padding: 5px 10px;
 }
+
+
+

@@ -30,10 +30,15 @@ namespace C3xPAWM.Models.Services.Application
             var search = model.Search;
             var offset = model.Offset;
             var limit = model.Limit;
+            var email = accessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value.ToUpper();
+
+            List<PaccoViewModel> pacchi;
+
+
 
             IQueryable<PaccoViewModel> queryLinq = baseQuery
                    .AsNoTracking()
-                   .Where(n => n.Utente.Email == accessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value)
+                   .Where(n => n.Utente.NormalizedEmail.Equals(email))
                    .Select(p => new PaccoViewModel
                    {
                        Corriere = p.Corriere,
@@ -41,16 +46,31 @@ namespace C3xPAWM.Models.Services.Application
                        Negozio = p.Negozio,
                        Destinazione = p.Destinazione,
                        StatoPacco = p.StatoPacco
-                   });
+                   })
+                   .OrderBy(p => p.StatoPacco);
 
-            queryLinq = queryLinq.Where(negozio => negozio.Negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
+            
+
+            if(!string.IsNullOrWhiteSpace(search)){
+                queryLinq = queryLinq.Where(n => n.Negozio.Nome.ToLower().Contains(search.ToLower()));
+
+                 model.Paginare = false;
+
+                pacchi = await queryLinq.ToListAsync();
+
+            }else{
+                model.Paginare = true;
+
+                pacchi = await queryLinq
+                .Skip(offset)
+                .Take(limit)
+                
+                .ToListAsync();
+            }
+
             var totale = queryLinq.Count();
 
-            List<PaccoViewModel> pacchi = await queryLinq
-            .Skip(offset)
-            .Take(limit)
-            .ToListAsync();
-
+            
             ListViewModel<PaccoViewModel> listViewModel = new ListViewModel<PaccoViewModel>
             {
                 Elenco = pacchi,

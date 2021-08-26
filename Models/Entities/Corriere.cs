@@ -40,6 +40,7 @@ namespace C3xPAWM.Models.Entities
 
          public void Revoca(){
              this.Revocato = 1;
+             
          }
 
          public void Assegna(){

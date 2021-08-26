@@ -22,7 +22,7 @@
                 <div class="input-group">
                     <input id="inp3" class="form-control" type="text" name="search" placeholder="Cerca un negozio" value="@Model.Input.Search">
                     <div class="input-group-append">
-                        <button class="input-group-text" title="Cerca" name="Nome" value="True"><i class="fas fa-filter"></i></button>
+                        <button class="input-group-text" title="Cerca" name="Nome" value="True"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             }
@@ -36,7 +36,7 @@
                 <div class="input-group">
                     <input id="inp3" class="form-control" type="text" name="luogo" placeholder="Cerca una citt&agrave;"  value="@Model.Input.Luogo">
                     <div class="input-group-append">
-                        <button type="submit" class="input-group-text" title="Cerca" name="Citta" value="True"><i class="fas fa-filter"></i></button>
+                        <button type="submit" class="input-group-text" title="Cerca" name="Citta" value="True"><i class="fas fa-search-location"></i></button>
                     </div>
                 </div>
             }
@@ -48,7 +48,7 @@
         <div class="col-md-4 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Index", "Elenco", FormMethod.Get)))
             {
-                <button type="submit" class="btn btn btn-outline-danger" title="Ricarica"><i class="fas fa-reply"></i> Ricarica</button>
+                <a class="btn btn btn-outline-danger" title="Ricarica" asp-route-page="1" asp-controller="Elenco" asp-action="Index"><i class="fas fa-redo-alt fa-flip-horizontal fa-spin" aria-hidden="true"></i> Ricarica</a>
             }
             
         </div>
@@ -58,14 +58,13 @@
         <li>
             <div class="row">
                 <div class="col-md-3">
-                    <a asp-route-orderby="Nome" asp-route-page="@Model.Input.Page"  asp-route-search="@Model.Input.Search" asp-route-ascending="@(Model.Input.OrderBy == "Nome" ? !Model.Input.Ascending : true)">Nome @if(@Model.Input.OrderBy == "Nome"){    <i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                    <p class="font-weight-bold">Nome</p>
                 </div>
                 <div class="col-md-2">
-                    <a asp-route-orderby="Tipologia" asp-route-page="@Model.Input.Page"  asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){<i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
+                    <a asp-route-orderby="Tipologia" asp-route-citta="@Model.Input.Citta" asp-route-search="@Model.Input.Search" asp-route-nome="@Model.Input.Nome" asp-route-luogo="@Model.Input.Luogo" asp-route-page="@Model.Input.Page" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? !Model.Input.Ascending : true)">Tipo @if(@Model.Input.OrderBy == "Tipologia"){<i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
                 </div>
                 <div class="col-md-3">
-                    <a asp-route-orderby="Citta" asp-route-page="@Model.Input.Page" asp-route-citta="@Model.Input.Citta" asp-route-search="@Model.Input.Luogo"  asp-route-ascending="@(Model.Input.OrderBy == "Citta" ? !Model.Input.Ascending : true)">Citta (Provincia) @if(@Model.Input.OrderBy == "Citta"){<i class="fas fa-sort-alpha-@(Model.Input.Ascending ? "up":"down")"></i>}</a>
-                              
+                    <p class="font-weight-bold">Citt&agrave;</p>        
                 </div>
                 <div class="col-md-2">
                     <p class="font-weight-bold">Via</p>
@@ -100,10 +99,42 @@
     </ul>
 
 
-<vc:pagination model="@Model" />
+
 
  
 
 
 
+    @{
+    int pagine = (int) Math.Ceiling(Model.Negozi.TotaleElenco / (decimal) Model.Input.Limit);
+    int paginaCorrente = Model.Input.Page;
 
+    }
+
+        @if(Model.Negozi.TotaleElenco > 0){
+
+        <p class="mt-2" style="color: grey; "> Totale: @Model.Negozi.TotaleElenco</p>
+        }
+    
+
+
+        <nav class="nav justify-content-center mt-3" aria-label="Paginazione">
+            <ul class="pagination">
+                    @if(pagine > 1 && Model.Input.Paginare){
+
+                        @for(int p = Math.Max(1, paginaCorrente-4); p <= Math.Min(pagine ,paginaCorrente+4); p++){
+                            if(p == paginaCorrente){
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" asp-route-page="@p" asp-route-nome="@Model.Input.Nome" asp-route-ricerca="@Model.Input.Search" asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? Model.Input.Ascending : false)">@p <span class="sr-only">(current)</span></a>
+                                </li>
+                            }else{
+                                <li class="page-item" aria-current="page">
+                                    <a class="page-link" asp-route-page="@p" asp-route-nome="@Model.Input.Nome" asp-route-ricerca="@Model.Input.Search"   asp-route-orderby="Tipologia" asp-route-ascending="@(Model.Input.OrderBy == "Tipologia" ? Model.Input.Ascending : false)"> @p </a>
+                                </li>
+                            
+                        }
+                    }
+                }
+            </ul>     
+        </nav>
+    

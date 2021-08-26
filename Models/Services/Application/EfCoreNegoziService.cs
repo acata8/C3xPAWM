@@ -53,12 +53,10 @@ namespace C3xPAWM.Models.Services.Application
 
             baseQuery = (orderBy, ascending) switch
             {
-                ("Nome", true) => baseQuery.OrderBy(ordinamento => ordinamento.Nome),
-                ("Nome", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Nome),
+                ("Id", true) => baseQuery.OrderBy(ordinamento => ordinamento.NegozioId),
+                ("Id", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.NegozioId),
                 ("Tipologia", true) => baseQuery.OrderBy(ordinamento => ordinamento.Tipologia),
                 ("Tipologia", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Tipologia),
-                ("Citta", true) => baseQuery.OrderBy(ordinamento => ordinamento.Citta),
-                ("Citta", false) => baseQuery.OrderByDescending(ordinamento => ordinamento.Citta),
                 _ => baseQuery
             };
             
@@ -95,11 +93,12 @@ namespace C3xPAWM.Models.Services.Application
                             .ToListAsync();
             }
             else if(model.Nome){
-                queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Equals(model.Search.ToUpper()));
+                queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
                 
                 model.Paginare = false;
 
                 negozi = await queryLinq
+                            
                             .ToListAsync();
             }else{
                 
@@ -146,6 +145,8 @@ namespace C3xPAWM.Models.Services.Application
                         .ToList();
 
             var totale = queryLinq.Count();
+
+            
 
             List<PubblicitaViewModel> negozi = queryLinq
                     .Skip(offset)

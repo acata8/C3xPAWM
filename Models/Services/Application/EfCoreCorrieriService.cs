@@ -164,13 +164,13 @@ namespace C3xPAWM.Models.Services.Application
                 paccoScelto.SettaCorriere(corriere.CorriereId);
                 try
                 {
-                
                     dbContext.SaveChanges();
                     logger.LogInformation($"Pacco {model.PaccoId} assegnato al corriere {corriere.Nominativo}");
                     return true;
                 }
                 catch(Exception e)
                 {
+                    paccoScelto.RevocaCorriere();
                     logger.LogWarning($"Errore nell'assegnamento del pacco {model.PaccoId}. Eccezione {e}. ");
                     return false;
                 }
@@ -206,17 +206,20 @@ namespace C3xPAWM.Models.Services.Application
             {
 
                 Pacco paccoScelto = dbContext.Pacco.Where(p => p.PaccoId == model.PaccoId).First();
-                paccoScelto.SettaConsegnato();
+                
 
                 paccoScelto.dataConsegna = model.Data;
                 try
                 {
+                    
+                    paccoScelto.SettaConsegnato();
+                    logger.LogInformation($"Pacco {model.PaccoId} consegnato dal corriere {model.CorriereId}");
                     dbContext.SaveChanges();
-                    logger.LogInformation($"Pacco {model.PaccoId} consegnato dal corriere {model.Corriere.Nominativo}");
                     return true;
                 }
                 catch(Exception e)
-                {
+                {   
+                    paccoScelto.RevocaCorriere();
                     logger.LogWarning($"Errore nella consegna del pacco {model.PaccoId}. Eccezione {e}. ");
                     return false;
                 }
@@ -253,11 +256,15 @@ namespace C3xPAWM.Models.Services.Application
                        }).ToList()
                    });
 
+            if(!string.IsNullOrWhiteSpace(model.Search)){
 
-            queryLinq = queryLinq.Where(corriere => corriere.Nominativo.ToUpper().Contains(model.Search.ToUpper()));
+                queryLinq = queryLinq.Where(corriere => corriere.Nominativo.ToUpper().Equals(model.Search.ToUpper()));
+            }
 
             var totale = queryLinq.Count();
 
+             model.Paginare = true;
+             
             List<CorriereViewModel> corrieri = await queryLinq
             .Skip(offset)
             .Take(limit)

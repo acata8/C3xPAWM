@@ -179,10 +179,27 @@ namespace C3xPAWM.Controllers
 
         private void RevocaCorriere(ApplicationUser user)
         {
-            var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            corriere.Revoca();
-            user.Revocato = 1;
-            dbContext.SaveChanges();
+            try
+            {
+                dbContext.SaveChanges();
+                var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
+                corriere.Revoca();
+
+                var pacchi = dbContext.Pacco.Where(c => c.CorriereId == corriere.CorriereId).ToList();
+                foreach(var pacco in pacchi){
+                    pacco.RevocaCorriere();
+                }
+                user.Revocato = 1;
+                dbContext.SaveChanges();
+                logger.LogInformation($"Revoca corriere riuscita.");
+            }
+            catch (Exception e)
+            {
+                logger.LogWarning($"Revoca corriere fallita. Eccezione: {e}");
+                throw;
+            }
+            
+            
         }
 
         private void AssegnaNegozio(ApplicationUser user)

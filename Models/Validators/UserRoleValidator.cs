@@ -10,7 +10,7 @@ namespace C3xPAWM.Models.Validators
         {
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email utente obbligatoria").EmailAddress().WithMessage("Formato non valido!");
 
-            RuleFor(x => x.Ruolo).NotEmpty().WithMessage("Seleziona il ruolo");
+            
         }
     }
 }

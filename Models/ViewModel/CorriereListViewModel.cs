@@ -21,17 +21,20 @@ namespace C3xPAWM.Models.ViewModel
 
         bool IPagination.Tipologia => Input.Tipologia;
 
-        string IPagination.OrderBy => throw new System.NotImplementedException();
+        string IPagination.OrderBy => Input.OrderBy;
 
-        bool IPagination.Ascending => throw new System.NotImplementedException();
+        bool IPagination.Ascending => Input.Ascending;
 
-        bool IPagination.Citta => throw new System.NotImplementedException();
+         bool IPagination.Citta => Input.Citta ;
 
-        bool IPagination.Nome => throw new System.NotImplementedException();
 
-        string IPagination.Luogo => throw new System.NotImplementedException();
+         bool IPagination.Nome => Input.Nome;
 
-        bool IPagination.Paginare => throw new System.NotImplementedException(); 
+
+        string IPagination.Luogo => Input.Luogo;
+
+
+        bool IPagination.Paginare => Input.Paginare;
         
     }
 }
