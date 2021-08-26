@@ -28,13 +28,11 @@ namespace C3xPAWM.Controllers
         private readonly ICorriereService corriereService;
         private readonly ILogger<AdminController> logger;
 
-        public AdminController(UserManager<ApplicationUser> userManager, IAdminService adminService,
-         C3PAWMDbContext dbContext, INegoziService negoziService, ICorriereService corriereService, ILogger<AdminController> logger)
+        public AdminController(UserManager<ApplicationUser> userManager, IAdminService adminService, INegoziService negoziService, ICorriereService corriereService, ILogger<AdminController> logger)
         {
             this.logger = logger;
             this.corriereService = corriereService;
             this.negoziService = negoziService;
-            this.dbContext = dbContext;
             this.adminService = adminService;
             this.userManager = userManager;
         }
@@ -54,13 +52,13 @@ namespace C3xPAWM.Controllers
             return View(viewModel);
         }
 
-        #region GESTIONE
-
-
+        [HttpGet]
         public IActionResult Gestione()
         {
             return View();
         }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> AssegnaAsync(UserRoleInputModel model)
@@ -100,12 +98,12 @@ namespace C3xPAWM.Controllers
 
             if (model.Ruolo == Categoria.Commerciante)
             {
-                AssegnaNegozio(user);
+                adminService.AssegnaNegozio(user);
                 logger.LogInformation("Negozio assegnato");
             }
             else if (model.Ruolo == Categoria.Corriere)
             {
-                AssegnaCorriere(user);
+                adminService.AssegnaCorriere(user);
                 logger.LogInformation("Corriere assegnato");
             }
             user.Revocato = 0;
@@ -154,12 +152,12 @@ namespace C3xPAWM.Controllers
 
             if (model.Ruolo == Categoria.Commerciante)
             {
-                RevocaNegozio(user);
+                adminService.RevocaNegozio(user);
                 logger.LogInformation("Negozio revocato");
             }
             else if (model.Ruolo == Categoria.Corriere)
             {
-                RevocaCorriere(user);
+                adminService.RevocaCorriere(user);
                 logger.LogInformation("Corriere revocato");
             }
 
@@ -169,55 +167,8 @@ namespace C3xPAWM.Controllers
             return RedirectToAction(nameof(Gestione));
         }
 
-        private void RevocaNegozio(ApplicationUser user)
-        {
-            var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            negozio.Revoca();
-            user.Revocato = 1;
-            dbContext.SaveChanges();
-        }
-
-        private void RevocaCorriere(ApplicationUser user)
-        {
-            try
-            {
-                dbContext.SaveChanges();
-                var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-                corriere.Revoca();
-
-                var pacchi = dbContext.Pacco.Where(c => c.CorriereId == corriere.CorriereId).ToList();
-                foreach(var pacco in pacchi){
-                    pacco.RevocaCorriere();
-                }
-                user.Revocato = 1;
-                dbContext.SaveChanges();
-                logger.LogInformation($"Revoca corriere riuscita.");
-            }
-            catch (Exception e)
-            {
-                logger.LogWarning($"Revoca corriere fallita. Eccezione: {e}");
-                throw;
-            }
-            
-            
-        }
-
-        private void AssegnaNegozio(ApplicationUser user)
-        {
-            var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            negozio.Assegna();
-            user.Revocato = 0;
-            dbContext.SaveChanges();
-        }
-        private void AssegnaCorriere(ApplicationUser user)
-        {
-            var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            corriere.Assegna();
-            user.Revocato = 0;
-            dbContext.SaveChanges();
-        }
-        #endregion
-
+        
+        [HttpGet]
         public async Task<IActionResult> NegoziAsync(ElencoListInputModel input)
         {
             ListViewModel<NegozioViewModel> negozi = await negoziService.GetNegozi(input, true);
@@ -232,7 +183,7 @@ namespace C3xPAWM.Controllers
             return View(viewModel);
         }
 
-
+        [HttpGet]
         public async Task<IActionResult> CorrieriAsync(ElencoListInputModel input)
         {
             ListViewModel<CorriereViewModel> corrieri = await corriereService.GetCorriere(input, true);
