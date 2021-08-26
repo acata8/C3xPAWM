@@ -23,7 +23,6 @@ namespace C3xPAWM.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IAdminService adminService;
-        private readonly C3PAWMDbContext dbContext;
         private readonly INegoziService negoziService;
         private readonly ICorriereService corriereService;
         private readonly ILogger<AdminController> logger;
@@ -74,7 +73,7 @@ namespace C3xPAWM.Controllers
             if (user == null)
             {
                 TempData["Error"] = "Non corrisponde ad nessun utente";
-                logger.LogWarning("User non trovato");
+                logger.LogWarning($"{user.Email} non trovato ");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -84,7 +83,7 @@ namespace C3xPAWM.Controllers
             if (claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
             {
                 TempData["Error"] = "Ruolo già assegnato all'utente";
-                logger.LogWarning("Ruolo gia' assegnato");
+                logger.LogWarning($"Ruolo gia' assegnato a {user.Email}");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -92,7 +91,7 @@ namespace C3xPAWM.Controllers
             if (!result.Succeeded)
             {
                 TempData["Error"] = "Operazione fallita";
-                logger.LogWarning("Assegnazione ruolo fallita");
+                logger.LogWarning($"Assegnazione ruolo a {user.Email} fallita, {result.Errors}");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -120,7 +119,7 @@ namespace C3xPAWM.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Inserimento non valido";
-                logger.LogWarning("Informazioni inserite non valide,");
+                logger.LogWarning("Informazioni inserite non valide");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -128,7 +127,7 @@ namespace C3xPAWM.Controllers
             if (user == null)
             {
                 TempData["Error"] = "Non corrisponde ad nessun utente";
-                logger.LogWarning("User non trovato");
+                logger.LogWarning($"{user.Email} non trovato");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -138,7 +137,7 @@ namespace C3xPAWM.Controllers
             if (!claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
             {
                 TempData["Error"] = "Ruolo non assegnato all'utente";
-                logger.LogWarning("Ruolo non assegnato all'utente");
+                logger.LogWarning($"Ruolo non assegnato a {user.Email}");
                 return RedirectToAction(nameof(Gestione));
             }
 
@@ -146,7 +145,7 @@ namespace C3xPAWM.Controllers
             if (!result.Succeeded)
             {
                 TempData["Error"] = "Operazione fallita";
-                logger.LogWarning("Assegnamento fallito");
+                logger.LogWarning($"Assegnamento del ruolo a {user.Email} fallito, {result.Errors}");
                 return RedirectToAction(nameof(Gestione));
             }
 

@@ -58,6 +58,7 @@ namespace C3xPAWM.Models.Services.Application
             List<UtenteViewModel> utenti = await queryLinq
             .Skip(model.Offset)
             .Take(model.Limit)
+            .OrderBy(u => u.Nome)
             .ToListAsync();
 
             ListViewModel<UtenteViewModel> listViewModel = new ListViewModel<UtenteViewModel>

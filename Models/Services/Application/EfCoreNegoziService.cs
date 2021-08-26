@@ -12,6 +12,7 @@ using C3xPAWM.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -103,13 +104,13 @@ namespace C3xPAWM.Models.Services.Application
             }else{
                 
                 model.Paginare = true;
-
                 negozi = await queryLinq
                             .Skip(offset)
                             .Take(limit)
+                            
                             .ToListAsync();
+                           
 
-                
             }
             
             var totale = queryLinq.Count();
@@ -173,9 +174,9 @@ namespace C3xPAWM.Models.Services.Application
 
             var negozio = new Negozio(model.Nome, model.Telefono, model.Provincia.ToUpper(), model.Regione,
              model.Citta, model.Via, model.Tipologia.ToString(), proprietario, proprietarioId);
-            dbContext.Add(negozio);
             try
             {
+                dbContext.Add(negozio);
                 dbContext.SaveChanges();
                 logger.LogInformation($"Negozio creato. {negozio.ToString()}");
             }
@@ -185,9 +186,10 @@ namespace C3xPAWM.Models.Services.Application
                 throw;
             }
 
+            var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
+
             try
-            {
-                var userActive = await userManager.GetUserAsync(accessor.HttpContext.User);
+            {    
                 userActive.Proprietario = 1;
                 userActive.IdRuolo = negozio.NegozioId;
                 IdentityResult result = await userManager.UpdateAsync(userActive);
@@ -195,7 +197,9 @@ namespace C3xPAWM.Models.Services.Application
             }
             catch (NullReferenceException e)
             {
-            logger.LogWarning($"Errore nell'aggiornamento del negozio. Eccezione {e}.");
+                 userActive.Proprietario = 0;
+                 userActive.IdRuolo = 0;
+                logger.LogWarning($"Errore nell'aggiornamento del negozio. Eccezione {e}.");
                 throw;
             }
 
@@ -210,6 +214,7 @@ namespace C3xPAWM.Models.Services.Application
 
         public NegozioInputModel GetNegozioEdit(int id)
         {
+            
             return dbContext.Negozi.Where(n => n.NegozioId == id)
                     .Select(negozio => new NegozioInputModel
                     {
@@ -292,6 +297,7 @@ namespace C3xPAWM.Models.Services.Application
         public Task<string> GetNegozioIdAsync(int negozioId)
         {
             return dbContext.Negozi
+                .AsNoTracking()
                     .Where(n => n.NegozioId == negozioId)
                     .Select(n => n.ProprietarioId)
                     .FirstOrDefaultAsync();

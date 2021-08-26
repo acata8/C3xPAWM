@@ -25,6 +25,7 @@ namespace C3xPAWM.Models.Services.Infrastructure
 
             base.OnModelCreating(modelBuilder);
             
+
             modelBuilder.Entity<Negozio>(entity => {
                 entity.ToTable("Negozi");
                 entity.HasKey(negozio => negozio.NegozioId);

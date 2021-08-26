@@ -42,6 +42,7 @@ namespace C3xPAWM.Controllers
             vm.NegozioId = id;
             vm.Negozio = negoziService.GetNegozio(id);
 
+            
             return View(vm);
         }
 

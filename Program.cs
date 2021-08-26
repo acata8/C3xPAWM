@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace C3xPAWM
 {
@@ -14,20 +16,17 @@ namespace C3xPAWM
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-
-            
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
                
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .UseSerilog(((webHostBuilderContext, loggerConfiguration) => 
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
-                
+                    loggerConfiguration.ReadFrom.Configuration(webHostBuilderContext.Configuration);
+                }));
 
-            
     }
 }

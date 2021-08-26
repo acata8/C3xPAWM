@@ -1,35 +1,54 @@
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using C3xPAWM.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace C3xPAWM.Models.Authorization
 {
     public class CreazioneAttivitaRequirementHandler : AuthorizationHandler<CreazioneAttivitaRequirement>
     {
-        public CreazioneAttivitaRequirementHandler()
+        private readonly ILogger<CreazioneAttivitaRequirementHandler> logger;
+        private readonly UserManager<ApplicationUser> userManager;
+        public CreazioneAttivitaRequirementHandler(ILogger<CreazioneAttivitaRequirementHandler> logger, UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
+            this.logger = logger;
             
         }
+        public UserManager<ApplicationUser> UserManager { get; }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CreazioneAttivitaRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CreazioneAttivitaRequirement requirement)
         {
+
             bool isAuthorized = false;
 
-            var proprietario = context.User.FindFirst("Proprietario").Value;
-            
-        
-            isAuthorized = proprietario.Equals("0");
-            
-            if (isAuthorized)
+
+            if (context.User != null)
             {
-                context.Succeed(requirement);
+                var proprietario = context.User.FindFirst("Proprietario").Value;
+                var user = context.User.FindFirst(ClaimTypes.Email).Value;
+                
+                
+                isAuthorized = (proprietario.Equals("0") && (context.User.IsInRole("Commerciante") || context.User.IsInRole("Corriere")));
+
+                if (isAuthorized)
+                {
+                    context.Succeed(requirement);
+                }
+                else
+                {
+                    context.Fail();
+                    logger.LogWarning($"{user} respinto accesso a creazione attivita'");
+                }
             }
             else
             {
-                context.Fail();
+                logger.LogWarning($"User non loggato. respinto accesso a creazione attivita'");
             }
 
-            return Task.CompletedTask;
         }
     }
 }

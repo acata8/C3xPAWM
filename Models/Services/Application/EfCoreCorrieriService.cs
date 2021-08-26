@@ -254,7 +254,7 @@ namespace C3xPAWM.Models.Services.Application
                        {
                            StatoPacco = p.StatoPacco
                        }).ToList()
-                   });
+                   }).OrderBy(c => c.Nominativo);
 
             if(!string.IsNullOrWhiteSpace(model.Search)){
 
@@ -268,7 +268,7 @@ namespace C3xPAWM.Models.Services.Application
             List<CorriereViewModel> corrieri = await queryLinq
             .Skip(offset)
             .Take(limit)
-            .OrderBy(c => c.Nominativo)
+            
             .ToListAsync();
 
             ListViewModel<CorriereViewModel> listViewModel = new ListViewModel<CorriereViewModel>
