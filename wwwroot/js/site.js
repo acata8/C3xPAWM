@@ -18,10 +18,10 @@ function addStricky() {
 }
 
 
-$("#alert").fadeTo(2000, 500).slideUp(500, function(){
-  $("#alert").slideUp(500);
+$("#alert").fadeTo(3800, 1500).slideUp(500, function(){
+  $("#alert").slideUp(5000);
 });
 
-
-
-      
+$('form').submit(function() {
+  $(this).prop('disabled',true);
+});

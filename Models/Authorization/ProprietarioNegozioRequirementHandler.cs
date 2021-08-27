@@ -23,12 +23,16 @@ namespace C3xPAWM.Models.Authorization
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, ProprietarioNegozioRequirement requirement)
         {
             bool isAuthorized = false;
-
+            
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            int NegozioId = Convert.ToInt32(accessor.HttpContext.Request.RouteValues["id"]);
+            int NegozioId = 0;
+            string proprietario = "";
+            
+            int.TryParse(accessor.HttpContext.Request.RouteValues["id"].ToString(), out NegozioId);
+            proprietario = await service.GetNegozioIdAsync(NegozioId);
+                    
             var user = context.User.FindFirst(ClaimTypes.Email).Value;
-            string proprietario = await service.GetNegozioIdAsync(NegozioId);
-
+            
             isAuthorized = (userId == proprietario);
 
             if (isAuthorized)
@@ -38,7 +42,7 @@ namespace C3xPAWM.Models.Authorization
             else
             {
                 context.Fail();
-                logger.LogWarning($"{user} accesso negato a negozio {NegozioId}");
+                
             }
         }
     }
