@@ -1,3 +1,5 @@
+@using System.Security.Claims
+@inject UserManager<ApplicationUser> userManager
 @model UtenteListViewModel
 
 @{
@@ -63,7 +65,7 @@
                 </div>
                 
                 <div class="col-md-2">
-                    <p class="font-weight-bold">Ruolo di registrazione</p>
+                    <p class="font-weight-bold">Ruolo attivo</p>
                 </div>
                 <div class="col-md-2">
                     <p class="font-weight-bold">Attivit&agrave; aperta</p>
@@ -76,21 +78,30 @@
                 <div class="row">
                     
                     <div class="col-md-6">             
-                        <p  >@utente.Email</p>           
+                        <p  >@utente.Utente.Email</p>           
                     </div>
                     
                     <div class="col-md-2">
-                        <p  >@utente.Nome</p>
+                        <p >@utente.Utente.FullName</p>
                     </div>
                     
                     <div class="col-md-2">
-                        <p  >@utente.Ruolo</p>
+                         @{
+                            IList<Claim> claims = await userManager.GetClaimsAsync(@utente.Utente);
+                            var ruoloAttivo = claims[0].Value;
+
+                            if(claims.Count > 1){
+                                ruoloAttivo = claims[1].Value;
+                            }    
+
+                        } 
+                        <p> @ruoloAttivo </p>
                     </div>
                     <div class="col-md-2">
                         @{
-                            @if(utente.Revocato == 0 && utente.Proprietario == 1 ){
+                            @if(utente.Utente.Revocato == 0 && utente.Utente.Proprietario == 1 ){
                                 <i style="color: green; "class="far fa-check-circle"></i>
-                            }else if(utente.Ruolo == "Commerciante" || utente.Ruolo == "Corriere" || (utente.Revocato == 1 && utente.Proprietario == 1)){
+                            }else if(utente.Ruolo == "Commerciante" || utente.Ruolo == "Corriere" || (utente.Utente.Revocato == 1 && utente.Utente.Proprietario == 1)){
                                 <i style="color: red; "class="fas fa-times-circle "></i>
                             }else if(utente.Ruolo == "Administrator"){
                                 <i style="color: gold; "class="fas fas fa-star"></i>

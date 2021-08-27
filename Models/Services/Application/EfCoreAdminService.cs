@@ -43,7 +43,8 @@ namespace C3xPAWM.Models.Services.Application
                        Ruolo = u.Ruolo,
                        Nome = u.FullName,
                        Proprietario = u.Proprietario,
-                       Revocato = u.Revocato
+                       Revocato = u.Revocato,
+                       Utente = u
                    });
 
             if (!string.IsNullOrWhiteSpace(model.Search))
@@ -71,22 +72,44 @@ namespace C3xPAWM.Models.Services.Application
         }
         public void RevocaNegozio(ApplicationUser user)
         {
+
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
+
+
+            if(user.Proprietario == 1 && negozio != null){
+
+                try
+                {
+                    negozio.Revoca();
+                    user.Revocato = 1;
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Revoca negozio riuscita.");
+                }
+                catch (System.Exception)
+                {
+                    negozio.Assegna();
+                    user.Revocato = 0;
+                    logger.LogWarning($"Revoca negozio fallita.");
+                    throw;
+                }
+            }else{
+                try
+                {
+                    user.Revocato = 1;
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Revoca negozio riuscita.");
+                }
+                catch (System.Exception)
+                {
+                    user.Revocato = 0;
+                    logger.LogWarning($"Revoca negozio fallita.");
+                    throw;
+                }
+
+
+            }
             
-            try
-            {
-                negozio.Revoca();
-                user.Revocato = 1;
-                dbContext.SaveChanges();
-                logger.LogInformation($"Revoca negozio riuscita.");
-            }
-            catch (System.Exception)
-            {
-                negozio.Assegna();
-                user.Revocato = 0;
-                logger.LogWarning($"Revoca negozio fallita.");
-                throw;
-            }
+            
             
         }
 
@@ -94,28 +117,44 @@ namespace C3xPAWM.Models.Services.Application
         {
 
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            corriere.Revoca();
-            var pacchi = dbContext.Pacco.Where(c => c.CorriereId == corriere.CorriereId).ToList();
-            foreach (var pacco in pacchi)
-            {
-                pacco.RevocaCorriere();
-            }
-            user.Revocato = 1;
-            try
-            {
-                dbContext.SaveChanges();
-                logger.LogInformation($"Revoca corriere riuscita.");
-            }
-            catch (Exception e)
-            {
-                corriere.Assegna();
+            if(user.Proprietario == 1 && corriere != null){
+                corriere.Revoca();
+                var pacchi = dbContext.Pacco.Where(c => c.CorriereId == corriere.CorriereId).ToList();
                 foreach (var pacco in pacchi)
                 {
-                    pacco.SettaCorriere(corriere.CorriereId);
-
+                    pacco.RevocaCorriere();
                 }
-                logger.LogWarning($"Revoca corriere fallita. Eccezione: {e}");
-                throw;
+                user.Revocato = 1;
+                try
+                {
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Revoca corriere riuscita.");
+                }
+                catch (Exception e)
+                {
+                    corriere.Assegna();
+                    user.Revocato = 0;
+                    foreach (var pacco in pacchi)
+                    {
+                        pacco.SettaCorriere(corriere.CorriereId);
+
+                    }
+                    logger.LogWarning($"Revoca corriere fallita. Eccezione: {e}");
+                    throw;
+                }
+            }else{
+                user.Revocato = 1;
+                try
+                {
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Revoca corriere riuscita.");
+                }
+                catch (Exception e)
+                {
+                    user.Revocato = 0;
+                    logger.LogWarning($"Revoca corriere fallita. Eccezione: {e}");
+                    throw;
+                }
             }
 
 
@@ -123,39 +162,70 @@ namespace C3xPAWM.Models.Services.Application
         public void AssegnaNegozio(ApplicationUser user)
         {
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            negozio.Assegna();
-            user.Revocato = 0;
-            try
-            {
+
+            if(user.Proprietario == 1 && negozio != null){
+                negozio.Assegna();
+                user.Revocato = 0;
+                try
+                {
+                    
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Riassegnamento negozio riuscito.");
+                }
+                catch (Exception)
+                {
+                    negozio.Revoca();
+                    user.Revocato = 1;
+                    logger.LogInformation($"Riassegnamento negozio fallito.");
+                    throw;
+                }
+            }else{
                 
-                dbContext.SaveChanges();
-                logger.LogInformation($"Riassegnamento negozio riuscito.");
+                try
+                {
+                    user.Revocato = 0;
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Riassegnamento negozio riuscito.");
+                }
+                catch (Exception)
+                {
+                    user.Revocato = 1;
+                    logger.LogInformation($"Riassegnamento negozio fallito.");
+                    throw;
+                }
             }
-            catch (Exception)
-            {
-                negozio.Revoca();
-                user.Revocato = 1;
-                logger.LogInformation($"Riassegnamento negozio fallito.");
-                throw;
-            }
-            
         }
         public void AssegnaCorriere(ApplicationUser user)
         {
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            corriere.Assegna();
-            user.Revocato = 0;
-            try
-            {
-                dbContext.SaveChanges();
-                logger.LogInformation($"Riassegnamento corriere riuscito.");
-            }
-            catch (System.Exception)
-            {
-                corriere.Revoca();
-                user.Revocato = 1;
-                logger.LogInformation($"Riassegnamento corriere fallito.");
-                throw;
+            if(user.Proprietario == 1 && corriere != null){
+                corriere.Assegna();
+                user.Revocato = 0;
+                try
+                {
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Riassegnamento corriere riuscito.");
+                }
+                catch (System.Exception)
+                {
+                    corriere.Revoca();
+                    user.Revocato = 1;
+                    logger.LogInformation($"Riassegnamento corriere fallito.");
+                    throw;
+                }
+            }else{
+                user.Revocato = 0;
+                try
+                {
+                    dbContext.SaveChanges();
+                    logger.LogInformation($"Riassegnamento corriere riuscito.");
+                }
+                catch (System.Exception)
+                {
+                                        user.Revocato = 1;
+                    logger.LogInformation($"Riassegnamento corriere fallito.");
+                    throw;
+                }
             }
         }
 

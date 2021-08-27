@@ -9,5 +9,6 @@ namespace C3xPAWM.Models.ViewModel
         public int Proprietario { get; set; }
         public string Nome {get; set;}
         public string Ruolo {get; set;}
+        public ApplicationUser Utente { get; set; }
     }
 }

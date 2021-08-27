@@ -78,6 +78,12 @@ namespace C3xPAWM.Controllers
             }
 
             IList<Claim> claims = await userManager.GetClaimsAsync(user);
+            
+            if(claims.Count() > 1 && !claims[1].Value.ToString().ToLower().Equals(model.Ruolo.ToString().ToLower())){
+                TempData["Error"] = $"Ruolo attivo dell'utente: {claims[1].Value.ToString()}, revocare {model.Ruolo} per assegnare";
+                logger.LogWarning($"Ruolo attivo dell'utente: {claims[1].Value}, impossibile assegnare {model.Ruolo}");
+                return RedirectToAction(nameof(Gestione));
+            }
 
             Claim roleClaim = new(ClaimTypes.Role, model.Ruolo.ToString());
             if (claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
@@ -132,6 +138,7 @@ namespace C3xPAWM.Controllers
             }
 
             IList<Claim> claims = await userManager.GetClaimsAsync(user);
+
 
             Claim roleClaim = new(ClaimTypes.Role, model.Ruolo.ToString());
             if (!claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
