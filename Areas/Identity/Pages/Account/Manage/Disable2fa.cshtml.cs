@@ -56,7 +56,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Errore inaspettato per disabilitare 2FA all'account ID '{_userManager.GetUserId(User)}'.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
+            _logger.LogInformation("User con ID '{UserId}' ha disabilitato 2fa.", _userManager.GetUserId(User));
             StatusMessage = "2fa è stato disabilitato. Puoi riabilitare 2fa quando imposti un app di autenticazione";
             return RedirectToPage("./TwoFactorAuthentication");
         }

@@ -99,7 +99,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
                 {
                     Claim baseClaim = new (ClaimTypes.Role, "Utente");
                     IdentityResult baseRoleAssignement = await _userManager.AddClaimAsync(user, baseClaim);
-                    _logger.LogInformation("User created a new account with password. Role: UTENTE");
+                    _logger.LogInformation("Creato nuovo user con password.Ruolo iniziale: UTENTE");
 
                     if(user.Email.Equals(_userOptions.CurrentValue.AssignAdministratorRoleOnRegistration, StringComparison.OrdinalIgnoreCase)){
                         Claim claim = new (ClaimTypes.Role, "Administrator");
@@ -117,7 +117,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
                         if(!roleAssignement.Succeeded){
                             _logger.LogWarning($"Ruolo di {x} non assegnato");
                         }
-                        _logger.LogInformation($"Loggato come {x}");
+                        _logger.LogInformation($"Ruolo assegnato: {x}. Loggato. ");
                     }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

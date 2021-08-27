@@ -76,7 +76,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.SignOutAsync();
 
-            _logger.LogInformation("Account con ID '{UserId}' deleted themselves.", userId);
+            _logger.LogInformation("Account con ID '{UserId}' eliminato", userId);
 
             return Redirect("~/");
         }

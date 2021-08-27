@@ -65,8 +65,8 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             RecoveryCodes = recoveryCodes.ToArray();
 
-            _logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes.", userId);
-            StatusMessage = "Hai generato nuovi codici di ripristino.";
+            _logger.LogInformation("User con ID '{UserId}' ha generato nuovi codici per 2FA.", userId);
+            StatusMessage = "Hai generato nuovi codici di recupero.";
             return RedirectToPage("./ShowRecoveryCodes");
         }
     }

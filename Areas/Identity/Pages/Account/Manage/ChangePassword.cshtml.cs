@@ -92,7 +92,7 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
+            _logger.LogInformation("Password aggiornata con successo.");
             StatusMessage = "Password aggiornata con successo.";
 
             return RedirectToPage();

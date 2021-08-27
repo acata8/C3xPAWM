@@ -71,18 +71,18 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", user.Id);
+                _logger.LogInformation("User con ID '{UserId}' loggato con codice di recupero.", user.Id);
                 return LocalRedirect(returnUrl ?? Url.Content("~/"));
             }
             if (result.IsLockedOut)
             {
-                _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
+                _logger.LogWarning("User con ID '{UserId}' account bloccato.", user.Id);
                 return RedirectToPage("./Lockout");
             }
             else
             {
-                _logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
+                _logger.LogWarning("Codice di recupero inserito non valido per user con ID '{UserId}' ", user.Id);
+                ModelState.AddModelError(string.Empty, "Codice di recupero non valido.");
                 return Page();
             }
         }

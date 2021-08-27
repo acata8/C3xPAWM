@@ -85,12 +85,12 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             }
             else if (result.IsLockedOut)
             {
-                _logger.LogWarning("Utente con ID '{UserId}' account locked out.", user.Id);
+                _logger.LogWarning("Utente con ID '{UserId}' account bloccato.", user.Id);
                 return RedirectToPage("./Lockout");
             }
             else
             {
-                _logger.LogWarning("Invalid authenticator code entered for Utente con ID '{UserId}'.", user.Id);
+                _logger.LogWarning("Autenticazione non valida per Utente con ID '{UserId}'.", user.Id);
                 ModelState.AddModelError(string.Empty, "Codice autenticatore non valido.");
                 return Page();
             }
