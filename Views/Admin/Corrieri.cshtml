@@ -56,10 +56,10 @@
         @foreach(var corriere in Model.Corrieri.Elenco){
         <li>
             <div class="row">
-                <div class="col-md-4"> <p html-sanitize> @corriere.Nominativo</p>  </div>
-                <div class="col-md-2"> <p html-sanitize>@corriere.Proprietario</p>  </div>
-                <div class="col-md-2"> <p html-sanitize> @corriere.Telefono </p>  </div>
-                <div class="col-md-2"> <p html-sanitize> @corriere.Pacchi.Count() </p>  </div>
+                <div class="col-md-4"> <p  > @corriere.Nominativo</p>  </div>
+                <div class="col-md-2"> <p  >@corriere.Proprietario</p>  </div>
+                <div class="col-md-2"> <p  > @corriere.Telefono </p>  </div>
+                <div class="col-md-2"> <p  > @corriere.Pacchi.Count() </p>  </div>
                 <div class="col-md-1">
                     @if(corriere.Revocato == 1){
                         <i class="far fa-check-circle" style="color: green;"></i>

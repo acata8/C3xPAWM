@@ -144,7 +144,6 @@ namespace C3xPAWM
                 app.UseExceptionHandler("/Error");
                
             }
-            
 
             app.UseStaticFiles();
             app.UseRouting();
