@@ -24,7 +24,6 @@ Ulteriori servizi e librerie utilizzate:
 -	Asp.Net Core Identity, API che supporta le funzionalità legate al login come gestione utenti, gestione password, ruoli, claims, token e altro;
 -	MailKit, libreria per il servizio di mailing;
 -	FluentValidation, libreria per validazione degli input;
--	HtmlSanitizer, libreria per evitare XSS;
 -	Mailtrap.io, come SMTP per il testing del servizio di mailing;
 -	Serilog.AspNetCore, libreria per il logging
   - Serilog.Sinks.Console, per scrivere il contenuto su Console 
