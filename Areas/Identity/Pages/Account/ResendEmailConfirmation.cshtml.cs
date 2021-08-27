@@ -65,7 +65,8 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "conferma la tua email",
-                $"Per favore conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'> cliccando qui</a>.");
+                $"Per favore conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'> cliccando qui</a>.  <br> "+@"
+                     Il team di C3.");
 
             ModelState.AddModelError(string.Empty, "Email di verifica inviata. Si prega di controllare la tua email.");
             return Page();

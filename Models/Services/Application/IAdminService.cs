@@ -9,8 +9,6 @@ namespace C3xPAWM.Models.Services.Application
     public interface IAdminService
     {   
 
-        Task<IList<ApplicationUser>> GetUtentiAsync(string ruolo);
-        
         Task<ListViewModel<UtenteViewModel>> GetUtenteEmailAsync(ElencoListInputModel model);
         void AssegnaCorriere(ApplicationUser user);
         void AssegnaNegozio(ApplicationUser user);

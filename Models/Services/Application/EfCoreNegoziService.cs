@@ -88,19 +88,13 @@ namespace C3xPAWM.Models.Services.Application
             
             if(citta){
                 queryLinq = queryLinq.Where(negozio => negozio.Citta.ToUpper().Equals(model.Luogo.ToUpper()));
-                    
                     model.Paginare = false;
-                    negozi = await queryLinq
-                            .ToListAsync();
+                    negozi = await queryLinq.ToListAsync();
             }
             else if(model.Nome){
                 queryLinq = queryLinq.Where(negozio => negozio.Nome.ToUpper().Contains(model.Search.ToUpper()));
-                
                 model.Paginare = false;
-
-                negozi = await queryLinq
-                            
-                            .ToListAsync();
+                negozi = await queryLinq.ToListAsync();
             }else{
                 
                 model.Paginare = true;

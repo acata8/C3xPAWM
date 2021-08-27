@@ -103,7 +103,8 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Conferma la email",
-                    $"Conferma la tua email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.");
+                    $"Conferma la tua email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.  <br> "+@"
+                    Il team di C3.");
 
                 StatusMessage = "Link di conferma per cambio email spedito. Perfavore controlla la tua posta.";
                 return RedirectToPage();
@@ -139,7 +140,8 @@ namespace C3xPAWM.Areas.Identity.Pages.Account.Manage
             await _emailSender.SendEmailAsync(
                 email,
                 "Conferma la tua email",
-                $"Conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.");
+                $"Conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>. <br> "+@"
+                    Il team di C3.");
 
             StatusMessage = "Email di verifica mandata. Perfavore controlla la tua email.";
             return RedirectToPage();

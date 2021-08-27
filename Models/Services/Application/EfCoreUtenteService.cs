@@ -31,10 +31,8 @@ namespace C3xPAWM.Models.Services.Application
             var offset = model.Offset;
             var limit = model.Limit;
             var email = accessor.HttpContext.User.FindFirst(ClaimTypes.Email).Value.ToUpper();
-
+            
             List<PaccoViewModel> pacchi;
-
-
 
             IQueryable<PaccoViewModel> queryLinq = baseQuery
                    .AsNoTracking()

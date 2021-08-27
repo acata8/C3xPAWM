@@ -2,6 +2,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Entities;
+using C3xPAWM.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -20,19 +21,18 @@ namespace C3xPAWM.Models.Authorization
         }
         public UserManager<ApplicationUser> UserManager { get; }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CreazioneAttivitaRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CreazioneAttivitaRequirement requirement)
         {
-
             bool isAuthorized = false;
 
 
-            if (context.User != null)
+            if (context.User.IsInRole(nameof(Categoria.Utente)))
             {
                 var proprietario = context.User.FindFirst("Proprietario").Value;
                 var user = context.User.FindFirst(ClaimTypes.Email).Value;
                 
                 
-                isAuthorized = (proprietario.Equals("0") && (context.User.IsInRole("Commerciante") || context.User.IsInRole("Corriere")));
+                isAuthorized = proprietario.Equals("0") && (context.User.IsInRole("Commerciante") || context.User.IsInRole("Corriere"));
 
                 if (isAuthorized)
                 {
@@ -49,6 +49,7 @@ namespace C3xPAWM.Models.Authorization
                 logger.LogWarning($"User non loggato. respinto accesso a creazione attivita'");
             }
 
+            return Task.CompletedTask;
         }
     }
 }

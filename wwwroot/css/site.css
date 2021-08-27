@@ -133,10 +133,10 @@ author{
 }
 
 .elenco li:nth-of-type(2n+1){
-  background-color: rgb(229, 230, 231);
+  background-color: rgb(185, 196, 214);
 }
 .elenco li:not(:last-child){
-  border-bottom: grey 1px solid;
+  border-bottom: rgb(128, 128, 128) 1px solid;
 }
 
 .validation-summary-errors{
@@ -184,5 +184,16 @@ legend {
   padding: 5px 10px;
 }
 
+
+
+.alertstyle{
+  position:absolute;
+  right:5%;
+  top:12%;
+  z-index:10000;
+  opacity:0.9;
+  width: fit-content;
+  height: fit-content;
+}
 
 

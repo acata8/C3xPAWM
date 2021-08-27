@@ -44,7 +44,7 @@ namespace C3xPAWM.Models.Services.Application
                        Nome = u.FullName,
                        Proprietario = u.Proprietario,
                        Revocato = u.Revocato
-                   }).OrderBy(c => c.Ruolo);
+                   });
 
             if (!string.IsNullOrWhiteSpace(model.Search))
             {
@@ -58,7 +58,7 @@ namespace C3xPAWM.Models.Services.Application
             List<UtenteViewModel> utenti = await queryLinq
             .Skip(model.Offset)
             .Take(model.Limit)
-            .OrderBy(u => u.Nome)
+            .OrderBy(u => u.Ruolo)
             .ToListAsync();
 
             ListViewModel<UtenteViewModel> listViewModel = new ListViewModel<UtenteViewModel>
@@ -69,16 +69,6 @@ namespace C3xPAWM.Models.Services.Application
 
             return listViewModel;
         }
-
-        public async Task<IList<ApplicationUser>> GetUtentiAsync(string ruolo)
-        {
-            Claim claim = new(ClaimTypes.Role, ruolo);
-
-            IList<ApplicationUser> userInRole = await userManager.GetUsersForClaimAsync(claim);
-
-            return userInRole;
-        }
-
         public void RevocaNegozio(ApplicationUser user)
         {
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();

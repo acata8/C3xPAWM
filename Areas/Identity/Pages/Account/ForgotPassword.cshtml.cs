@@ -60,8 +60,9 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
                 await _emailSender.SendEmailAsync(
                     Input.Email,
                     "Resetta la password",
-                    $"Per favore reimposta la tua password<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.");
-
+                    $"Reimposta la tua password <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>. <br> "+@"
+                     Il team di C3.");
+                
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 

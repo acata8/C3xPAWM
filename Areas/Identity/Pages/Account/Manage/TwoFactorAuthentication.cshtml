@@ -11,21 +11,21 @@
 {
     if (Model.RecoveryCodesLeft == 0)
     {
-        <div class="alert alert-danger">
+        <div id="alert" class="alert alert-danger alertstyle">
             <strong>Non hai più codici di recupero.</strong>
             <p>Devi <a asp-page="./GenerateRecoveryCodes"> generare un nuovo set di codici di ripristino</a> prima di poter accedere con un codice di ripristino.</p>
         </div>
     }
     else if (Model.RecoveryCodesLeft == 1)
     {
-        <div class="alert alert-danger">
+        <div id="alert" class="alert alert-danger alertstyle">
             <strong>Hai 1 codice di recupero rimasto</strong>
             <p>Puoi <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di ripristino</a>.</p>
         </div>
     }
     else if (Model.RecoveryCodesLeft <= 3)
     {
-        <div class="alert alert-warning">
+        <div id="alert" class="alert alert-warning alertstyle">
             <strong>Hai @Model.RecoveryCodesLeft codici di recupero rimasti</strong>
             <p>Potresti <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di ripristino</a>.</p>
         </div>

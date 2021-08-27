@@ -17,12 +17,12 @@
             </div>
             <div class="col-md-4">
                 <label asp-for="Ruolo"></label>
-                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>()" class="form-control">
+                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(1)" class="form-control">
                 </select>
             </div>
         <div class="col-md-4">
                 <label> &nbsp; </label><br>
-                <button class="btn btn-success"> Assegna </button>
+                <button class="btn btn-success"><i class="fas fa-user-check"></i>&nbsp; Assegna </button>
         </div>
     </div>
 
@@ -48,7 +48,7 @@
             </div>
         <div class="col-md-4">
                 <label> &nbsp; </label><br>
-                <button class="btn btn-danger"> Revoca </button>
+                <button class="btn btn-danger"> <i class="fas fa-user-times"></i>&nbsp;&nbsp; Revoca </button>
         </div>
     </div>
 

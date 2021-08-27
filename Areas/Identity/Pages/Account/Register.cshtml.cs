@@ -129,7 +129,8 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Conferma il tuo account",
-                        $"Conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.");
+                        $"Conferma il tuo account <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>cliccando qui</a>.  <br> "+@"
+                     Il team di C3.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
