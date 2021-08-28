@@ -29,7 +29,7 @@ Ulteriori servizi e librerie utilizzate:
   - Serilog.Sinks.Console, per scrivere il contenuto su Console 
   - Serilog.Sinks.File, per tracciare il contenuto su file
   - Serilog.Settings.Configuration, per leggere le configurazioni da appsetting.json
-
+  - Select.HtmlToPdf.NetCore, libreria per convertire un file HTML in pdf
 
 
 ## PANORAMICA PROGETTO
