@@ -25,3 +25,38 @@ $("#alert").fadeTo(3800, 1500).slideUp(500, function(){
 $('form').submit(function() {
   $(this).prop('disabled',true);
 });
+
+$('#Dettagli').click(function(){
+  var $div = $('#DettagliNegozio');
+  var $icona = $('#icona')
+  
+  if($div.is(":visible")){
+    $div.hide(1000);
+    $icona.removeClass("fas fa-toggle-on")
+    $icona.addClass("fas fa-toggle-off")
+  }else{
+
+    $icona.addClass("fas fa-toggle-on")
+    $div.show(1000);
+  }
+ 
+});
+
+
+$('#Dettagli2').click(function(){
+  var $div = $('#DettagliD');
+  var $icona = $('#icona2')
+  
+  if($div.is(":visible")){
+    $div.hide(1000);
+    $icona.removeClass("fas fa-toggle-on")
+    $icona.addClass("fas fa-toggle-off")
+  }else{
+
+    $icona.addClass("fas fa-toggle-on")
+    $div.show(1000);
+  }
+ 
+});
+
+

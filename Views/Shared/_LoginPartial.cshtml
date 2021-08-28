@@ -5,22 +5,22 @@
     @if(SignInManager.IsSignedIn(User))
     {
         <ul class="navbar-nav mr-auto">
-                <li class="nav-item" style="padding: 10px; margin-left: 7px">
+                <li class="nav-item">
                    <form class="form-inline" asp-action="Logout" asp-controller="Home" method="post">
-                        <button class="btn btn btn-outline-primary" type="submit"><i class="fas fa-key"></i> Logout </button>
+                        <button class="btn btn-outline-primary"style="margin-left: 1em;"  type="submit"><i class="fas fa-key"></i> Logout </button>
                     </form>
                 </li>
-                <li class="nav-item mt-3">
+                <li class="nav-item mt-1">
                     <A asp-page="/Account/Manage/Index" asp-area="Identity"> Ciao, @User.FindFirst("FullName").Value</a>
                 </li>
         </ul>
     }else{
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="btn btn btn-outline-primary" asp-page="/Account/Login" asp-area="Identity"><i class="fas fa-key"></i> Login </a>
+                <a class="btn btn-outline-primary" asp-page="/Account/Login" asp-area="Identity"><i class="fas fa-key"></i> Login </a>
             </li>
             <li class="nav-item">
-                   <a class="btn btn btn-outline-primary"asp-page="/Account/Register" asp-area="Identity"> <i class="far fa-id-badge"></i> Registrati</a>
+                   <a class="btn btn-outline-primary"asp-page="/Account/Register" asp-area="Identity"> <i class="far fa-id-badge"></i> Registrati</a>
             </li>
 
         </ul>

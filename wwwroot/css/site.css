@@ -82,9 +82,9 @@ header{
 
 /* end navbar section */
 
-@media (max-width: 768px){
+@media (max-width: 770px){
   header .nav-item a{
-    margin-top: 0.5em;
+    margin-top: 0.3em;
   }
   
   h1{
@@ -117,6 +117,7 @@ h1{
 
 author{
   font-style: italic;
+  color: rgb(128, 128, 128);
 }
 
 .title{
@@ -129,7 +130,11 @@ author{
 }
 
 .elenco li{
-  padding: 3em;
+  padding: 1.5em;
+}
+
+.elenco li p{
+  margin-top: 0.3em;
 }
 
 .elenco li:nth-of-type(2n+1){
@@ -184,6 +189,11 @@ legend {
   padding: 5px 10px;
 }
 
+#attiva{
+  position:absolute;
+  right:50%;
+  top:15%;
+}
 
 
 .alertstyle{

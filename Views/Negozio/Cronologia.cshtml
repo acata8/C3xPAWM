@@ -24,7 +24,7 @@
         </div>
     </div>
 
-
+    
 
 <div class="row mt-3">
     <div class="col-md-12">
@@ -38,14 +38,15 @@
                     <div class="col-md-3">
                         <p class="font-weight-bold"> Email </p>  
                     </div>
-                    <div class="col-md-2">
-                        <p class="font-weight-bold"> Nome </p>  
-                    </div>
+                    
                     <div class="col-md-1">
                         <p class="font-weight-bold"> Stato </p>  
                     </div>
                      <div class="col-md-2">
                         <p class="font-weight-bold"> Data Consegna </p>  
+                    </div>
+                    <div class="col-md-2 d-none d-lg-block">
+                        <p class="font-weight-bold"> Etichetta </p> 
                     </div>
                 </div> 
             </li>
@@ -53,19 +54,17 @@
             {
                 <li>
                     <div class="row">
-                        <div class="col-md-4">
+                        
+                        <div class="col-md-4 mt-1">
                             <p  > @pacco.Destinazione </p> 
                         
                         </div>
-                        <div class="col-md-3">
-                            
+                        <div class="col-md-3 mt-1">
+
                             <p  > @pacco.Utente.Email </p> 
                         </div>
-                        <div class="col-md-2">
-                            
-                            <p  > @pacco.Utente.FullName </p> 
-                        </div>
-                        <div class="col-md-1">
+                        
+                        <div class="col-md-1 mt-1">
                             @if(pacco.StatoPacco == StatoPacco.NON_ASSEGNATO){
                                 <i style="color: red;" class="far fa-times-circle"></i>
                             }
@@ -76,13 +75,23 @@
                                 <i style="color: green;" class="far fa-check-circle"></i>
                             }
                         </div>
-                          <div class="col-md-2">
+                          <div class="col-md-2 mt-1">
                             
                             <p> @if(pacco.StatoPacco != StatoPacco.CONSEGNATO){
                                 <p> Previsto 1 giorno</p>
                             }else{
                                <p  > @pacco.Data </p> 
                             }</p> 
+                        </div>
+                        <div class="col-md-2 d-none d-lg-block">
+                            @using(Html.BeginForm("StampaPDF", "Negozio", FormMethod.Post)){
+                                @if(pacco.StatoPacco == StatoPacco.CONSEGNATO){
+                                   
+                                }else{
+                                    <button class="btn btn-outline-primary" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>
+
+                                } 
+                            }
                         </div>
                     </div> 
                 </li>

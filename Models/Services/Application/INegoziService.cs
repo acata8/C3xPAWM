@@ -26,6 +26,7 @@ namespace C3xPAWM.Models.Services.Application
         Task<bool> RicercaEmailAsync(string email);
         Task<ApplicationUser> GetUtenteAsync(string email);
         bool CreateOrder(PaccoCreateInputModel model);
-        
+        Pacco GetPacco(int paccoId);
+        bool StampaPDF(Pacco pacco);
     }
 }

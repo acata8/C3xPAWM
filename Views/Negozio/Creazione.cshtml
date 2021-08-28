@@ -46,11 +46,11 @@
     
 
     <div class="row mt-3">
-         <div class="col-md-4">
+         <div class="col-md-8">
             <label for="Telefono">Telefono</label>
             <input class="form-control" asp-for="Telefono" type="text">
         </div>
-        <div class="col-md-4 mt-3">
+        <div class="col-md-8 mt-3">
             <select  asp-items="@Html.GetEnumSelectList<Tipologia>().SkipLast(1)" name="Tipologia" id="Tipologia" class="form-control"></select>
         </div>
         

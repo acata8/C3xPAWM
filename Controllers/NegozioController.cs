@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using C3xPAWM.Customizations.PdfExporter;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
@@ -63,20 +64,46 @@ namespace C3xPAWM.Controllers
         [HttpGet]
         public IActionResult Pacco(int id)
         {
-            PaccoCreateInputModel inputModel = new PaccoCreateInputModel();
-            inputModel.NegozioId = id;
-            inputModel.Partenza = negoziService.getIndirizzo(id);
-            return View(inputModel);
+            PaccoCreateInputModel iM = new PaccoCreateInputModel();
+            iM.NegozioId = id;
+            iM.Negozio = negoziService.GetNegozio(id);
+            iM.ViaP = iM.Negozio.Via;
+            iM.RegioneP = iM.Negozio.Regione;
+            iM.CittaP = iM.Negozio.Citta;
+            iM.ProvinciaP = iM.Negozio.Provincia;
+            return View(iM);
         }
+
+
+        public IActionResult StampaPDF(int PaccoId){
+            var pacco = negoziService.GetPacco(PaccoId);
+            var result = negoziService.StampaPDF(pacco);
+            if (result)
+                {
+                    TempData["Success"] = @"PDF Esportato in C:\C3";
+                    logger.LogInformation("PDF esportato correttamente");
+                }
+                else
+                {
+                     TempData["Success"] = "PDF non esportato";
+                    logger.LogInformation("PDF non esportato");
+                }
+           return RedirectToAction(nameof(Cronologia), new { id = pacco.NegozioId });
+        }
+
 
         [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
         [HttpPost]
         public async Task<IActionResult> PaccoAsync(PaccoCreateInputModel model)
         {
+            
             if (ModelState.IsValid)
             {
+                model.Partenza = model.ViaP + ", " + model.CittaP + "(" + model.ProvinciaP + ")";
+                model.Destinazione = model.ViaD + ", " + model.CittaD + "(" + model.ProvinciaD + ")";
                 model.Utente = await negoziService.GetUtenteAsync(model.Email);
                 model.UtenteId = model.Utente.Id;
+                
                 bool result = negoziService.CreateOrder(model);
                 if (result)
                 {
@@ -200,5 +227,8 @@ namespace C3xPAWM.Controllers
             return Json(result);
 
         }
+
+
+
     }
 }

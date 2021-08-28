@@ -7,7 +7,7 @@
 <h1 class="title mt-3">@ViewData["Title"]</h1>
 
     <div class="mt-3 row">
-        <div class="col-md-4 d-flex align-items-center mt-2">
+        <div class="col-md-8 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Negozi","Admin", FormMethod.Get)))
             {
                 <div class="input-group">
@@ -21,7 +21,7 @@
     
     
         
-        <div class="col-md-4 d-flex align-items-center mt-2">
+        <div class="col-md-8 d-flex align-items-center mt-2">
             @using((Html.BeginForm("Negozi", "Admin", FormMethod.Get)))
             {
                 <button type="submit" class="btn btn btn-outline-danger" title="Ricarica"><i class="fas fa-redo-alt fa-flip-horizontal fa-spin" aria-hidden="true"></i> Ricarica</button>

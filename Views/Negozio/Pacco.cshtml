@@ -7,9 +7,9 @@
 <h4 class="title mt-3"> Creazione ordine <i class="fas fa-shopping-basket"></i> </h4>
 
     
-@using((Html.BeginForm("Pacco", "Negozio", FormMethod.Post))){
-        
-    @Html.HiddenFor(m =>m.NegozioId)
+@using (Html.BeginForm("Pacco", "Negozio", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.NegozioId);
 
     <div class="row mt-3">
         <div class="col-md-12">
@@ -17,39 +17,114 @@
         </div>
     </div>
 
-
-    <div class="row mt-2">
-        <div class="col-md-4 mt-3">
-            <label for="Destinazione">Destinazione</label>
-            <input class="form-control" asp-for="Destinazione" type="text">
-        </div>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col-md-4 mt-3">
-            <label for="Partenza"> Luogo di ritiro</label>
-            <input class="form-control" asp-for="Partenza" type="text">
-        </div>
-    </div>
-    
-    
-     <div class="row mt-3">
+    <div class="row">
         <div class="col-md-4">
+            <p class="h4 color"> Informazioni negozio</p>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-outline-primary" id="Dettagli" type="button"> <i id="icona" class="fas fa-toggle-off"></i>&nbsp; Dettagli </button>
+        </div>
+    </div>
+
+    <div id="DettagliNegozio" class="mt-1" style="display: none;">
+        <div class="row" >  
+            <div class="col-md-6">
+                <label for="ViaP"> Via </label>
+                <input class="form-control" asp-for="ViaP" type="text">
+            </div>
+        </div>
+        <div class="row mt-2">
+                <div class="col-md-6">
+                    <label for="CittaP"> Citta </label>
+                    <input class="form-control" asp-for="CittaP" type="text">
+                </div>
+                
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-2">
+                    <label for="ProvinciaP"> Provincia </label>
+                    <input class="form-control" asp-for="ProvinciaP" type="text">
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3 ">
+                    <label for="RegioneP"> Regione </label>
+                    <input class="form-control" asp-for="RegioneP" type="text">
+                </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+            <div class="col-md-4">
+                <p class="h4 color mt-2"> Informazioni spedizione </p>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-outline-primary" id="Dettagli2" type="button"><i id="icona2" class="fas fa-toggle-on"></i>&nbsp; Dettagli </button> 
+            </div>
+        </div>
+
+    
+
+    <div id="DettagliD" style="display: block;">
+
+        <div class="row ">  
+            <div class="col-md-6">
+                
+                <label for="ViaD"> Via </label>
+                <input class="form-control" asp-for="ViaD" type="text">
+            </div>
+        </div>
+        <div class="row mt-2">
+                <div class="col-md-6">
+                    <label for="CittaD"> Citta </label>
+                    <input class="form-control" asp-for="CittaD" type="text">
+                </div>
+                
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-2">
+                    <label for="ProvinciaD"> Provincia </label>
+                    <input class="form-control" asp-for="ProvinciaD" type="text">
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3 ">
+                    <label for="RegioneD"> Regione </label>
+                    <input class="form-control" asp-for="RegioneD" type="text">
+                </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <hr>
+            </div>
+        </div>
+    </div>
+
+     <p class="h4 color mb-2"> Dettagli utente </p>
+
+     <div class="row mt-3">
+        <div class="col-md-6">
             <label for="Email">Email utente</label>
             <input class="form-control mb-2" asp-for="Email" type="text">
             <span asp-validation-for="Email" style="color: darkred"></span>
         </div>
         
     </div>
-    
 
-
-    <div class="row mt-4">
+    <div class="row mt-2">
         <div class="col-md-8">
-                <button type="submit" class="btn btn-primary" asp-route-id="@Model.NegozioId"><i class="fas fas fa-cash-register"></i>&nbsp;Crea ordine</button>
+                <button class="btn btn-primary" asp-route-id="@Model.NegozioId"><i class="fas fas fa-cash-register"></i>&nbsp;Crea ordine</button>
             </div>
     </div>
+
+      
 }
+
+
+  
+
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial"></partial>

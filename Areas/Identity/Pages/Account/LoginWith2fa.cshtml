@@ -8,7 +8,7 @@
 <hr />
 <p class="color mt-2">Il tuo accesso è protetto con un'app di autenticazione. Inserisci il tuo codice autenticatore di seguito.</p>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
             <input asp-for="RememberMe" type="hidden" />
             <div asp-validation-summary="All" class="text-danger"></div>

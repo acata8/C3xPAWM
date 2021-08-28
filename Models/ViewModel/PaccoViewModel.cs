@@ -8,6 +8,10 @@ namespace C3xPAWM.Models.ViewModel
     {
         public int PaccoId { get; set; }
         public string Destinazione {get; set;}
+        public string Regione { get; set; }
+        public string Provincia { get; set; }
+        public string Citta { get; set; }
+        public string Via { get; set; }
         public string Partenza {get; set;}
 
         public int NegozioId { get; set; }

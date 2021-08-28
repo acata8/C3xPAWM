@@ -19,10 +19,10 @@
         <div class="row mt-1">
             <div class="col-md-3"> 
                 @if(Model.Negozio.Pubblicita.Any()){
-                    <button class="btn btn-outline-primary position-relative" style="cursor: not-allowed;" disabled>
+                    <button class="btn btn-outline-primary" style="cursor: not-allowed;" disabled>
                         <i class="fas fa-audio-description"></i> Attiva pubblicit&agrave; 
                     </button>
-                    <span class="badge bg-danger blink">ATTIVA</span>
+                    <span id="attiva" class="badge bg-danger blink">ATTIVA</span>
 
                 }else{
                     <a class="btn btn-outline-primary" asp-action="Pubblicita" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-audio-description"></i> Attiva pubblicit&agrave; </a>        

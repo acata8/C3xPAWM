@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using C3xPAWM.Customizations.PdfExporter;
 using C3xPAWM.Models.Entities;
 using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
@@ -358,7 +359,18 @@ namespace C3xPAWM.Models.Services.Application
                         .ToList();
         }
 
+        public Pacco GetPacco(int paccoId)
+        {
+            return dbContext.Pacco.Where(p => p.PaccoId == paccoId).FirstOrDefault();
+        }
 
+        public bool StampaPDF(Pacco pacco)
+        {
+            PdfExport pdf = new PdfExport();
+            var Utente = dbContext.Users.Where(p => p.Id == pacco.UtenteId).FirstOrDefault();
+            var Negozio = dbContext.Negozi.Where(p => p.NegozioId == pacco.NegozioId).FirstOrDefault();
+            return pdf.GeneratePdf(pacco, Utente, Negozio);
+        }
     }
 
 
