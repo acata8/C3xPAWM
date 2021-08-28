@@ -85,12 +85,7 @@
                         </div>
                         <div class="col-md-2 d-none d-lg-block">
                             @using(Html.BeginForm("StampaPDF", "Negozio", FormMethod.Post)){
-                                @if(pacco.StatoPacco == StatoPacco.CONSEGNATO){
-                                   
-                                }else{
-                                    <button class="btn btn-outline-primary" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>
-
-                                } 
+                                    <button class="btn btn-outline-primary" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>               
                             }
                         </div>
                     </div> 

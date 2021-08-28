@@ -63,31 +63,36 @@ namespace C3xPAWM.Customizations.PdfExporter
                         margin-top: 0;
                         margin-bottom: 0;
                     }
+
+                    img{
+                        height: 70px;
+                        width: 70px;
+                    }
                 </style>
                 </head>
                 <body>
                     <div class='container'>
 
                         <header>
-                        <h2>C3xPAWM</h2>
+                            <h3> C3 </h3>
                         </header>
                     
                         <div class='content'>
                         <br>
                         <p>
-                            Spedito da" + negozio.Nome + @",<br>
+                            Spedito da " + negozio.Nome + @",<br>
                             " +  pacco.Partenza + @" <br>
                             ITALIA
                         </p>
                         <br>
+                        <hr>
+                        <br>
+                       
                         <p>
                             " + utente.FullName + @" <br>
                             " + pacco.Destinazione + @" <br>
                             ITALIA
                         </p>
-                        <br>
-                        <p> Progetto C3 di Andrea Cataluffi </p>
-                        <br>
                         </div>
                 </body>
                 </html>";
@@ -97,7 +102,6 @@ namespace C3xPAWM.Customizations.PdfExporter
             {
                 HtmlToPdf converter = new HtmlToPdf();
                 PdfDocument doc = converter.ConvertHtmlString(myHtml);
-
 
                 doc.Save("C:/C3/Etichetta"+utente.FullName+""+pacco.PaccoId+".pdf");
                 doc.Close();
