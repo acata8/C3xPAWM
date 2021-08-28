@@ -11,16 +11,16 @@
    {
         <div class="row mt-5 mb-3">
          
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <label asp-for="Email"></label>
                 <input type="text" asp-for="Email" class="form-control" placeholder="Email">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <label asp-for="Ruolo"></label>
                 <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(1)" class="form-control">
                 </select>
             </div>
-        <div class="col-md-8">
+        <div class="col-md-4">
                 <label> &nbsp; </label><br>
                 <button class="btn btn-success"><i class="fas fa-user-check"></i>&nbsp; Assegna </button>
         </div>
@@ -37,16 +37,16 @@
         <div class="row mt-5">
          
 
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <label asp-for="Email"></label>
                 <input type="text" asp-for="Email" class="form-control" placeholder="Email">
             </div>
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <label asp-for="Ruolo"></label>
                 <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(1)" class="form-control">
                 </select>
             </div>
-        <div class="col-md-8">
+        <div class="col-md-4">
                 <label> &nbsp; </label><br>
                 <button class="btn btn-danger"> <i class="fas fa-user-times"></i>&nbsp;&nbsp; Revoca </button>
         </div>

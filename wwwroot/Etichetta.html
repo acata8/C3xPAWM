@@ -1,20 +1,4 @@
-
-
-using C3xPAWM.Models.Entities;
-using C3xPAWM.Models.InputModel;
-using SelectPdf;
-
-namespace C3xPAWM.Customizations.PdfExporter
-{
-    public class PdfExport
-    {
-        
-        
-        public bool GeneratePdf(Pacco pacco, ApplicationUser utente, Negozio negozio){
-            
-            #region RenderHTML
-            
-           var myHtml = @"<html>
+<html>
                 <head>
                 
                 <title>Etichetta</title>
@@ -74,37 +58,21 @@ namespace C3xPAWM.Customizations.PdfExporter
                             <b> Mittente </b> <br>
                             Spedito da " + negozio.Nome + @",<br>
                             " +  pacco.Partenza + @" <br>
+                            
                         </p>
+
                         <br>
+                        
+                       
                         <p>
                             <b>Destinatario </b>  <br>
                             " + utente.FullName + @" <br>
                             " + pacco.Destinazione + @" <br>
+                           
                         </p>
                         <br>
-                            <p style='font-style: italic; color: grey;'> Grazie per averci scelto. <br> Il team di C3 </p>
+                            <p style="font-style: italic; color: grey;"> Grazie per averci scelto. <br> Il team di C3 </p>
                         <br>
                         </div>
                 </body>
-                </html>";
-           #endregion
-
-            try
-            {
-                HtmlToPdf converter = new HtmlToPdf();
-                PdfDocument doc = converter.ConvertHtmlString(myHtml);
-                doc.Save("C:/C3/Etichetta"+utente.FullName+""+pacco.PaccoId+".pdf");
-                doc.Close();
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-                throw;
-            }
-            
-
-        }
-
-    }
-}
+                </html>
