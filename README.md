@@ -1,5 +1,7 @@
 # C3xPAWM
 
+<img src="https://github.com/acata8/C3xPAWM/blob/main/wwwroot/img/logo.png" width="250" height="250">
+
 ## TECNOLOGIE UTILIZZATE 
 
 Per la creazione di un’applicazione web dinamica è stato utilizzato C#, tramite il framework ASP.NET Core 5.0 e basandosi sull’architettura MVC. 
