@@ -1,0 +1,26 @@
+@model TokenViewModel
+
+@{
+    ViewData["Title"] = "Token";
+}
+
+<p class="color mt-3 h2">Hai bisogno di più token?</p>
+
+<p class="color mt-4 h5"> I tuoi token: <button type="button" class="btn btn-outline-success"> <i class="fas fa-coins"></i> &nbsp; @Model.Negozio.Token </button> </p>
+
+
+<p class="color mt-4 h5"> Contatta l'amministratore della piattaforma! </p>
+
+@foreach (var amministratore in Model.Amministratori)
+{
+    <address class="mt-2 ml-5" style="color: rgb(125, 128, 170); ">
+       @amministratore.FullName <br>
+       +39 @amministratore.PhoneNumber <br>
+        @amministratore.Email
+    </address>
+}
+
+
+
+
+

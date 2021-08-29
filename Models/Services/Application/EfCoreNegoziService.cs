@@ -119,10 +119,16 @@ namespace C3xPAWM.Models.Services.Application
             return listViewModel;
         }
 
+        public void DisattivaPubblicita(Pubblicita pubblicita){
+            pubblicita.Attiva = 0;
+        }
+      
         public ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input)
         {
 
             IQueryable<Pubblicita> baseQuery = dbContext.Pubblicita;
+
+            var negoziScartati = baseQuery.Where(p => p.DataFine.CompareTo(DateTime.Now) >= 0).ForEachAsync(p => DisattivaPubblicita(p));
 
             var offset = input.Offset;
             var limit = input.Limit;
@@ -141,8 +147,6 @@ namespace C3xPAWM.Models.Services.Application
                         .ToList();
 
             var totale = queryLinq.Count();
-
-            
 
             List<PubblicitaViewModel> negozi = queryLinq
                     .Skip(offset)
@@ -202,9 +206,23 @@ namespace C3xPAWM.Models.Services.Application
             return NegozioViewModel.FromEntity(negozio);
         }
 
+        private void RimuoviPubblicitaScadute(Negozio negozio){
+            if(negozio.Pubblicita != null){
+
+                foreach(var pubblicita in negozio.Pubblicita){
+                    if(negozio.Revocato == 0){
+                        if(pubblicita.Attiva == 0)
+                            negozio.Pubblicita.Remove(pubblicita);
+                    }
+                }
+            }
+        }
+
         public Negozio GetNegozio(int id)
         {
-            return dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita).FirstOrDefault();
+            var negozio = dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita).FirstOrDefault();
+            RimuoviPubblicitaScadute(negozio);
+            return negozio;
         }
 
         public NegozioInputModel GetNegozioEdit(int id)
@@ -252,12 +270,36 @@ namespace C3xPAWM.Models.Services.Application
 
         public PubblicitaInputModel GetNegozioPubblicita(int id)
         {
-            return dbContext.Negozi.Where(n => n.NegozioId == id)
+            var baseQuery = dbContext.Negozi.Where(n => n.NegozioId == id).Include(p => p.Pubblicita);
+
+            var negozio = baseQuery.FirstOrDefault();
+
+            var pubblicitaNegozio = dbContext.Pubblicita.Where(p => p.NegozioId == id).ToList();
+
+            if(pubblicitaNegozio.Count() == 0){
+                return baseQuery
                     .Select(p => new PubblicitaInputModel
                     {
                         NegozioId = p.NegozioId,
-                        Negozio = p
+                        Negozio = negozio,
+                        Attiva = 0
                     }).FirstOrDefault();
+            }else{
+
+                RimuoviPubblicitaScadute(negozio);
+
+                return baseQuery
+                        .Select(p => new PubblicitaInputModel
+                        {
+                            NegozioId = negozio.NegozioId,
+                            Negozio = negozio,
+                            Attiva = pubblicitaNegozio.FirstOrDefault().Attiva,
+                            DataFine = pubblicitaNegozio.FirstOrDefault().DataFine,
+                            DataInizio = pubblicitaNegozio.FirstOrDefault().DataInizio,
+                            Durata = pubblicitaNegozio.FirstOrDefault().Durata
+                        }).FirstOrDefault();
+            }
+
         }
 
         public PubblicitaViewModel CreatePubblicita(PubblicitaInputModel model)
@@ -268,6 +310,7 @@ namespace C3xPAWM.Models.Services.Application
             {
                 model.Attiva = 1;
                 negozio.DecrementaToken(model.Durata);
+                
             }
             else
             {
@@ -280,7 +323,8 @@ namespace C3xPAWM.Models.Services.Application
             dbContext.Add(pubblicita);
             try{
                 dbContext.SaveChanges();
-                logger.LogWarning("Attivazione pubblicita riuscita");
+                negozio.Pubblicita.Add(pubblicita);
+                logger.LogInformation("Attivazione pubblicita riuscita");
             }catch(Exception e){
                 logger.LogWarning($"Attivazione pubblicita non riuscita. Eccezione {e}");
                 throw;
@@ -370,6 +414,11 @@ namespace C3xPAWM.Models.Services.Application
             var Utente = dbContext.Users.Where(p => p.Id == pacco.UtenteId).FirstOrDefault();
             var Negozio = dbContext.Negozi.Where(p => p.NegozioId == pacco.NegozioId).FirstOrDefault();
             return pdf.GeneratePdf(pacco, Utente, Negozio);
+        }
+
+        public List<ApplicationUser> GetAmministratori()
+        {
+            return dbContext.Users.Where(u => u.Ruolo == nameof(Categoria.Administrator)).ToList();
         }
     }
 

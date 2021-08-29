@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using C3xPAWM.Controllers;
 using C3xPAWM.Models.Entities;
@@ -16,6 +17,9 @@ namespace C3xPAWM.Models.InputModel
         public int Durata { get; set; }
         //Riferita in termini di giorni
         public int Attiva { get; set; }
+
+        public DateTime DataInizio {get; set;}
+        public DateTime DataFine {get; set;}
 
     }
 }

@@ -9,7 +9,9 @@ namespace C3xPAWM.Models.ViewModel
         public string NomeEvento { get; set; }
         public int Durata { get; set; }
         public int Attiva {get; set;}
-        public Negozio Negozio;
+        public Negozio Negozio {get; set;}
+        public DateTime DataInizio {get; set;}
+        public DateTime DataFine {get; set;}
 
       public static PubblicitaViewModel FromEntity(Pubblicita pubblicita){
             return new PubblicitaViewModel{
@@ -17,7 +19,9 @@ namespace C3xPAWM.Models.ViewModel
                 NomeEvento = pubblicita.NomeEvento,
                 Durata = pubblicita.Durata,
                 Attiva = pubblicita.Attiva,
-                Negozio = pubblicita.Negozio
+                Negozio = pubblicita.Negozio,
+                DataInizio = pubblicita.DataInizio,
+                DataFine = pubblicita.DataFine
             };
         }
         

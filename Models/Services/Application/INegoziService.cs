@@ -28,5 +28,6 @@ namespace C3xPAWM.Models.Services.Application
         bool CreateOrder(PaccoCreateInputModel model);
         Pacco GetPacco(int paccoId);
         bool StampaPDF(Pacco pacco);
+        List<ApplicationUser> GetAmministratori();
     }
 }

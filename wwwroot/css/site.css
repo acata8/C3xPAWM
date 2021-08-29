@@ -120,11 +120,6 @@ author{
   color: rgb(128, 128, 128);
 }
 
-.title{
-    color: rgb(255,166,0);
-    font-size: 26px;
-}
-
 .elenco{
   border: rgb(229, 230, 231) 1px solid;
 }
@@ -184,7 +179,6 @@ fieldset {
 }
 
 legend {
-  
   color: rgb(255,166,0);
   padding: 5px 10px;
 }
@@ -206,4 +200,8 @@ legend {
   height: fit-content;
 }
 
+.custom {
+  width: 38px !important;
+  height: 180px !important;
+}
 

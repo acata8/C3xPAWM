@@ -4,35 +4,41 @@
     ViewData["Title"] = "Negozio";
 }
 
-<h1 class="title"> @Model.Negozio.Nome, </h1>
-<h2 class="title"> questa &egrave; la tua dashboard!</h2>
+        <p class="color h1"> @Model.Negozio.Nome questa &egrave; la tua dashboard!</p>
 
 
-<div class="container">
-    
+
         <div class="row mt-3" >
             <div class="col-md-3">
-                <a class="btn btn-outline-primary" asp-action="Modifica" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-user-edit"></i> Modifica Negozio </a>
+                <a class="btn btn-outline-primary w-100  w-100 " asp-action="Modifica" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-user-edit"></i>&nbsp; Modifica Negozio </a>
             </div>
+             <div class="col-md-3">
+                <a class="btn btn-outline-primary w-100  w-100 " asp-action="Token" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-comments-dollar"></i>&nbsp; Token </a>
+            </div>     
         </div>
+        
         <hr>
+
         <div class="row mt-1">
             <div class="col-md-3"> 
                 @if(Model.Negozio.Pubblicita.Any()){
-                    <button class="btn btn-outline-primary" style="cursor: not-allowed;" disabled>
-                        <i class="fas fa-audio-description"></i> Attiva pubblicit&agrave; 
-                    </button>
-                    <span id="attiva" class="badge bg-danger blink">ATTIVA</span>
-
+                     <a class="btn btn-outline-primary w-100  w-100 " asp-action="Pubblicita" asp-controller="Negozio" asp-route-id="@Model.NegozioId">
+                        <i class="fas fa-audio-description"></i> Pubblicit&agrave; 
+                        <span class="badge badge-danger blink">ATTIVA</span>
+                    </a>
+                    
+                    
+                    
                 }else{
-                    <a class="btn btn-outline-primary" asp-action="Pubblicita" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-audio-description"></i> Attiva pubblicit&agrave; </a>        
+                    <a class="btn btn-outline-primary w-100  w-100 " asp-action="Pubblicita" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-audio-description"></i>&nbsp; Pubblicit&agrave; </a>        
                 }
+                
             </div>
             <div class="col-md-3">
-                <a class="btn btn-outline-primary" asp-action="Pacco" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-cart-plus"></i> Nuovo ordine </a>
+                <a class="btn btn-outline-primary w-100  w-100" asp-action="Pacco" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-cart-plus"></i>&nbsp; Nuovo ordine </a>
             </div>
             <div class="col-md-3">
-                <a class="btn btn-outline-primary" asp-action="Cronologia" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-history"></i> Cronologia ordini </a>
+                <a class="btn btn-outline-primary w-100  w-100 " asp-action="Cronologia" asp-controller="Negozio" asp-route-id="@Model.NegozioId"><i class="fas fa-history"></i>&nbsp; Cronologia ordini </a>
             </div>
         </div>
-</div>
+

@@ -5,9 +5,10 @@
 @model PacchiNegozioViewModel 
 
 
-<h3 class="title mt-3"> Cronologia ordini </h5>
+<p class="color h2 mt-3"> Cronologia ordini </p>
 
-<h1 class="color mt-3" style="font-size: 23px;"> Legenda </h1>
+
+<p class="color mt-2 h3"> Legenda</p>
     <div class="row">
         <div class="col-md-5">
             <ul>
@@ -28,7 +29,7 @@
 
 <div class="row mt-3">
     <div class="col-md-12">
-        <h3 style="color: rgb(255,166,0); font-size: 25px;"> Lista di ordini</h3>
+        <p class="color h3"> Lista di ordini</p>
         <ul class="elenco mt-2">
             <li>
                 <div class="row">
@@ -85,8 +86,9 @@
                         </div>
                         <div class="col-md-2 d-none d-lg-block">
                             @using(Html.BeginForm("StampaPDF", "Negozio", FormMethod.Post)){
-                                 @Html.AntiForgeryToken()
-                                <button class="btn btn-outline-primary" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>               
+                                @if(pacco.StatoPacco != StatoPacco.CONSEGNATO){
+                                    <button class="btn btn-outline-primary w-100 " name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>               
+                                }
                             }
                         </div>
                     </div> 

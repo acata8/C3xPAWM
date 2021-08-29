@@ -17,8 +17,7 @@ function addStricky() {
   }
 }
 
-
-$("#alert").fadeTo(3800, 1500).slideUp(500, function(){
+$("#alert").fadeTo(2000, 1500).slideUp(500, function(){
   $("#alert").slideUp(5000);
 });
 
@@ -58,5 +57,9 @@ $('#Dettagli2').click(function(){
   }
  
 });
+
+$("[type='number']").keypress(function (evt) {
+  evt.preventDefault();
+ });
 
 

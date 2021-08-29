@@ -6,7 +6,7 @@
 }
 
 <partial name="_StatusMessage" for="StatusMessage" />
-<h4 class="title">@ViewData["Title"]</h4>
+<p class="color mb-3 h3">@ViewData["Title"]</p>
 <div>
     <p class="font-weight-bold mt-3">Per usare un app di autenticazione esegui i seguenti step:</p>
     <ol class="list">
@@ -37,7 +37,7 @@
                             <input asp-for="Input.Code" class="form-control" autocomplete="off" />
                             <span asp-validation-for="Input.Code" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-outline-primary">Verifica</button>
+                        <button type="submit" class="btn btn-outline-primary w-100 ">Verifica</button>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     </form>
                 </div>

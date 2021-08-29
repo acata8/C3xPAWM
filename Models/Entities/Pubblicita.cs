@@ -14,6 +14,9 @@ namespace C3xPAWM.Models.Entities
         public int Durata { get; set; }
         //Riferita in termini di giorni
         public int Attiva {get; set;}
+
+        public DateTime DataInizio {get; set;}
+        public DateTime DataFine {get; set;}
         public virtual Negozio Negozio { get; set; }
 
 
@@ -40,8 +43,13 @@ namespace C3xPAWM.Models.Entities
             this.NomeEvento = nomeEvento;
             this.Durata = durata;
             this.Attiva = 1;
+            this.DataInizio = DateTime.Now;
+            this.DataFine = DataInizio.AddDays(Convert.ToDouble(durata));
         }
 
+
         
+
+
     }
 }

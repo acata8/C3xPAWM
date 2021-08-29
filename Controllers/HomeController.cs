@@ -32,13 +32,11 @@ namespace C3xPAWM.Controllers
             ListViewModel<PubblicitaViewModel> negoziPubblicizzati = negoziService.GetNegoziPubblicizzati(input);
 
             PubblicitaListViewModel viewModel = new PubblicitaListViewModel
-            
             {
                 NegoziPubblicizzati = negoziPubblicizzati,
                 Input = input
-
             };
-
+            
             return View(viewModel);
         }
 

@@ -1,12 +1,12 @@
 ﻿@page
 @model TwoFactorAuthenticationModel
 @{
-    ViewData["Title"] = "2FA Autenticazione";
+    ViewData["Title"] = "Autenticazione a due fattori";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <partial name="_StatusMessage" for="StatusMessage" />
-<h4 class="title">@ViewData["Title"]</h4>
+<p class="color mb-3 h3">@ViewData["Title"]</p>
 @if (Model.Is2faEnabled)
 {
     if (Model.RecoveryCodesLeft == 0)
@@ -33,35 +33,31 @@
 
     if (Model.IsMachineRemembered)
     {
-        <p>
+        
             <form method="post" style="display: inline-block">
-                <button type="submit" class="btn btn-outline-primary"> Dimentica questo browser</button>
+                <button type="submit" class="btn btn-outline-primary w-100 "> Dimentica questo browser</button>
             </form>
-        </p>
+        
         
     }
-    <p>
-        <a asp-page="./Disable2fa" class="btn btn-outline-primary mt-3 "> Disabilita 2FA </a>
-    </p>
-    <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-primary mt-3 "> Reimposta codici </a>
+    
+    <a asp-page="./Disable2fa" class="btn btn-outline-primary w-100  mt-3 mr-4">  <i class="fas fa-lock-open"></i> Disabilita 2FA </a>
+    
+    <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-primary w-100  mt-3 ">  <i class="fas fa-check-double"></i> Reimposta codici </a>
 }
 
-<h5 class="title mt-3">App di autenticazione</h5>
+<p class="color mb-3 mt-3 h4">Applicazione</p>
 @if (!Model.HasAuthenticator)
 {
-    <p>
-
-        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary mt-3"> Aggiungi app di autenticazione</a>
-    </p>
+        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-lock"></i> &nbsp; Aggiungi app di autenticazione</a>
 }
 else
 {
-    <p>
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary mt-3"> Imposta APP </a>
-    </p>
-    <p>
-        <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-primary mt-3"> Reimposta APP </a>
-    </p>
+    
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-lock"></i> &nbsp;Imposta APP </a>
+    
+    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-mobile-alt"></i> &nbsp; Reimposta APP </a>
+    
     
 }
 

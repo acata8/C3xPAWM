@@ -44,6 +44,7 @@ namespace C3xPAWM.Controllers
             vm.Negozio = negoziService.GetNegozio(id);
 
             
+            
             return View(vm);
         }
 
@@ -228,7 +229,15 @@ namespace C3xPAWM.Controllers
 
         }
 
-
+        [Authorize(Policy = nameof(Policy.ProprietarioNegozio))]
+        [HttpGet]
+        public IActionResult Token(int id)
+        {
+            TokenViewModel vm = new TokenViewModel();
+            vm.Negozio = negoziService.GetNegozio(id);
+            vm.Amministratori = negoziService.GetAmministratori();
+            return View(vm);
+        }
 
     }
 }

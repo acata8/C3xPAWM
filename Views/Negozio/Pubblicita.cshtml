@@ -4,7 +4,7 @@
     ViewData["Title"] = "Pubblicita";
 }
 
-<h4 class="title mt-3">Pubblicizza il tuo negozio!</h4>
+<p class="color mt-3 h3">Pubblicizza il tuo negozio!</p>
 
 @using((Html.BeginForm("Pubblicita", "Negozio", FormMethod.Post))){
         
@@ -12,42 +12,49 @@
     @Html.HiddenFor(n => n.NegozioId)
     @Html.HiddenFor(n => n.PubblicitaId)
 
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <div asp-validation-summary="All"></div>
+    @if(Model.Attiva == 0){
+        <div class="row mt-3">
+            <div class="col-12" asp-validation-summary="All"></div>
         </div>
-    </div>
+    }
       <div class="row mt-3">
         <div class="col-md-12">
-            <p class="font-weight-bold"> I tuoi token: @Model.Negozio.Token</p>
+            <p class="color mt-4 h5"> I tuoi token: <button type="button" class="btn btn-outline-success"> <i class="fas fa-coins"></i> &nbsp; @Model.Negozio.Token </button> </p>
+            @if(Model.Attiva == 1){
+                <p class="mt-2 ml-5" style="color: rgb(125, 128, 170);">Inizio: @Model.Negozio.Pubblicita.First().DataInizio </p>
+                <p class="mt-2 ml-5" style="color: rgb(125, 128, 170);">Scadenza: @Model.Negozio.Pubblicita.First().DataFine </p>
+                <p class="mt-2 ml-5" style="color: rgb(125, 128, 170);">Durata: @Model.Negozio.Pubblicita.First().Durata </p>
+            }
         </div>
     </div>
-    <div class="row mt-2">
-        <div class="col-md-8 mt-3">
-            <label for="NomeEvento">Nome dell'evento</label>
-            <input class="form-control" asp-for="NomeEvento" type="text">
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-md-2 mt-3">
-            <label for="Durata">Durata in giorni</label>
-            <input class="form-control" asp-for="Durata" type="number" step="1" max="@Model.Negozio.Token">
-        </div>
-    </div>
+    @if(Model.Attiva == 0){
 
-    <div class="row mt-3">
-        <div class="col-md-8">
-            <button type="submit" class="btn btn-primary"><i cfar fa-save"></i>&nbsp; Salva</button>
-        </div>
-    </div>
-}
+            <div class="row mt-2">
+                <div class="col-md-4 mt-3">
+                    <label for="NomeEvento">Nome dell'evento</label>
+                    
+                        <input class="form-control" asp-for="NomeEvento" type="text" readonly>
+                    
+                        <input class="form-control" asp-for="NomeEvento" type="text">
+                    
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-2 mt-3">
+                    <label for="Durata">Durata in giorni</label>
+                    @if(Model.Attiva == 1){
+                    <input class="form-control" type="number"readonly>
+                    }else{
+                        <input class="form-control" asp-for="Durata" type="number" step="1" max="@Model.Negozio.Token">
+                    }
+                    
+                </div>
+            </div>
 
-@section Scripts{
-
-    <script>
-        $("[type='number']").keypress(function (evt) {
-         evt.preventDefault();
-        });
-
-    </script>
-}
+            <div class="row mt-3">
+                <div class="col-md-4">
+                        <button type="submit" class="btn btn-outline-primary w-100 "><i class="far fa-save"></i>&nbsp; Salva</button>
+                </div>
+            </div>
+        }
+    }

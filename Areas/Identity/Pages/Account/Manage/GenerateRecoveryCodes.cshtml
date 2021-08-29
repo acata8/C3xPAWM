@@ -1,24 +1,17 @@
 ﻿@page
 @model GenerateRecoveryCodesModel
 @{
-    ViewData["Title"] = "Genera codici di ripristino con autenticazione a due fattori (2FA)";
+    ViewData["Title"] = "Genera codici (2FA)";
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
 <partial name="_StatusMessage" for="StatusMessage" />
-<h4 class="title mt-3">@ViewData["Title"]</h4>
+<p class="color mt-3 h3">@ViewData["Title"]</p>
 <div id="alert" class="alert alert-warning alertstyle" role="alert">
-    <p>
-        <span class="font-weight-bold"> Metti questi codici in un posto sicuro. </span>
-        
-    </p>
-    <p>
-        Se perdi il dispositivo e non disponi dei codici di ripristino, perderai l'accesso al tuo account.
-    </p>
-    <p>
-        La generazione di nuovi codici di ripristino non modifica le chiavi utilizzate nelle app di autenticazione. Se desideri cambiare la chiave
-         utilizzato in un'app di autenticazione che dovresti <a asp-page="./ResetAuthenticator">reimposta le tue chiavi di autenticazione.</a>
-    </p>
+    <span class="font-weight-bold"> Metti questi codici in un posto sicuro. </span>  <br>
+    Se perdi il dispositivo e non disponi dei codici di ripristino, perderai l'accesso al tuo account. <br>
+    La generazione di nuovi codici di ripristino non modifica le chiavi utilizzate nelle app di autenticazione. <br> Se desideri cambiare la chiave
+    utilizzato in un'app di autenticazione che dovresti <a asp-page="./ResetAuthenticator">reimposta le tue chiavi di autenticazione.</a>
 </div>
 <div>
     <form method="post" class="form-group">

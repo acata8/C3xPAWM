@@ -4,8 +4,8 @@
     ViewData["Title"] = "Reinvia conferma email";
 }
 
-<h1 class="title">@ViewData["Title"]</h1>
-<h4 class="color mt-2">Inserisci la tua mail</h4>
+<p class="color h3">@ViewData["Title"]</p>
+<h4 class="color mt-2">Inserisci la tua mail</p>
 <hr />
 <div class="row">
     <div class="col-md-8">
@@ -16,7 +16,7 @@
                 <input asp-for="Input.Email" class="form-control" />
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Reinvia</button>
+            <button type="submit" class="btn btn-outline-primary w-100 ">Reinvia</button>
         </form>
     </div>
 </div>
