@@ -8,8 +8,8 @@
 <h2 class="title mt-2"> Lista ordini non assegnati </h2>
 
     @using(Html.BeginForm("NonAssegnati", "Corriere", FormMethod.Post)){
-              
-    @Html.HiddenFor(m => m.CorriereId);
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.CorriereId)
         <div class="row mt-3">
             <div class="col-md-12">
                 <ul class="elenco">

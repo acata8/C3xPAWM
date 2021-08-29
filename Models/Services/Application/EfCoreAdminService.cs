@@ -82,6 +82,7 @@ namespace C3xPAWM.Models.Services.Application
                 {
                     negozio.Revoca();
                     user.Revocato = 1;
+                    user.IdRuolo = 0;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Revoca negozio riuscita.");
                 }
@@ -89,6 +90,7 @@ namespace C3xPAWM.Models.Services.Application
                 {
                     negozio.Assegna();
                     user.Revocato = 0;
+                    user.IdRuolo = negozio.NegozioId;
                     logger.LogWarning($"Revoca negozio fallita.");
                     throw;
                 }
@@ -124,9 +126,10 @@ namespace C3xPAWM.Models.Services.Application
                 {
                     pacco.RevocaCorriere();
                 }
-                user.Revocato = 1;
                 try
                 {
+                    user.Revocato = 1;
+                    user.IdRuolo = 0;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Revoca corriere riuscita.");
                 }
@@ -134,6 +137,7 @@ namespace C3xPAWM.Models.Services.Application
                 {
                     corriere.Assegna();
                     user.Revocato = 0;
+                    user.IdRuolo = corriere.CorriereId;
                     foreach (var pacco in pacchi)
                     {
                         pacco.SettaCorriere(corriere.CorriereId);
@@ -165,10 +169,11 @@ namespace C3xPAWM.Models.Services.Application
 
             if(user.Proprietario == 1 && negozio != null){
                 negozio.Assegna();
-                user.Revocato = 0;
+                
                 try
                 {
-                    
+                    user.Revocato = 0;
+                    user.IdRuolo = negozio.NegozioId;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Riassegnamento negozio riuscito.");
                 }
@@ -176,6 +181,7 @@ namespace C3xPAWM.Models.Services.Application
                 {
                     negozio.Revoca();
                     user.Revocato = 1;
+                    user.IdRuolo = 0;
                     logger.LogInformation($"Riassegnamento negozio fallito.");
                     throw;
                 }
@@ -200,9 +206,10 @@ namespace C3xPAWM.Models.Services.Application
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
             if(user.Proprietario == 1 && corriere != null){
                 corriere.Assegna();
-                user.Revocato = 0;
                 try
                 {
+                    user.Revocato = 0;
+                    user.IdRuolo = corriere.CorriereId;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Riassegnamento corriere riuscito.");
                 }
@@ -210,6 +217,7 @@ namespace C3xPAWM.Models.Services.Application
                 {
                     corriere.Revoca();
                     user.Revocato = 1;
+                    user.IdRuolo = 0;
                     logger.LogInformation($"Riassegnamento corriere fallito.");
                     throw;
                 }
@@ -222,7 +230,7 @@ namespace C3xPAWM.Models.Services.Application
                 }
                 catch (System.Exception)
                 {
-                                        user.Revocato = 1;
+                    user.Revocato = 1;
                     logger.LogInformation($"Riassegnamento corriere fallito.");
                     throw;
                 }

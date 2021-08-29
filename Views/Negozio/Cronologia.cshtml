@@ -85,11 +85,14 @@
                         </div>
                         <div class="col-md-2 d-none d-lg-block">
                             @using(Html.BeginForm("StampaPDF", "Negozio", FormMethod.Post)){
-                                    <button class="btn btn-outline-primary" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>               
+                                 @Html.AntiForgeryToken()
+                                <button class="btn btn-outline-primary" name="PaccoId" id="PaccoId" value="@pacco.PaccoId"><i class="far fa-file-pdf"> </i>  </button>               
                             }
                         </div>
                     </div> 
                 </li>
+
+   
             }
         </ul>
      

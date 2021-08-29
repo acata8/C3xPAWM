@@ -9,6 +9,7 @@
 
 @using(Html.BeginForm("Consegna", "Corriere", FormMethod.Post)){
     @Html.HiddenFor( c => c.CorriereId)
+    @Html.AntiForgeryToken()
     <div class="row mt-3">
         <div class="col-md-12">
                 <ul class="elenco">

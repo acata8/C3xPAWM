@@ -103,7 +103,7 @@
                     </div>
                     <div class="col-md-2">
                         @{
-                            @if(utente.Utente.Revocato == 0 && utente.Utente.Proprietario == 1 ){
+                            @if(utente.Utente.Revocato == 0 && utente.Utente.Proprietario == 1 && utente.Utente.IdRuolo != 0){
                                 <i style="color: green; "class="far fa-check-circle"></i>
                             }else if(utente.Ruolo == "Commerciante" || utente.Ruolo == "Corriere" || (utente.Utente.Revocato == 1 && utente.Utente.Proprietario == 1)){
                                 <i style="color: red; "class="fas fa-times-circle "></i>
