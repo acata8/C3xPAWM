@@ -10,7 +10,7 @@ namespace C3xPAWM.Models.Validators
         {
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email utente obbligatoria").EmailAddress().WithMessage("Formato non valido!");
 
-            
+            RuleFor(x => x.Token).InclusiveBetween(1,30).WithMessage("Token inclusi tra 1 e 30");
         }
     }
 }

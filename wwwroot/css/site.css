@@ -147,12 +147,12 @@ author{
 .validation-summary-errors{
   background-color:rgba(255,0,0,0.1);
   border-left: 2px solid #d12121;
+  border-right: 2px solid #d12121;
   color: darkred;
   padding: 5px;
   margin-top:15px;
   margin-bottom:15px;
   border-radius: 1em;
-  
 }
 
 .validation-summary-errors li{

@@ -150,11 +150,18 @@ namespace C3xPAWM.Models.Entities
                 Tipologia = Tipologia.INDEFINITA;
         }
 
-        public void DecrementaToken(int durata){
-            if(durata > 0){
+        public bool DecrementaToken(int durata){
+            if(durata > 0 && Token >= durata){
                 Token -= durata;
+                return true;
             }
+            return false;
         }
+        
+        public void IncrementaToken(int token){
+            Token += token;
+        }
+
 
     }
 

@@ -57,123 +57,83 @@ namespace C3xPAWM.Controllers
             return View();
         }
 
-        
+        public async Task<IActionResult> GestioneRuoloAsync(string btnRuolo, UserRoleInputModel model){
 
-        [HttpPost]
-        public async Task<IActionResult> AssegnaAsync(UserRoleInputModel model)
-        {
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid){
                 TempData["Error"] = "Inserimento non valido";
                 logger.LogWarning("Informazioni inserite non valide,");
-                return RedirectToAction(nameof(Gestione));
+            }
+            else{   
+                var notifica = 0;
+                var ruoloDaAssegnare = model.Ruolo.ToString();
+                ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
+                var claims = await userManager.GetClaimsAsync(user);
+                Claim roleClaim = new(ClaimTypes.Role, ruoloDaAssegnare);
+                if (btnRuolo.Equals("Assegna"))
+                {
+                    notifica = await adminService.AssegnaAsync(user, claims, ruoloDaAssegnare, roleClaim);
+                }
+                else if (btnRuolo.Equals("Revoca"))
+                {
+                    notifica = await adminService.RevocaAsync(user, claims, ruoloDaAssegnare, roleClaim);
+                }
+
+
+                string messaggio = "Error";
+                if(notifica > 5){
+                    messaggio = "Success";
+                    await userManager.UpdateAsync(user);
+
+                    if(notifica == 7){
+
+                        logger.LogInformation($"Ruolo assegnato con successo a {user.Email}");
+                    }
+                    if(notifica == 6){
+                        logger.LogInformation($"Ruolo revocato con successo a {user.Email}");
+                    }
+                }
+                    
+
+                TempData[messaggio] = (notifica) switch
+                {
+                    (1) => "Non corrisponde ad nessun utente",
+                    (2) => $"Ruolo attivo dell'utente: {claims[1].Value.ToString()}, revocalo per assegnare {ruoloDaAssegnare}",
+                    (3) => "Ruolo già assegnato all'utente",
+                    (4) => "Operazione fallita",
+                    (5) =>  "Ruolo non assegnato all'utente",
+                    (6) =>  "Ruolo revocato",
+                    _ =>  "Ruolo assegnato con successo"
+                };
             }
 
-            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                TempData["Error"] = "Non corrisponde ad nessun utente";
-                logger.LogWarning($"{user.Email} non trovato ");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            IList<Claim> claims = await userManager.GetClaimsAsync(user);
-            
-            if(claims.Count() > 1 && !claims[1].Value.ToString().ToLower().Equals(model.Ruolo.ToString().ToLower())){
-                TempData["Error"] = $"Ruolo attivo dell'utente: {claims[1].Value.ToString()}, revocalo per assegnare {model.Ruolo}";
-                logger.LogWarning($"Ruolo attivo dell'utente: {claims[1].Value}, impossibile assegnare {model.Ruolo}");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            Claim roleClaim = new(ClaimTypes.Role, model.Ruolo.ToString());
-            if (claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
-            {
-                TempData["Error"] = "Ruolo già assegnato all'utente";
-                logger.LogWarning($"Ruolo gia' assegnato a {user.Email}");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            IdentityResult result = await userManager.AddClaimAsync(user, roleClaim);
-            if (!result.Succeeded)
-            {
-                TempData["Error"] = "Operazione fallita";
-                logger.LogWarning($"Assegnazione ruolo a {user.Email} fallita, {result.Errors}");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            if (model.Ruolo == Categoria.Commerciante)
-            {
-                adminService.AssegnaNegozio(user);
-                logger.LogInformation("Negozio assegnato");
-            }
-            else if (model.Ruolo == Categoria.Corriere)
-            {
-                adminService.AssegnaCorriere(user);
-                logger.LogInformation("Corriere assegnato");
-            }
-            user.Revocato = 0;
-            await userManager.UpdateAsync(user);
-            TempData["Success"] = "Ruolo assegnato!";
-            logger.LogInformation($"Ruolo assegnato con successo a {user.Email}");
             return RedirectToAction(nameof(Gestione));
         }
 
-
+       
+    
         [HttpPost]
-        public async Task<IActionResult> Revoca(UserRoleInputModel model)
+        public async Task<IActionResult> Token(string btnToken, UserRoleInputModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["Error"] = "Inserimento non valido";
-                logger.LogWarning("Informazioni inserite non valide");
-                return RedirectToAction(nameof(Gestione));
+            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);  
+            var negozio = negoziService.GetNegozio(user.IdRuolo);
+            bool success = false;
+            if(negozio.ProprietarioId == user.Id){
+                var token = model.Token;
+                if(btnToken.Equals("Aggiunta")){
+                    success = adminService.AggiungiToken(negozio, token);
+                }else if(btnToken.Equals("Rimozione")){
+                    success = adminService.RimuoviToken(negozio, token);
+                }
             }
+           
+            if(success){
+                TempData["Success"] = "Operazione riuscita";
+            }else
+                 TempData["Error"] = "Operazione fallita";
 
-            ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                TempData["Error"] = "Non corrisponde ad nessun utente";
-                logger.LogWarning($"{user.Email} non trovato");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            IList<Claim> claims = await userManager.GetClaimsAsync(user);
-
-
-            Claim roleClaim = new(ClaimTypes.Role, model.Ruolo.ToString());
-            if (!claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
-            {
-                TempData["Error"] = "Ruolo non assegnato all'utente";
-                logger.LogWarning($"Ruolo non assegnato a {user.Email}");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            IdentityResult result = await userManager.RemoveClaimAsync(user, roleClaim);
-            if (!result.Succeeded)
-            {
-                TempData["Error"] = "Operazione fallita";
-                logger.LogWarning($"Assegnamento del ruolo a {user.Email} fallito, {result.Errors}");
-                return RedirectToAction(nameof(Gestione));
-            }
-
-            if (model.Ruolo == Categoria.Commerciante)
-            {
-                adminService.RevocaNegozio(user);
-                logger.LogInformation("Negozio revocato");
-            }
-            else if (model.Ruolo == Categoria.Corriere)
-            {
-                adminService.RevocaCorriere(user);
-                logger.LogInformation("Corriere revocato");
-            }
-
-            await userManager.UpdateAsync(user);
-            TempData["Success"] = "Ruolo revocato!";
-            logger.LogInformation($"Ruolo revocato con successo a {user.Email}");
-            return RedirectToAction(nameof(Gestione));
+             return RedirectToAction(nameof(Gestione));
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> NegoziAsync(ElencoListInputModel input)
         {
@@ -203,6 +163,5 @@ namespace C3xPAWM.Controllers
 
             return View(viewModel);
         }
-
     }
 }

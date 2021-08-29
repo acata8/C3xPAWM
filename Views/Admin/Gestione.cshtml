@@ -7,57 +7,60 @@
 <h1 class="title mt-3">@ViewData["Title"]</h1>
 
 
- @using (@Html.BeginForm("Assegna", "Admin", FormMethod.Post))
+ @using (@Html.BeginForm("GestioneRuolo", "Admin", FormMethod.Post))
    {
-        <div class="row mt-5 mb-3">
+        <div class="row mt-3 mb-3">
          
-            <div class="col-md-4">
-                <label asp-for="Email"></label>
+            <div class="col-md-4 mt-3">
                 <input type="text" asp-for="Email" class="form-control" placeholder="Email">
             </div>
-            <div class="col-md-4">
-                <label asp-for="Ruolo"></label>
-                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(1)" class="form-control">
+            <div class="col-md-3 mt-3">
+                
+                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(2)" class="form-control">
                 </select>
+
+                <input type="hidden" asp-for="Token" value="1">
             </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
                 <label> &nbsp; </label><br>
-                <button class="btn btn-success"><i class="fas fa-user-check"></i>&nbsp; Assegna </button>
+                <button class="btn btn-success" name="btnRuolo" id="btnRuolo" value="Assegna"><i class="fas fa-user-check"></i>&nbsp; Assegna </button>
+        </div>
+        <div class="col-md-2">
+                <label> &nbsp; </label><br>
+                <button class="btn btn-danger" name="btnRuolo" id="btnRuolo" value="Revoca"><i class="fas fa-user-times"></i>&nbsp; Revoca </button>
         </div>
     </div>
 
     <div class="row">
         <div class="col-12 mt-3" asp-validation-summary="All"></div>
     </div>
+
 }
+
 
 <hr>
-@using (@Html.BeginForm("Revoca", "Admin", FormMethod.Post))
-   {
-        <div class="row mt-5">
-         
 
-            <div class="col-md-4">
-                <label asp-for="Email"></label>
+<h1 class="title mt-3">Gestione Token</h1>
+
+@using(Html.BeginForm("Token", "Admin", FormMethod.Post)){
+    <div class="row mt-3">
+        <div class="col-md-4 mt-3">    
                 <input type="text" asp-for="Email" class="form-control" placeholder="Email">
+        </div>
+        <div class="col-md-2 mt-3">
+            <div class="input-group">
+                <input type="text" asp-for="Token" class="form-control" placeholder="Token">
             </div>
-            <div class="col-md-4">
-                <label asp-for="Ruolo"></label>
-                <select asp-for="Ruolo" asp-items="@Html.GetEnumSelectList<Categoria>().SkipLast(1)" class="form-control">
-                </select>
-            </div>
-        <div class="col-md-4">
-                <label> &nbsp; </label><br>
-                <button class="btn btn-danger"> <i class="fas fa-user-times"></i>&nbsp;&nbsp; Revoca </button>
+        </div>
+        <div class="col-md-2 mt-3">
+                <button class="btn btn-success" name="btnToken" id="btnToken" value="Aggiunta"><i class="fas fa-plus-circle"></i>&nbsp; Incrementa </button>
+        </div>
+        <div class="col-md-2 mt-3">
+                <button class="btn btn-danger" name="btnToken" id="btnToken" value="Rimozione"><i class="fas fa-minus-circle"></i> &nbsp; Decrementa </button>
         </div>
     </div>
-
-    <div class="row">
+    
+     <div class="row">
         <div class="col-12 mt-3" asp-validation-summary="All"></div>
     </div>
 }
-
-
-<script>
-    $("#nav").addClass('active');
-</script>

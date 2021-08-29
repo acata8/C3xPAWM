@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using C3xPAWM.Models.Entities;
+using C3xPAWM.Models.Enums;
 using C3xPAWM.Models.InputModel;
 using C3xPAWM.Models.Options;
 using C3xPAWM.Models.Services.Infrastructure;
@@ -236,6 +237,132 @@ namespace C3xPAWM.Models.Services.Application
                 }
             }
         }
+
+        public bool AggiungiToken(Negozio negozio, int token){
+            
+             try
+            {   
+                negozio.IncrementaToken(token);
+                dbContext.SaveChanges();
+                logger.LogInformation("Incremento token riuscito");
+                return true;
+            }
+            catch (System.Exception)
+            {
+                negozio.DecrementaToken(token);
+                logger.LogWarning("Incremento token fallito");
+                return false;
+                throw;
+            }
+        }
+        
+
+        public bool RimuoviToken(Negozio negozio, int token){
+
+
+        
+            
+            try
+            {   
+                if(negozio.DecrementaToken(token)){
+                    dbContext.SaveChanges();
+                    logger.LogInformation("Decremento token riuscito");
+                    return true;
+                }else{
+                    logger.LogWarning("Decremento token fallito");
+                    return false;
+                }
+                
+            }
+            catch (System.Exception)
+            {
+                negozio.IncrementaToken(token);
+                logger.LogWarning("Decremento token fallito");
+                return false;
+                throw;
+            }
+        }
+
+
+        public async Task<int> AssegnaAsync(ApplicationUser user, IList<Claim> claims , string ruoloDaAssegnare, Claim roleClaim)
+        {
+            if (user == null)
+            {
+                logger.LogWarning($"{user.Email} non trovato ");  
+                return 1;
+            }
+    
+            if(claims.Count() > 1 && !claims[1].Value.ToString().ToLower().Equals(ruoloDaAssegnare.ToLower())){
+        
+                logger.LogWarning($"Ruolo attivo dell'utente: {claims[1].Value}, impossibile assegnare {ruoloDaAssegnare}");
+                return 2;
+            }
+
+            if (claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value))
+            {
+                logger.LogWarning($"Ruolo gia' assegnato a {user.Email}");
+                return 3;  
+            }
+
+            IdentityResult result = await userManager.AddClaimAsync(user, roleClaim);
+            if (!result.Succeeded){
+                logger.LogWarning($"Assegnazione ruolo a {user.Email} fallita, {result.Errors}");
+                return  4;
+            }
+
+            if (ruoloDaAssegnare == nameof(Categoria.Commerciante))
+            {
+                AssegnaNegozio(user);
+                logger.LogInformation("Negozio assegnato");
+                return 7;
+            }
+            else if (ruoloDaAssegnare == nameof(Categoria.Corriere))
+            {
+                AssegnaCorriere(user);
+                logger.LogInformation("Corriere assegnato");
+                return 7;
+            }
+
+            return 4;
+        }
+
+        public async Task<int> RevocaAsync(ApplicationUser user, IList<Claim> claims , string ruoloDaAssegnare, Claim roleClaim)
+        {
+            
+            if (user == null){
+                logger.LogWarning($"{user.Email} non trovato");
+                return 1;
+            }
+
+            if (!claims.Any(c => c.Type == roleClaim.Type && c.Value == roleClaim.Value)){  
+                logger.LogWarning($"Ruolo non assegnato a {user.Email}");
+                return 5;
+            }
+            
+            IdentityResult result = await userManager.RemoveClaimAsync(user, roleClaim);
+            if (!result.Succeeded){   
+                logger.LogWarning($"Assegnamento del ruolo a {user.Email} fallito, {result.Errors}");
+                return 4;
+            }
+
+            if (ruoloDaAssegnare == nameof(Categoria.Commerciante))
+            {
+                RevocaNegozio(user);
+                logger.LogInformation("Negozio revocato");
+                return 6;
+            }
+            else if (ruoloDaAssegnare == nameof(Categoria.Corriere))
+            {
+                RevocaCorriere(user);
+                logger.LogInformation("Corriere revocato");
+                return 6;
+            }
+
+           return 4;
+            
+        }
+        
+
 
     }
 }
