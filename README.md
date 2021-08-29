@@ -2,6 +2,10 @@
 
 <img src="https://github.com/acata8/C3xPAWM/blob/main/wwwroot/img/logo.png" width="250" height="250">
 
+- [Tecnologie](#tecnologie-utilizzate)
+- [Panoramica](#panoramica-progetto)
+- [Manuale utente](#manuale-utente)
+
 ## TECNOLOGIE UTILIZZATE 
 
 Per la creazione di un’applicazione web dinamica è stato utilizzato C#, tramite il framework ASP.NET Core 5.0 e basandosi sull’architettura MVC. 
@@ -40,6 +44,12 @@ Il progetto si pone dunque come obiettivo di ricreare una piattaforma da utilizz
 
 
 ## MANUALE UTENTE
+
+- [Utente base](#utente-base)
+- [Commerciante](#commerciante)
+- [Corriere](#corriere)
+- [Admin](#admin)
+
 
   Funzionalità standard, per utenti registrati e non, messe a disposizione:
   - accesso alla home, dove sono presenti i negozi pubblicizzati che hanno deciso di attivare una promozione per un limitato periodo;
