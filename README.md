@@ -45,12 +45,6 @@ Il progetto si pone dunque come obiettivo di ricreare una piattaforma da utilizz
 
 ## MANUALE UTENTE
 
-- [Utente base](#utente-base)
-- [Commerciante](#commerciante)
-- [Corriere](#corriere)
-- [Admin](#admin)
-
-
   Funzionalità standard, per utenti registrati e non, messe a disposizione:
   - accesso alla home, dove sono presenti i negozi pubblicizzati che hanno deciso di attivare una promozione per un limitato periodo;
   -	elenco dei negozi che sono registrati sulla piattaforma (filtrabile per nome e per città, alfabeticamente ordinabile per tipologia).
