@@ -121,6 +121,7 @@ namespace C3xPAWM.Models.Services.Application
 
         public void DisattivaPubblicita(Pubblicita pubblicita){
             pubblicita.Attiva = 0;
+            dbContext.SaveChanges();
         }
       
         public ListViewModel<PubblicitaViewModel> GetNegoziPubblicizzati(ElencoListInputModel input)
@@ -128,7 +129,7 @@ namespace C3xPAWM.Models.Services.Application
 
             IQueryable<Pubblicita> baseQuery = dbContext.Pubblicita;
 
-            baseQuery.Where(p => p.DataFine.CompareTo(DateTime.Now) >= 0).ForEachAsync(p => DisattivaPubblicita(p));
+            baseQuery.Where(p => DateTime.Now.CompareTo(p.DataFine) > 0).ForEachAsync(p => DisattivaPubblicita(p));
 
             var offset = input.Offset;
             var limit = input.Limit;
