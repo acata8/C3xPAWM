@@ -128,10 +128,11 @@ namespace C3xPAWM.Models.Services.Application
 
             IQueryable<Pubblicita> baseQuery = dbContext.Pubblicita;
 
-            var negoziScartati = baseQuery.Where(p => p.DataFine.CompareTo(DateTime.Now) >= 0).ForEachAsync(p => DisattivaPubblicita(p));
+            baseQuery.Where(p => p.DataFine.CompareTo(DateTime.Now) >= 0).ForEachAsync(p => DisattivaPubblicita(p));
 
             var offset = input.Offset;
             var limit = input.Limit;
+
             var queryLinq = baseQuery
                         .AsNoTracking()
                         .Where(p => p.Negozio.Revocato == 0)
@@ -142,7 +143,8 @@ namespace C3xPAWM.Models.Services.Application
                             NomeEvento = p.NomeEvento,
                             Durata = p.Durata,
                             Attiva = p.Attiva,
-                            Negozio = p.Negozio
+                            Negozio = p.Negozio,
+                            DataFine = p.DataFine
                         })
                         .ToList();
 
@@ -151,7 +153,7 @@ namespace C3xPAWM.Models.Services.Application
             List<PubblicitaViewModel> negozi = queryLinq
                     .Skip(offset)
                     .Take(limit)
-                    .OrderBy(p => p.Durata)
+                    .OrderBy(p => p.DataFine)
                     .ToList();
 
             ListViewModel<PubblicitaViewModel> listViewModel = new ListViewModel<PubblicitaViewModel>

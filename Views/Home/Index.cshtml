@@ -69,11 +69,11 @@
                             <div class="col-md-2">
                                 <p class="font-weight-bold" >Nome Evento </p>
                             </div>
-                            <div class="col-md-3">                            
+                            <div class="col-md-4">                            
                                 <p class="font-weight-bold">Citta (Provincia)</p>
                             </div>
-                            <div class="col-md-3">
-                                <p class="font-weight-bold" >Via</p>
+                            <div class="col-md-1">
+                                <p class="font-weight-bold" > Scadenza </p>
                             </div>
                             <div class="col-md-1">
                                 <p class="font-weight-bold">Tipologia</p>
@@ -90,11 +90,11 @@
                             <div class="col-md-2 text-lowercase font-italic ">
                                 <p  >@a.NomeEvento </p>
                             </div>
-                            <div class="col-md-3">                            
-                                <p  >@a.Negozio.Citta (@a.Negozio.Provincia)</p>
+                            <div class="col-md-4">                            
+                                <p  > @a.Negozio.Via @a.Negozio.Citta (@a.Negozio.Provincia)</p>
                             </div>
-                            <div class="col-md-2">
-                                <p  >@a.Negozio.Via</p>
+                            <div class="col-md-1">
+                                <p > @a.DataFine.ToShortDateString() </p>
                             </div>
                             <div class="col-md-2">
                                 <p  >@a.Negozio.Tipologia</p>
