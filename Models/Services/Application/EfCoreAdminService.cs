@@ -258,13 +258,9 @@ namespace C3xPAWM.Models.Services.Application
         
 
         public bool RimuoviToken(Negozio negozio, int token){
-
-
-        
-            
             try
             {   
-                if(negozio.DecrementaToken(token)){
+                if(negozio.RimuoviToken(token)){
                     dbContext.SaveChanges();
                     logger.LogInformation("Decremento token riuscito");
                     return true;

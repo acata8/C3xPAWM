@@ -22,19 +22,19 @@
 
                     @if(User.IsInRole(nameof(Categoria.Corriere)) && User.FindFirstValue("Proprietario").Equals("0")){
                         <hr>
-                        <p class="color h4 mb-3"> Lavora per noi! </p>
+                        <p class="color h4 mb-3"> Lavora con noi! </p>
                         <ul>
                             <li>
-                                <a class="btn btn btn-outline-primary w-100 " asp-action="Creazione" asp-controller="Corriere"><i class="fas fa-truck"></i>&nbsp;Corriere </a>
+                                <a class="btn btn btn-outline-primary" asp-action="Creazione" asp-controller="Corriere"><i class="fas fa-truck"></i>&nbsp;Corriere </a>
                             </li>
                         </ul>
                     }
                     @if(User.IsInRole(nameof(Categoria.Commerciante)) && User.FindFirstValue("Proprietario").Equals("0") ){
                         <hr>
-                        <p class="color h4 mb-3"> Lavora per noi! </p>
+                        <p class="color h4 mb-3"> Lavora con noi! </p>
                         <ul>
                             <li>
-                                <a class="btn btn btn-outline-primary w-100 "  asp-action="Creazione" asp-controller="Negozio"><i class="fas fas fa-store-alt"></i>&nbsp;Negozio </a>
+                                <a class="btn btn btn-outline-primary"  asp-action="Creazione" asp-controller="Negozio"><i class="fas fas fa-store-alt"></i>&nbsp;Negozio </a>
                             </li>
                         </ul>
                     }
@@ -44,7 +44,7 @@
             }else{
 
                 <hr>
-                    <p class="color h2 mb-3"> Lavora per noi! </p>
+                    <p class="color h2 mb-3"> Lavora con noi! </p>
 
                 <ul class="mt-3">
                     

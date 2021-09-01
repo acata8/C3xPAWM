@@ -32,21 +32,15 @@
             <div class="row mt-2">
                 <div class="col-md-4 mt-3">
                     <label for="NomeEvento">Nome dell'evento</label>
-                    
-                        <input class="form-control" asp-for="NomeEvento" type="text" readonly>
-                    
-                        <input class="form-control" asp-for="NomeEvento" type="text">
-                    
+                    <input class="form-control" asp-for="NomeEvento" type="text">
                 </div>
             </div>
             <div class="row mt-2">
                 <div class="col-md-2 mt-3">
                     <label for="Durata">Durata in giorni</label>
-                    @if(Model.Attiva == 1){
-                    <input class="form-control" type="number"readonly>
-                    }else{
-                        <input class="form-control" asp-for="Durata" type="number" step="1" max="@Model.Negozio.Token">
-                    }
+                    
+                    <input class="form-control" asp-for="Durata" type="number" step="1" max="@Model.Negozio.Token">
+                    
                     
                 </div>
             </div>

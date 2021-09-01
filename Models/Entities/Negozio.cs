@@ -157,6 +157,16 @@ namespace C3xPAWM.Models.Entities
             }
             return false;
         }
+
+        public bool RimuoviToken(int token)
+        {
+            if(this.Token >= token){
+                Token -= token;
+                return true;
+            }
+            return false;
+        }
+
         
         public void IncrementaToken(int token){
             Token += token;
