@@ -7,59 +7,65 @@
 
 <partial name="_StatusMessage" for="StatusMessage" />
 <p class="color mb-3 h3">@ViewData["Title"]</p>
-@if (Model.Is2faEnabled)
-{
-    if (Model.RecoveryCodesLeft == 0)
-    {
-        <div id="alert" class="alert alert-danger alertstyle">
-            <strong>Non hai più codici di recupero.</strong>
-            <p>Devi <a asp-page="./GenerateRecoveryCodes"> generare un nuovo set di codici di ripristino</a> prima di poter accedere con un codice di ripristino.</p>
-        </div>
-    }
-    else if (Model.RecoveryCodesLeft == 1)
-    {
-        <div id="alert" class="alert alert-danger alertstyle">
-            <strong>Hai 1 codice di recupero rimasto</strong>
-            <p>Puoi <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di ripristino</a>.</p>
-        </div>
-    }
-    else if (Model.RecoveryCodesLeft <= 3)
-    {
-        <div id="alert" class="alert alert-warning alertstyle">
-            <strong>Hai @Model.RecoveryCodesLeft codici di recupero rimasti</strong>
-            <p>Potresti <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di ripristino</a>.</p>
-        </div>
-    }
+<div class="row">
+    <div class="col-md-4">
+        
+        @if (Model.Is2faEnabled)
+        {
+            if (Model.RecoveryCodesLeft == 0)
+            {
+                <div id="alert" class="alert alert-danger alertstyle">
+                    <strong>Non hai più codici di recupero.</strong>
+                    <p>Devi <a asp-page="./GenerateRecoveryCodes"> generare un nuovo set di codici di ripristino</a> prima di poter accedere con un codice di ripristino.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft == 1)
+            {
+                <div id="alert" class="alert alert-danger alertstyle">
+                    <strong>Hai 1 codice di recupero rimasto</strong>
+                    <p>Puoi <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di ripristino</a>.</p>
+                </div>
+            }
+            else if (Model.RecoveryCodesLeft <= 3)
+            {
+                <div id="alert" class="alert alert-warning alertstyle">
+                    <strong>Hai @Model.RecoveryCodesLeft codici di recupero rimasti</strong>
+                    <p>Potresti <a asp-page="./GenerateRecoveryCodes">generare un nuovo set di codici di ripristino</a>.</p>
+                </div>
+            }
 
-    if (Model.IsMachineRemembered)
-    {
-        
-            <form method="post" style="display: inline-block">
-                <button type="submit" class="btn btn-outline-primary w-100 "> Dimentica questo browser</button>
-            </form>
-        
-        
-    }
-    
-    <a asp-page="./Disable2fa" class="btn btn-outline-primary w-100  mt-3 mr-4">  <i class="fas fa-lock-open"></i> Disabilita 2FA </a>
-    
-    <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-primary w-100  mt-3 ">  <i class="fas fa-check-double"></i> Reimposta codici </a>
-}
+            if (Model.IsMachineRemembered)
+            {
+                
+                    <form method="post" style="display: inline-block">
+                        <button type="submit" class="btn btn-outline-primary w-100 "> Dimentica questo browser</button>
+                    </form>
+                
+                
+            }
+            
+            <a asp-page="./Disable2fa" class="btn btn-outline-primary w-100  mt-3 mr-4">  <i class="fas fa-lock-open"></i> Disabilita 2FA </a>
+            
+            <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-primary w-100  mt-3 ">  <i class="fas fa-check-double"></i> Reimposta codici </a>
+        }
 
-<p class="color mb-3 mt-3 h4">Applicazione</p>
-@if (!Model.HasAuthenticator)
-{
-        <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-lock"></i> &nbsp; Aggiungi app di autenticazione</a>
-}
-else
-{
-    
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-lock"></i> &nbsp;Imposta APP </a>
-    
-    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-mobile-alt"></i> &nbsp; Reimposta APP </a>
-    
-    
-}
+        <p class="color mb-3 mt-3 h4">Applicazione</p>
+        @if (!Model.HasAuthenticator)
+        {
+                <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-lock"></i> &nbsp; Aggiungi app di autenticazione</a>
+        }
+        else
+        {
+            
+            <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-lock"></i> &nbsp;Imposta APP </a>
+            
+            <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-outline-primary w-100  mt-3 mr-4"> <i class="fas fa-mobile-alt"></i> &nbsp; Reimposta APP </a>
+            
+            
+        }
+    </div>
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

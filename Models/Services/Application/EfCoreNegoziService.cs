@@ -43,7 +43,7 @@ namespace C3xPAWM.Models.Services.Application
 
             if (!admin)
             {
-                baseQuery = dbContext.Negozi.Where(n => n.Revocato == 0);
+                baseQuery = dbContext.Negozi.AsNoTracking().Where(n => n.Revocato == 0);
             }
 
             var orderBy = model.OrderBy;

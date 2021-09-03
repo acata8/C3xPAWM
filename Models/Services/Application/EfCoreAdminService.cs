@@ -60,7 +60,7 @@ namespace C3xPAWM.Models.Services.Application
             List<UtenteViewModel> utenti = await queryLinq
             .Skip(model.Offset)
             .Take(model.Limit)
-            .OrderBy(u => u.Ruolo)
+            .OrderBy(u => u.Revocato)
             .ToListAsync();
 
             ListViewModel<UtenteViewModel> listViewModel = new ListViewModel<UtenteViewModel>
@@ -75,7 +75,6 @@ namespace C3xPAWM.Models.Services.Application
         {
 
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-
 
             if(user.Proprietario == 1 && negozio != null){
 
@@ -96,15 +95,21 @@ namespace C3xPAWM.Models.Services.Application
                     throw;
                 }
             }else{
+                int backupRuolo = user.IdRuolo;
+                int backupProprietario = user.Proprietario;
                 try
                 {
                     user.Revocato = 1;
+                    user.IdRuolo = 0;
+                    user.Proprietario = 0;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Revoca negozio riuscita.");
                 }
                 catch (System.Exception)
                 {
                     user.Revocato = 0;
+                    user.Proprietario = backupProprietario;
+                    user.IdRuolo = backupRuolo;
                     logger.LogWarning($"Revoca negozio fallita.");
                     throw;
                 }
@@ -122,13 +127,17 @@ namespace C3xPAWM.Models.Services.Application
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
             if(user.Proprietario == 1 && corriere != null){
                 corriere.Revoca();
-                var pacchi = dbContext.Pacco.Where(c => c.CorriereId == corriere.CorriereId).ToList();
+                var pacchi = dbContext.Pacco
+                        .Where(c => c.CorriereId == corriere.CorriereId).Where(p => p.StatoPacco != StatoPacco.CONSEGNATO)
+                        .ToList();
+
                 foreach (var pacco in pacchi)
                 {
                     pacco.RevocaCorriere();
                 }
                 try
                 {
+                    user.Proprietario = 0;
                     user.Revocato = 1;
                     user.IdRuolo = 0;
                     dbContext.SaveChanges();
@@ -137,6 +146,7 @@ namespace C3xPAWM.Models.Services.Application
                 catch (Exception e)
                 {
                     corriere.Assegna();
+                    user.Proprietario = 1;
                     user.Revocato = 0;
                     user.IdRuolo = corriere.CorriereId;
                     foreach (var pacco in pacchi)
@@ -148,14 +158,20 @@ namespace C3xPAWM.Models.Services.Application
                     throw;
                 }
             }else{
-                user.Revocato = 1;
+                int backupRuolo = user.IdRuolo;
+                int backupProprietario = user.Proprietario;
                 try
-                {
+                {  
+                    user.Revocato = 1;
+                    user.Proprietario = 0;
+                    user.IdRuolo = 0;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Revoca corriere riuscita.");
                 }
                 catch (Exception e)
                 {
+                    user.Proprietario = backupProprietario;
+                    user.IdRuolo = backupRuolo;
                     user.Revocato = 0;
                     logger.LogWarning($"Revoca corriere fallita. Eccezione: {e}");
                     throw;
@@ -168,11 +184,12 @@ namespace C3xPAWM.Models.Services.Application
         {
             var negozio = dbContext.Negozi.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
 
-            if(user.Proprietario == 1 && negozio != null){
+            if(negozio != null){
                 negozio.Assegna();
                 
                 try
                 {
+                    user.Proprietario = 1;
                     user.Revocato = 0;
                     user.IdRuolo = negozio.NegozioId;
                     dbContext.SaveChanges();
@@ -180,6 +197,7 @@ namespace C3xPAWM.Models.Services.Application
                 }
                 catch (Exception)
                 {
+                    user.Proprietario = 0; 
                     negozio.Revoca();
                     user.Revocato = 1;
                     user.IdRuolo = 0;
@@ -187,17 +205,23 @@ namespace C3xPAWM.Models.Services.Application
                     throw;
                 }
             }else{
-                
+                int backupRuolo = user.IdRuolo;
+                int backupProprietario = user.Proprietario;
                 try
                 {
                     user.Revocato = 0;
+                    user.Proprietario = 0;
+                    user.IdRuolo = 0;
                     dbContext.SaveChanges();
-                    logger.LogInformation($"Riassegnamento negozio riuscito.");
+                    logger.LogInformation($"Assegnamento nuovo ruolo riuscito. {user.FullName} è ora commerciante ");
                 }
                 catch (Exception)
                 {
                     user.Revocato = 1;
-                    logger.LogInformation($"Riassegnamento negozio fallito.");
+                    user.Proprietario = backupProprietario;
+                    user.IdRuolo = backupRuolo;
+
+                    logger.LogInformation($"Assegnamento nuovo ruolo fallito.");
                     throw;
                 }
             }
@@ -205,33 +229,40 @@ namespace C3xPAWM.Models.Services.Application
         public void AssegnaCorriere(ApplicationUser user)
         {
             var corriere = dbContext.Corrieri.Where(n => n.ProprietarioId == user.Id).FirstOrDefault();
-            if(user.Proprietario == 1 && corriere != null){
+            if(corriere != null){
                 corriere.Assegna();
                 try
                 {
                     user.Revocato = 0;
+                    user.Proprietario = 1;
                     user.IdRuolo = corriere.CorriereId;
                     dbContext.SaveChanges();
-                    logger.LogInformation($"Riassegnamento corriere riuscito.");
+                    logger.LogInformation($"Assegnamento nuovo ruolo riuscito. {user.FullName} è ora corriere .");
                 }
                 catch (System.Exception)
                 {
                     corriere.Revoca();
                     user.Revocato = 1;
                     user.IdRuolo = 0;
-                    logger.LogInformation($"Riassegnamento corriere fallito.");
+                    logger.LogInformation($"Assegnamento nuovo ruolo fallito. ");
                     throw;
                 }
             }else{
-                user.Revocato = 0;
+                int backupRuolo = user.IdRuolo;
+                int backupProprietario = user.Proprietario;
                 try
                 {
+                    user.Revocato = 0;
+                    user.IdRuolo = 0;
+                    user.Proprietario = 0;
                     dbContext.SaveChanges();
                     logger.LogInformation($"Riassegnamento corriere riuscito.");
                 }
                 catch (System.Exception)
                 {
                     user.Revocato = 1;
+                    user.Proprietario = backupProprietario;
+                    user.IdRuolo = backupRuolo;
                     logger.LogInformation($"Riassegnamento corriere fallito.");
                     throw;
                 }

@@ -67,15 +67,16 @@ namespace C3xPAWM.Controllers
                     
                 }
                 else
+                
                 {
                     TempData["Error"] = "Pacco non assegnato";
                     logger.LogInformation("Pacco non assegnato");
                 }
-                return RedirectToAction(nameof(Index), new { id = model.CorriereId });
+                return RedirectToAction(nameof(NonAssegnati), new { id = model.CorriereId });
             }
             TempData["Error"] = "Pacco non assegnato";
             logger.LogInformation("Informazioni inserite non valide,, Pacco non assegnato");
-            return RedirectToAction(nameof(Index), new { id = model.CorriereId });
+            return RedirectToAction(nameof(NonAssegnati), new { id = model.CorriereId });
         }
 
         [Authorize(Policy = nameof(Policy.CorriereAttivo))]

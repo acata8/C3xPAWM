@@ -36,10 +36,10 @@ namespace C3xPAWM.Areas.Identity.Pages.Account
             [Required]
             [StringLength(7, ErrorMessage = "Deve essere almeno {2} e massimo {1} caratteri.", MinimumLength = 6)]
             [DataType(DataType.Text)]
-            [Display(Name = "Codice uthenticator")]
+           
             public string TwoFactorCode { get; set; }
 
-            [Display(Name = "Ricorda questa macchina")]
+            
             public bool RememberMachine { get; set; }
         }
 

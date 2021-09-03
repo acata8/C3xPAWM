@@ -6,27 +6,28 @@
 
 <p class="color h3">@ViewData["Title"]</p>
 <hr />
-<p class="color mt-2">Il tuo accesso è protetto con un'app di autenticazione. Inserisci il tuo codice autenticatore di seguito.</p>
+<p class="color mt-2 h5">Il tuo accesso è protetto con un'app di autenticazione. 
+    <br> Inserisci il tuo codice autenticatore di seguito.</p>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-3">
         <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
             <input asp-for="RememberMe" type="hidden" />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.TwoFactorCode"></label>
-                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
+                
+                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" placeholder="Codice Authenticator"/>
                 <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
-                    <label asp-for="Input.RememberMachine">
-                        <input asp-for="Input.RememberMachine" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                    
+                        
+                        <p class="color mt-2 h6"><input asp-for="Input.RememberMachine" /> Ricorda questo dispositivo 
                     </label>
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-outline-primary w-100 ">Log in</button>
+                <button type="submit" class="btn btn-outline-primary w-100"> <i class="fas fa-key"></i> Login</button>
             </div>
         </form>
     </div>

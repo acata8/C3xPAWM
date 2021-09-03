@@ -71,6 +71,7 @@ namespace C3xPAWM.Models.Services.Application
         public CorriereInputModel GetCorriere(int id)
         {
             return dbContext.Corrieri.Where(n => n.CorriereId == id)
+                    .AsNoTracking()
                     .Select(corriere => new CorriereInputModel
                     {
                         CorriereId = corriere.CorriereId,
@@ -117,6 +118,7 @@ namespace C3xPAWM.Models.Services.Application
         public List<PaccoViewModel> GetPacchiCorriere(int id)
         {
             return dbContext.Pacco
+                .AsNoTracking()
                 .Where(p => p.CorriereId == id)
                 .Where(p => p.StatoPacco == StatoPacco.ASSEGNATO)
                 .Include(p => p.Utente)
@@ -137,6 +139,7 @@ namespace C3xPAWM.Models.Services.Application
         public List<PaccoViewModel> GetPacchiNonAssegnati()
         {
             return dbContext.Pacco
+                 .AsNoTracking()
                  .Where(p => p.CorriereId == 6)
                  .Where(p => p.StatoPacco == StatoPacco.NON_ASSEGNATO)
                  .Include(p => p.Utente)
@@ -182,6 +185,7 @@ namespace C3xPAWM.Models.Services.Application
         public List<PaccoViewModel> GetCronologiaPacchi(int id)
         {
             return dbContext.Pacco
+                .AsNoTracking()
                 .Where(p => p.CorriereId == id)
                 .Where(p => p.StatoPacco == StatoPacco.CONSEGNATO)
                 .Include(p => p.Utente)
@@ -282,7 +286,11 @@ namespace C3xPAWM.Models.Services.Application
 
         public int GetNumeroPacchi(int id)
         {
-            return dbContext.Pacco.Where(p => p.StatoPacco == StatoPacco.ASSEGNATO).Where(p => p.CorriereId == id).Count();
+            return dbContext.Pacco
+                .AsNoTracking()
+                .Where(p => p.StatoPacco == StatoPacco.ASSEGNATO)
+                .Where(p => p.CorriereId == id)
+                .Count();
         }
     }
 }
