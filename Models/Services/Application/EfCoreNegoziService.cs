@@ -102,7 +102,6 @@ namespace C3xPAWM.Models.Services.Application
                 negozi = await queryLinq
                             .Skip(offset)
                             .Take(limit)
-                            
                             .ToListAsync();
                            
 

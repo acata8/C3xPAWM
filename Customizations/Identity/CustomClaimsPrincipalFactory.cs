@@ -17,6 +17,7 @@ namespace C3xPAWM.Customizations.Identity
             identity.AddClaim(new Claim("FullName", user.FullName));
             identity.AddClaim(new Claim("Proprietario", user.Proprietario.ToString()));
             identity.AddClaim(new Claim("IdRuolo", user.IdRuolo.ToString()));
+            identity.AddClaim(new Claim("Revocato", user.Revocato.ToString()));
             return identity;
         }
     }

@@ -47,9 +47,10 @@
         <div class="col-md-4 mt-3">    
                 <input type="text" asp-for="Email" class="form-control" placeholder="Email">
         </div>
-        <div class="col-md-2 mt-3">
+        <div class="col-md-1">
             <div class="input-group">
-                <input type="text" asp-for="Token" class="form-control" placeholder="Token">
+                <label for="Token"> Token </label>
+                <input type="number" asp-for="Token" class="form-control" min="0" max="30" step="1" value="0">
             </div>
         </div>
         <div class="col-md-2 mt-3">

@@ -58,9 +58,9 @@ namespace C3xPAWM.Models.Services.Application
             model.Paginare = true;
 
             List<UtenteViewModel> utenti = await queryLinq
+            .OrderBy(u => u.Revocato)
             .Skip(model.Offset)
             .Take(model.Limit)
-            .OrderBy(u => u.Revocato)
             .ToListAsync();
 
             ListViewModel<UtenteViewModel> listViewModel = new ListViewModel<UtenteViewModel>
@@ -286,8 +286,6 @@ namespace C3xPAWM.Models.Services.Application
                 throw;
             }
         }
-        
-
         public bool RimuoviToken(Negozio negozio, int token){
             try
             {   

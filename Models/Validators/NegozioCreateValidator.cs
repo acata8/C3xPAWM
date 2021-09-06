@@ -16,9 +16,9 @@ namespace C3xPAWM.Models.Validators
 
             RuleFor(x => x.Telefono)
                     .NotEmpty().WithMessage("Il numero è obbligatorio")
-                    .MinimumLength(10).WithMessage("Il numero telefonico non è valido")
-                    .MaximumLength(10).WithMessage("Il numero telefonico non è valido")
-                    .Matches(@"^\d{10}$").WithMessage("Formato non valido, Telefono non può contenere caratteri");
+                    .MinimumLength(10).WithMessage("Telefono: Il numero telefonico non è valido")
+                    .MaximumLength(10).WithMessage("Telefono: Il numero telefonico non è valido")
+                    .Matches(@"^\d$").WithMessage("Formato non valido, il numero telefonico non è valido");
 
             RuleFor(x => x.Regione)
                     .NotEmpty().WithMessage("La regione è obbligatoria")
@@ -28,7 +28,7 @@ namespace C3xPAWM.Models.Validators
                     .NotEmpty().WithMessage("La provincia è obbligatoria")
                     .MinimumLength(2).WithMessage("Provincia: Errore nell'inserimento")
                     .MaximumLength(2).WithMessage("Provincia: Errore nell'inserimento")
-                    .Matches(@"[A-Z]{2}$").WithMessage("Formato non valido, La provincia può contenere solo 2 caratteri maiuscoli");
+                    .Matches(@"[A-Z]{2}$").WithMessage("Formato non valido, la provincia può contenere solo 2 caratteri maiuscoli");
 ;
             RuleFor(x => x.Citta)
                     .NotEmpty().WithMessage("La città è obbligatoria")

@@ -15,7 +15,7 @@ namespace C3xPAWM.Models.Validators
 
             RuleFor(x => x.Durata)
                     .NotEmpty().WithMessage("Durata non valida")
-                    .InclusiveBetween(1, 30).WithMessage("La durata deve essere compresa tra 1 e il numero di token disponibili, ma ad un massimo di 30 giorni");
+                    .InclusiveBetween(1, 30).WithMessage("La durata deve essere compresa tra 1 e il numero di token disponibili o un massimo di 30 giorni");
         }
     }
 }

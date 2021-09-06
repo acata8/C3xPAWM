@@ -55,9 +55,12 @@
                                 </li>
                             }
 
-                                
-                                
-                            
+
+                            @if(User.FindFirstValue("Revocato") == "1"){
+                                <li class="nav-item mt-2 ml-3">
+                                   <button type="button" class="btn btn-danger badge badge-danger" title="Contatta l'admin">RUOLO REVOCATO</button>
+                                </li>
+                            }
                         }
                     </ul>
 
