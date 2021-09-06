@@ -18,7 +18,7 @@ namespace C3xPAWM.Models.Validators
                     .NotEmpty().WithMessage("Il numero è obbligatorio")
                     .MinimumLength(10).WithMessage("Telefono: Il numero telefonico non è valido")
                     .MaximumLength(10).WithMessage("Telefono: Il numero telefonico non è valido")
-                    .Matches(@"^\d$").WithMessage("Formato non valido, il numero telefonico non è valido");
+                    .Matches(@"^\d+$").WithMessage("Formato non valido, il numero telefonico non è valido");
 
             RuleFor(x => x.Regione)
                     .NotEmpty().WithMessage("La regione è obbligatoria")

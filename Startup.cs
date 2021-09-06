@@ -99,12 +99,21 @@ namespace C3xPAWM
                     option.Password.RequireLowercase = true;
 
                     option.SignIn.RequireConfirmedAccount = true;
-       
+                    
                 })
                 .AddClaimsPrincipalFactory<CustomClaimsPrincipalFactory>()
                 .AddEntityFrameworkStores<C3PAWMDbContext>();
 
             
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
 
             services.AddTransient<INegoziService, EfCoreNegoziService>();
             services.AddTransient<ICorriereService, EfCoreCorrieriService>();
